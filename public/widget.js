@@ -1,6 +1,6 @@
 // ai-enhanced-inputs.js
 
-let BASE_URL = 'http://localhost:3000/api/enhance';
+let BASE_URL = 'https://micro-ai-mage.vercel.app/api/enhance';
 
 function emToPixels(em, contextElement) {
   // If no context element is provided, default to the document's root element (<html>)
