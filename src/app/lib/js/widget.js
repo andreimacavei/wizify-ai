@@ -1,5 +1,3 @@
-// ai-enhanced-inputs.js
-
 let BASE_URL = 'https://micro-ai-mage.vercel.app/api/enhance';
 
 function emToPixels(em, contextElement) {
@@ -127,7 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
         position: absolute;
         font-family: monospace;
     }
-    /* Add more CSS rules as needed */
     `;
 
   // Append the style element to the head (common practice)
@@ -319,18 +316,31 @@ document.addEventListener('DOMContentLoaded', function () {
           if (!url) return;
           try {
             url += '&location=' + encodeURIComponent(window.location.href);
-            console.log(url);
             const response = await fetch(url);
+
+            if (response.status === 429) {
+              const errorData = await response.json();
+              alert(errorData.error);
+              return;
+            }
+
             const text = await response.text();
-            // Replace input value with the AI-generated text
-            inputElement.value = text;
-            const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-              window.HTMLInputElement.prototype,
-              'value'
-            ).set;
-            nativeInputValueSetter.call(inputElement, text);
-            inputElement.dispatchEvent(new Event('input', { bubbles: true }));
-          } catch (e) {}
+
+            if (response.ok) {
+              // Replace input value with the AI-generated text
+              inputElement.value = text;
+              const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                window.HTMLInputElement.prototype,
+                'value'
+              ).set;
+              nativeInputValueSetter.call(inputElement, text);
+              inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+            } else {
+              console.error('Error fethcing data: ', text);
+            }
+          } catch (e) {
+            console.error('Network error: ', e);
+          }
         });
 
         parent.appendChild(menuOption);

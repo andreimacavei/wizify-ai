@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "esbuild src/app/lib/js/*.js --outdir=public/ --allow-overwrite --minify; next dev",
+    "dev": "next dev",
     "build": "esbuild src/app/lib/js/*.js --outdir=public/ --allow-overwrite --minify; next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@upstash/ratelimit": "^1.0.1",
     "@vercel/analytics": "^1.2.2",
+    "@vercel/kv": "^1.0.1",
     "ai": "^3.0.5",
     "next": "14.2.0-canary.0",
     "openai": "^4.28.4",
