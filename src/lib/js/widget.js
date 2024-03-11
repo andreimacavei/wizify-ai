@@ -276,6 +276,7 @@ document.addEventListener('DOMContentLoaded', function () {
         menuOption.addEventListener('click', async function () {
           hideMenu(aiMenu);
           const content = inputElement.value;
+          if (!content) return alert('Please enter some text to enhance');
           const lang = option.lang;
           const tone = option.tone;
           let url;
@@ -319,6 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const response = await fetch(url);
             console.log('response: ', response);
             if (
+              response.status === 400 ||
               response.status === 401 ||
               response.status === 403 ||
               response.status === 429
