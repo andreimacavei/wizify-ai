@@ -108,6 +108,19 @@
 .logo {
   position: relative;
 }
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: var(--border-radius);
+  background: var(--button-background);
+  color: var(--button-color);
+  font-weight: 600;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {

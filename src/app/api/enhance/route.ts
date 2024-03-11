@@ -72,12 +72,23 @@ export async function GET(req: Request) {
   }
 
   // Ask OpenAI for a streaming completion given the prompt
-  const response = await openai.completions.create({
-    model: 'gpt-3.5-turbo-instruct',
-    max_tokens: 200,
-    prompt,
-  });
+  // const response = await openai.completions.create({
+  //   model: 'gpt-3.5-turbo-instruct',
+  //   max_tokens: 200,
+  //   prompt,
+  // });
  
+  // Mock response data for now
+  const response = {
+    choices: [
+      {
+        text: 'This is a mock response. Make money online with this one weird trick!',
+      },
+    ],
+  };
+
+  console.log('Response:', response.choices[0].text.trim());
+
   // Respond with the stream
   return new Response(response.choices[0].text.trim(), {
       headers: {

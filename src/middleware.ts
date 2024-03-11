@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Ratelimit } from '@upstash/ratelimit';
 import { kv } from '@vercel/kv';
+import { client } from './lib/redis'
 
 const ratelimit = new Ratelimit({
   redis: kv,
@@ -8,18 +9,23 @@ const ratelimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(5, '10 s'),
 });
 
+const corsOptions = {
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+}
+
 // Define which routes you want to rate limit
 export const config = {
   matcher: '/api/:path*',
 };
 
 export default async function middleware(request: NextRequest) {
-  // You could alternatively limit based on user ID or similar
+  // Limit the rate of requests
   const ip = request.ip ?? '127.0.0.1';
   const { success, pending, limit, reset, remaining } = await ratelimit.limit(
     ip
   );
-  console.log({ success, limit, reset, remaining });
+  console.log({ success, limit, ip, remaining });
 
   if (!success) {
     return NextResponse.json({ error: 'Rate limit exceeded' }, {
@@ -31,6 +37,31 @@ export default async function middleware(request: NextRequest) {
       },
     });
   }
+
+  const origin = request.headers.get('origin')
+  const referer = request.headers.get('referer')
+
+  if (!origin && !referer) {
+    return NextResponse.json({ error: 'Origin or Referer header is required' }, {
+      status: 403,
+    });
+  }
+
+  const urlOrigin = new URL(origin ?? referer).origin;
+
+  console.log('urlOrigin:', urlOrigin)
+
+  const response = await client.smembers('domains');
+  if (!response.includes(urlOrigin)) {
+    return NextResponse.json({ error: 'Origin or Referer is not allowed' }, {
+      status: 401,
+      headers: {
+        'Access-Control-Allow-Origin': urlOrigin,
+      },
+    });
+  }
+
+  //TODO check for subscription status
 
   return NextResponse.next();
 }

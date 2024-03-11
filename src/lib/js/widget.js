@@ -1,4 +1,4 @@
-let BASE_URL = 'https://micro-ai-mage.vercel.app/api/enhance';
+let BASE_URL = 'http://localhost:3000/api/enhance';
 
 function emToPixels(em, contextElement) {
   // If no context element is provided, default to the document's root element (<html>)
@@ -317,10 +317,15 @@ document.addEventListener('DOMContentLoaded', function () {
           try {
             url += '&location=' + encodeURIComponent(window.location.href);
             const response = await fetch(url);
-
-            if (response.status === 429) {
+            console.log('response: ', response);
+            if (
+              response.status === 401 ||
+              response.status === 403 ||
+              response.status === 429
+            ) {
               const errorData = await response.json();
               alert(errorData.error);
+              console.error('Error: ', errorData.error);
               return;
             }
 
