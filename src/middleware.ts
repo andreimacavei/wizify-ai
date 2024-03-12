@@ -25,7 +25,6 @@ export default async function middleware(request: NextRequest) {
   const { success, pending, limit, reset, remaining } = await ratelimit.limit(
     ip
   );
-  console.log({ success, limit, ip, remaining });
 
   if (!success) {
     return NextResponse.json({ error: 'Rate limit exceeded' }, {
@@ -38,6 +37,7 @@ export default async function middleware(request: NextRequest) {
     });
   }
 
+
   const origin = request.headers.get('origin')
   const referer = request.headers.get('referer')
 
@@ -48,11 +48,12 @@ export default async function middleware(request: NextRequest) {
   }
 
   const urlOrigin = new URL(origin ?? referer).origin;
-
   console.log('urlOrigin:', urlOrigin)
 
-  const response = await client.smembers('domains');
-  if (!response.includes(urlOrigin)) {
+  const whitelistedDomains = await client.smembers('domains');
+  console.log('whitelistedDomains:', whitelistedDomains)
+
+  if (!whitelistedDomains.includes(urlOrigin)) {
     return NextResponse.json({ error: 'Origin or Referer is not allowed' }, {
       status: 401,
       headers: {
@@ -63,5 +64,7 @@ export default async function middleware(request: NextRequest) {
 
   //TODO check for subscription status
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set('Access-Control-Allow-Origin', urlOrigin);
+  return response;
 }
