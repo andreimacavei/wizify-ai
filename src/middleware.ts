@@ -9,11 +9,6 @@ const ratelimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(5, '10 s'),
 });
 
-const corsOptions = {
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-}
-
 // Define which routes you want to rate limit
 export const config = {
   matcher: '/api/:path*',
@@ -36,8 +31,7 @@ export default async function middleware(request: NextRequest) {
       },
     });
   }
-
-
+  // Check if the request is coming from a whitelisted domain
   const origin = request.headers.get('origin')
   const referer = request.headers.get('referer')
 
@@ -48,6 +42,7 @@ export default async function middleware(request: NextRequest) {
   }
 
   const urlOrigin = new URL(origin ?? referer).origin;
+  console.log("****** new request ******")
   console.log('urlOrigin:', urlOrigin)
 
   const whitelistedDomains = await client.smembers('domains');
@@ -65,6 +60,7 @@ export default async function middleware(request: NextRequest) {
   //TODO check for subscription status
 
   const response = NextResponse.next();
+  // Set the Access-Control-Allow-Origin header for CORS issues
   response.headers.set('Access-Control-Allow-Origin', urlOrigin);
   return response;
 }
