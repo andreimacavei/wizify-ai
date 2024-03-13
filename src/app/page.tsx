@@ -13,7 +13,7 @@ export default function Home() {
     <>
       <DefaultLayout>
         {/* <ECommerce /> */}
-        {}
+        {null}
       </DefaultLayout>
     </>
   );

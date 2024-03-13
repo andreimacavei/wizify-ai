@@ -60,8 +60,8 @@ export async function GET(req: Request) {
       prompt = `Make the following text more verbose: "${content}"`;
       break;
     case 'translate':
-      const langParam = searchParams.get('lang').toLowerCase() || 'en';
-      const lang = language[langParam] || 'English';
+      const langParam = searchParams.get('lang')?.toLowerCase() || 'en';
+      const lang = language[langParam as keyof typeof language] || 'English';
       prompt = `Translate the following text to ${lang}: "${content}"`;
       break;
     case 'lucky':
