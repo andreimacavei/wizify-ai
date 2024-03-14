@@ -29,7 +29,7 @@ const RegisterDomains = () => {
     try {
       const validation = schema.safeParse(userInfo);
       
-      if (!validation.success) {
+      if (validation.success === false) {
         let errorArr = [];
         const err = validation.error;
         err.errors.forEach((error) => {
