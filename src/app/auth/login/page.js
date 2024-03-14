@@ -34,9 +34,8 @@ const SignIn = () => {
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
             <p className="2xl:px-20">
-              <span className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Welcome to AI Mage - Enhance your web app with AI
-              </span>
+              Welcome to <span className="font-bold">AI Mage</span> - Enhance
+              your web app with AI
             </p>
 
             <span className="mt-15 inline-block">
@@ -180,6 +179,7 @@ const SignIn = () => {
                   <input
                     type="email"
                     id="email"
+                    value={email}
                     placeholder="Enter your email"
                     onChange={(e) => setEmail(e.currentTarget.value)}
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -213,6 +213,7 @@ const SignIn = () => {
                   <input
                     type="password"
                     id="password"
+                    value={password}
                     placeholder="6+ Characters, 1 Capital letter"
                     onChange={(e) => setPassword(e.currentTarget.value)}
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"

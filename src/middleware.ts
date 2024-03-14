@@ -15,6 +15,15 @@ export const config = {
 };
 
 export default async function middleware(request: NextRequest) {
+  console.log("****** new request ******")
+  // console.log('request.url:', request.nextUrl.pathname)
+  // if (request.nextUrl.pathname.startsWith("/auth")) {
+  //   if (request.cookies.get("email_address")) {
+  //     console.log("user is authenticated")
+  //     return NextResponse.redirect(new URL("/", request.url));
+  //   }
+  // }
+
   // Limit the rate of requests
   const ip = request.ip ?? '127.0.0.1';
   const { success, pending, limit, reset, remaining } = await ratelimit.limit(
@@ -42,7 +51,7 @@ export default async function middleware(request: NextRequest) {
   }
 
   const urlOrigin = new URL(origin ?? referer).origin;
-  console.log("****** new request ******")
+  
   console.log('urlOrigin:', urlOrigin)
 
   const whitelistedDomains = await client.smembers('domains');
