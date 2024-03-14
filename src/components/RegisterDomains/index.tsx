@@ -1,6 +1,5 @@
 'use client';
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 const urlRegex = /^(((http|https):\/\/|)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?)$/;
