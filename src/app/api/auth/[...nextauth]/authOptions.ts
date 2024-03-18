@@ -11,6 +11,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/login",
+    verifyRequest: "/verify",
   },
   providers: [
     Google({
@@ -23,8 +24,6 @@ export const authOptions: NextAuthOptions = {
         password: {},
       },
       async authorize(credentials, req) {
-        console.log("credentials", credentials);
-
         const { email, password} = credentials;
 
         const response = await pool.sql`SELECT * FROM users WHERE email = ${email}`;
@@ -33,7 +32,7 @@ export const authOptions: NextAuthOptions = {
         const passwordMatch = await compare(password, user.password);
         // Return null if user data could not be retrieved
         return passwordMatch? { id: user.id, email: user.email } : null;
-      }
+      },
     }),
   ],
 }

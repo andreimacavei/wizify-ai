@@ -34,9 +34,15 @@ const SignInForm = () => {
     });
     console.log("response", response);
     if (!response.error) {
-      router.replace("/dashboard");
+      router.replace("/dashboard/overview");
     }
   };
+
+  const handleGoogleSignIn = async () => {
+    const response = await signIn("google", {
+      callbackUrl: "/dashboard/overview",
+    });
+  }
 
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -257,7 +263,8 @@ const SignInForm = () => {
                 />
               </div>
 
-              <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+              <button onClick={handleGoogleSignIn}
+                className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                 <span>
                   <svg
                     width="20"
@@ -296,7 +303,7 @@ const SignInForm = () => {
 
               <div className="mt-6 text-center">
                 <p>
-                  Don’t have any account?{" "}
+                  Don't have any account?{" "}
                   <Link href="/signup" className="text-primary">
                     Sign Up
                   </Link>

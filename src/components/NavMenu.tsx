@@ -1,6 +1,7 @@
 'use client';
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 function AuthButton() {
   const { data: session } = useSession();

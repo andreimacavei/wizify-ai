@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { z } from "zod";
 
 const SignUpForm = () => {
@@ -69,6 +70,12 @@ const SignUpForm = () => {
       setIsLoading(false);
     }
   };
+
+  const handleGoogleSignIn = async () => {
+    const response = await signIn("google", {
+      callbackUrl: "/dashboard",
+    });
+  }
 
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -338,7 +345,9 @@ const SignUpForm = () => {
                 />
               </div>
 
-              <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+              <button
+                onClick={handleGoogleSignIn}
+                className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                 <span>
                   <svg
                     width="20"

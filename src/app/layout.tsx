@@ -3,9 +3,9 @@ import "@/css/style.css";
 import React from "react";
 import Loader from "@/components/common/Loader";
 import { getServerSession } from "next-auth";
-import SessionProvider from "@/components/SessionProvider";
-import NavMenu from "@/components/NavMenu";
+import SessionProvider from "@/app/context/SessionProvider";
 import { Metadata } from "next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 export const metadata: Metadata = {
   title:
@@ -18,7 +18,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   // const [sidebarOpen, setSidebarOpen] = useState(false);
   // const [loading, setLoading] = useState<boolean>(false);
 
@@ -34,7 +34,6 @@ export default async function RootLayout({
       <SessionProvider session={session}>
         <div className="dark:bg-boxdark-2 dark:text-bodydark">  
             {/* {loading ? <Loader /> : children} */}
-            <NavMenu />
             {children}
           </div>
         </SessionProvider>
