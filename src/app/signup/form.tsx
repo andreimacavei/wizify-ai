@@ -5,12 +5,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 
-const SignUp = () => {
+const SignUpForm = () => {
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
 
   const schema = z
@@ -27,6 +24,11 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirmPassword");
 
     try {
       const validation = schema.safeParse({
@@ -57,11 +59,7 @@ const SignUp = () => {
       });
 
       if (res.ok) {
-        router.replace("/auth/login");
-        // const { result } = await res.json();
-        // if (result) {
-        //   router.replace("/dashboard");
-        // }
+        router.replace("/login");
       } else {
         console.log("Error signing up");
       }
@@ -222,9 +220,8 @@ const SignUp = () => {
                 <div className="relative">
                   <input
                     type="text"
-                    id="email"
+                    name="email"
                     placeholder="Enter your email"
-                    onChange={(e) => setEmail(e.currentTarget.value)}
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
 
@@ -258,9 +255,8 @@ const SignUp = () => {
                 <div className="relative">
                   <input
                     type="password"
-                    id="password"
+                    name="password"
                     placeholder="Enter your password"
-                    onChange={(e) => setPassword(e.currentTarget.value)}
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
 
@@ -298,8 +294,7 @@ const SignUp = () => {
                 <div className="relative">
                   <input
                     type="password"
-                    id="confirm-password"
-                    onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+                    name="confirmPassword"
                     placeholder="Re-enter your password"
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
@@ -383,7 +378,7 @@ const SignUp = () => {
               <div className="mt-6 text-center">
                 <p>
                   Already have an account?{" "}
-                  <Link href="/auth/login" className="text-primary">
+                  <Link href="/login" className="text-primary">
                     Sign in
                   </Link>
                 </p>
@@ -396,4 +391,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpForm;
