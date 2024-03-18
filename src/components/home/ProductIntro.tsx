@@ -6,3 +6,5 @@ function ProductIntro({ user }) {
     </>
   )
 }
+
+export default ProductIntro;
