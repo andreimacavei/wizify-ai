@@ -5,10 +5,19 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/demo',
-        destination: '/index.html',
+        source: "/demo",
+        destination: "/index.html",
       },
     ];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+      },
+    ],
   },
 };
 

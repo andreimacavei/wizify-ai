@@ -1,0 +1,24 @@
+import Link from 'next/link'
+import Image from 'next/image'
+import { Profile, ProfileServer } from '@/components/templates'
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+
+export default async function Header() {
+  const session = await getServerSession(authOptions);
+	//! TODO: z-index must be removed but first progressbar z-index should be fixed
+	return (
+		<header className="sticky left-0 right-0 top-0 z-20 border-b border-gray-200 bg-white">
+			<div className='flex justify-between items-center mx-auto w-full  py-2 px-2.5 lg:px-20'>
+				<h1 className="text-3xl">
+					<Link href="/" className='flex flex-row gap-1 items-center font-medium'>
+						<Image src="/images/logo/mage_ai.png" alt='Logo' width={34} height={34} />
+						MageAI
+					</Link>
+				</h1>
+
+				{!session || !session.user ? <ProfileServer /> : <Profile key='x' />}
+			</div>
+		</header>
+	)
+}

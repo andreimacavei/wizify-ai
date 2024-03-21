@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import SessionProvider from "@/app/context/SessionProvider";
 import { Metadata } from "next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import { Footer, Header } from "@/components/templates";
 
 export const metadata: Metadata = {
   title:
@@ -30,12 +31,18 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
       <body suppressHydrationWarning={true}>
-      <SessionProvider session={session}>
-        <div className="dark:bg-boxdark-2 dark:text-bodydark">  
+        <SessionProvider session={session}>
+          <Header />
+          <div className="dark:bg-boxdark-2 dark:text-bodydark">  
             {/* {loading ? <Loader /> : children} */}
             {children}
           </div>
+          <Footer />
         </SessionProvider>
       </body>
     </html>

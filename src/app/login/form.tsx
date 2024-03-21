@@ -14,18 +14,6 @@ const SignInForm = () => {
     const email = formData.get("email");
     const password = formData.get("password");
 
-    // let res = await fetch("/api/login", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ email, password }),
-    // });
-
-    // if (res.ok) {
-    //   router.replace("/");
-    // } else {
-    //   console.log("Error login in: ", res.status);
-    // }
-
     const response = await signIn("credentials", {
       email,
       password,
@@ -35,6 +23,8 @@ const SignInForm = () => {
     console.log("response", response);
     if (!response.error) {
       router.replace("/dashboard/overview");
+    } else {
+      console.log("Error login in: ", response.error);
     }
   };
 
