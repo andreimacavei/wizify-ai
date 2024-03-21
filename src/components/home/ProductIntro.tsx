@@ -2,19 +2,30 @@
 import { Hero, UseCaseExample } from '@/components/home';
 import Script from 'next/script'
 
+declare global {
+  let enhanceInputElement: () => void;
+}
+
 function ProductIntro({ user }: { user: any }) {
   
   return (
     <>
-      <Script src="http://localhost:3000/widget.js"
+      <Script src="./widget.js"
         strategy='lazyOnload'
         onReady={() => {
-          console.log("Widget Loaded from Script onLoad")
-          const inputElements = document.querySelectorAll(
-            'input[type="text"], textarea',
-          );
-          inputElements.forEach(enhanceInputElement);
-        }}
+          try {
+            
+            const inputElements = document.querySelectorAll(
+              'input[type="text"], textarea',
+            );
+    
+            inputElements.forEach(enhanceInputElement);
+          } catch (error) {
+            console.error("Error loading widget", error);
+          }
+          
+        }
+      }
       />
       <div className="mx-auto max-w-md sm:max-w-lg text-center">
         {user && <Hero loggedIn />}

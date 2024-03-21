@@ -133,7 +133,6 @@ function loadStyle() {
 loadStyle();
 
 window.onload = function () {
-  console.log("window loaded");
   const inputElements = document.querySelectorAll(
     'input[type="text"], textarea',
   );
@@ -149,7 +148,6 @@ function hideMenu(aiMenu) {
 
 // Function to create the AI button and menu
 function enhanceInputElement(inputElement) {
-  console.log("enhanceInputElement called for elem: ", inputElement);
   if (inputElement.parentNode.className.includes("micro-ai-wrapper")) return;
   // Create the AI button element
   let padding = 3;
