@@ -36,7 +36,7 @@ export default function EmailForm() {
               name="email"
               autoFocus={true}
               type="email"
-              placeholder="partytime@thedis.co"
+              placeholder="aiparty@thewizzard.co"
               autoComplete="email"
               required
               value={email}
@@ -47,7 +47,7 @@ export default function EmailForm() {
             />
           </div>
         )}
-        <button className="h-10 w-full items-center justify-center space-x-2 rounded-md border px-4 text-sm transition-all focus:outline-none border-gray hover:border-black"
+        <button className="h-10 w-full items-center justify-center space-x-2 rounded-md border px-4 text-sm transition-all focus:outline-none border-gray-100 hover:border-black"
           {...(!showEmailOption && {
             type: "button",
             onClick: (e) => {

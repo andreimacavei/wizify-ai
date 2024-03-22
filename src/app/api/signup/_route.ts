@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     // TODO add field validation here aswell
     
     const result = await pool.sql`INSERT INTO users(email, password) VALUES(${email}, ${hashedPassword}) RETURNING *`;
-    
+  
     if (result) {
       return NextResponse.json({ message: "User created" }, { status: 201 });
     } else {

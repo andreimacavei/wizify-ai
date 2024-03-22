@@ -1,4 +1,4 @@
-let BASE_URL="https://micro-ai-mage.vercel.app/api/enhance";function emToPixels(e,a){a=a||document.documentElement;var t=getComputedStyle(a).fontSize;t||(t=getComputedStyle(document.documentElement).fontSize);var n=parseFloat(t),r=e*n;return r}function copyStyles(e,a){const t=window.getComputedStyle(e);for(let n=0;n<t.length;n++){const r=t[n];r=="width"&&(a.style[r]=t.getPropertyValue(r))}a.style.width=e.offsetWidth+"px",a.style.height=e.offsetHeight+"px"}function loadStyle(){var e=document.createElement("style");e.innerHTML=`
+let BASE_URL="https://aiwizzard.vercel.app/api/enhance";function emToPixels(e,a){a=a||document.documentElement;var t=getComputedStyle(a).fontSize;t||(t=getComputedStyle(document.documentElement).fontSize);var n=parseFloat(t),r=e*n;return r}function copyStyles(e,a){const t=window.getComputedStyle(e);for(let n=0;n<t.length;n++){const r=t[n];r=="width"&&(a.style[r]=t.getPropertyValue(r))}a.style.width=e.offsetWidth+"px",a.style.height=e.offsetHeight+"px"}function loadStyle(){var e=document.createElement("style");e.innerHTML=`
     .micro-ai {
         position: absolute;
         right: 3px;

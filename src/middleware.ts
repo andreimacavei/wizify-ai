@@ -16,7 +16,7 @@ export const config = {
   // matcher: ['/((?!api|_next/static|.*\svg|.*\png|.*\jpg|.*\jpeg|.*\gif|.*\webp|_next/image|favicon.ico).*)',],
 };
 
-const publicPages = ["/", "/demo", "login", "signup"];
+const publicPages = ["/", "/demo", "signin"];
 
 export default withAuth(
   // Note that this callback is only invoked if

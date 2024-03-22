@@ -22,7 +22,7 @@ const SignInForm = () => {
     });
     console.log("response", response);
     if (!response.error) {
-      router.replace("/dashboard/overview");
+      router.replace("/dashboard");
     } else {
       console.log("Error login in: ", response.error);
     }
@@ -30,7 +30,7 @@ const SignInForm = () => {
 
   const handleGoogleSignIn = async () => {
     const response = await signIn("google", {
-      callbackUrl: "/dashboard/overview",
+      callbackUrl: "/dashboard",
     });
   }
 

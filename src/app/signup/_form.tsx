@@ -60,7 +60,7 @@ const SignUpForm = () => {
       });
 
       if (res.ok) {
-        router.replace("/login");
+        router.replace("/signin");
       } else {
         console.log("Error signing up");
       }
@@ -387,7 +387,7 @@ const SignUpForm = () => {
               <div className="mt-6 text-center">
                 <p>
                   Already have an account?{" "}
-                  <Link href="/login" className="text-primary">
+                  <Link href="/signin" className="text-primary">
                     Sign in
                   </Link>
                 </p>
