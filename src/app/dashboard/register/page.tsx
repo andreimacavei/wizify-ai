@@ -9,7 +9,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 export default async function RegisterPage() {
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
-    redirect("/login");
+    redirect("/sigin");
   }
 
   return (

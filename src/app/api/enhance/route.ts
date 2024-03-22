@@ -87,7 +87,7 @@ export async function GET(req: Request) {
     ],
   };
 
-  console.log('Response:', response.choices[0].text.trim());
+  // console.log('Response:', response.choices[0].text.trim());
 
   // Respond with the stream
   return new Response(response.choices[0].text.trim(), {

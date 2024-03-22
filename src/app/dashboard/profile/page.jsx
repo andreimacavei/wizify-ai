@@ -11,7 +11,7 @@ The ProfilePage component was generated with Github Copilot.
 export default function ProfilePage() {
   const { data: session } = useSession();
   if (!session || !session.user) {
-    redirect("/login");
+    redirect("/signin");
   }
 
   const [userDetails, setUserDetails] = useState({

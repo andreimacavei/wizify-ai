@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 export default function SettingsPage() {
   const { data: session } = useSession();
   if (!session || !session.user) {
-    redirect("/login");
+    redirect("/signin");
   }
 
   return (
