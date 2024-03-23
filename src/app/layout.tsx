@@ -5,7 +5,7 @@ import Loader from "@/components/common/Loader";
 import { getServerSession } from "next-auth";
 import SessionProvider from "@/app/context/SessionProvider";
 import { Metadata } from "next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import { authOptions } from "@/app/lib/authOptions";
 import { Footer, Header } from "@/components/templates";
 
 export const metadata: Metadata = {

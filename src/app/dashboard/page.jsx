@@ -10,7 +10,7 @@ TODO: Modify this component to fit your needs.
 The ProfilePage component was completely generated with Github Copilot.
 */
 
-export default function OverviewPage() {
+export default function DashboardPage() {
   const { data: session } = useSession();
   if (!session || !session.user) {
     redirect("/signin");

@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import { authOptions } from "@/app/lib/authOptions";
 import Image from "next/image";
 
 export default async function ProfileServer () {

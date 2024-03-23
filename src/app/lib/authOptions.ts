@@ -6,7 +6,6 @@ import { Resend } from 'resend';
 import { NextAuthOptions } from "next-auth";
 import { prisma } from "@/lib/db/db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { use } from "react";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -59,7 +58,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 
-  debug: process.env.NODE_ENV === "development",
+  // debug: process.env.NODE_ENV === "development",
 
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
@@ -77,7 +76,31 @@ export const authOptions: NextAuthOptions = {
 
       return true;
     },
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.sub;
+      }
+      return session;
+    },
+    jwt: async ({ user, token }) => {
+      if (user) {
+        token.uid = user.id;
+      }
+      return token;
+    },
+    // async session({ session, user, token}) {
+    //   if (session.user) {
+    //     let res = await prisma.user.findUnique({
+    //       where: {
+    //         id: user.id
+    //       }
+    //     });
+    //     // session.user.timezone = res!.timezone
+    //     session.user.id = user.id;
+    //   }
 
+    //   return session;
+    // },
   },
   // events: {
   //   createUser: async (message) => {

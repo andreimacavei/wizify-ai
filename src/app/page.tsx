@@ -1,6 +1,6 @@
 import { ProductIntro } from "@/components/home";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import { authOptions } from "@/app/lib/authOptions";
 
 
 export default async function Home() {

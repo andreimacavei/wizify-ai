@@ -72,7 +72,7 @@ export default async function middleware(request: NextRequest) {
 async function validateDomain(urlOrigin: string) {
     
   const whitelistedDomains = await client.smembers('domains');
-  // console.log('whitelistedDomains:', whitelistedDomains)
+  console.log('whitelistedDomains:', whitelistedDomains)
 
   if (!whitelistedDomains.includes(urlOrigin)) {
     return false;

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Profile, ProfileServer } from '@/components/templates'
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import { authOptions } from "@/app/lib/authOptions";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);

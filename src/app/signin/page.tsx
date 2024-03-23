@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth/next"
 import { SignInButton } from "@/app/ui/auth"
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions"
+import { authOptions } from "@/app/lib/authOptions"
 import { Google, Github } from "@/app/ui/icons"
 import Image from 'next/image'
 import EmailForm from "./EmailForm"

@@ -34,7 +34,7 @@ export default function Profile() {
         <svg
           className="w-7 h-7 rounded-full"
           fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+          <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path>
         </svg>
       </a>
     );
@@ -61,7 +61,7 @@ export default function Profile() {
           Dashboard
         </DropdownMenu.Item>
         <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray-100"
-          onSelect={() => router.push('/dashboard/profile')}>
+          onSelect={() => router.push('/profile')}>
           Update Profile
         </DropdownMenu.Item>
         {/* <UserDeleteDialog id={user.id} open={deleteDialogOpen} setOpen={setDeleteDialogOpen} trigger={(
