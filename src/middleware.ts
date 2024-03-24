@@ -46,10 +46,11 @@ export default async function middleware(request: NextRequest) {
     });
   }
   
-  const urlOrigin = new URL(origin ?? referer).hostname;
+  const urlOrigin = new URL(origin ?? referer).origin;
+  const hostname = new URL(origin ?? referer).hostname;
   console.log('urlOrigin:', urlOrigin)
   
-  const isValidDomain = await validateDomain(urlOrigin);
+  const isValidDomain = await validateDomain(hostname);
   if (!isValidDomain) {
     console.log('NOT allowed')
     
