@@ -46,7 +46,7 @@ export default async function middleware(request: NextRequest) {
     });
   }
   
-  const urlOrigin = new URL(origin ?? referer).origin;
+  const urlOrigin = new URL(origin ?? referer).hostname;
   console.log('urlOrigin:', urlOrigin)
   
   const isValidDomain = await validateDomain(urlOrigin);
