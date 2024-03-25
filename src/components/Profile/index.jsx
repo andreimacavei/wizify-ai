@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 /*
@@ -65,55 +64,53 @@ export default function ProfilePage() {
   };
 
   return (
-    <DefaultLayout>
-      <form onSubmit={handleSubmit} className="space-y-4 p-5">
-        {Object.keys(userDetails).map((field, index) => {
-          if (field === "editables") return null;
-          return Array.isArray(userDetails[field]) ? (
-            userDetails[field].map((value, idx) => (
-              <div key={idx} className="flex items-center space-x-2">
-                <input
-                  type="text"
-                  value={value}
-                  onChange={(e) => handleChange(e, field, idx)}
-                  disabled={!userDetails.editables[field][idx]}
-                  className="border-gray-300 border-b-2"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleEditToggle(field, idx)}
-                  className="text-blue-500"
-                >
-                  {userDetails.editables[field][idx] ? "Save" : "Edit"}
-                </button>
-              </div>
-            ))
-          ) : (
-            <div key={index} className="flex items-center space-x-2">
+    <form onSubmit={handleSubmit} className="space-y-4 p-5">
+      {Object.keys(userDetails).map((field, index) => {
+        if (field === "editables") return null;
+        return Array.isArray(userDetails[field]) ? (
+          userDetails[field].map((value, idx) => (
+            <div key={idx} className="flex items-center space-x-2">
               <input
                 type="text"
-                value={userDetails[field]}
-                onChange={(e) => handleChange(e, field)}
-                disabled={!userDetails.editables[field]}
+                value={value}
+                onChange={(e) => handleChange(e, field, idx)}
+                disabled={!userDetails.editables[field][idx]}
                 className="border-gray-300 border-b-2"
               />
               <button
                 type="button"
-                onClick={() => handleEditToggle(field)}
+                onClick={() => handleEditToggle(field, idx)}
                 className="text-blue-500"
               >
-                {userDetails.editables[field] ? "Save" : "Edit"}
+                {userDetails.editables[field][idx] ? "Save" : "Edit"}
               </button>
             </div>
-          );
-        })}
-        <button
-          type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white"
-        >
-          Save Changes
-        </button>
-      </form>
-    </DefaultLayout>
+          ))
+        ) : (
+          <div key={index} className="flex items-center space-x-2">
+            <input
+              type="text"
+              value={userDetails[field]}
+              onChange={(e) => handleChange(e, field)}
+              disabled={!userDetails.editables[field]}
+              className="border-gray-300 border-b-2"
+            />
+            <button
+              type="button"
+              onClick={() => handleEditToggle(field)}
+              className="text-blue-500"
+            >
+              {userDetails.editables[field] ? "Save" : "Edit"}
+            </button>
+          </div>
+        );
+      })}
+      <button
+        type="submit"
+        className="rounded bg-blue-500 px-4 py-2 text-white"
+      >
+        Save Changes
+      </button>
+    </form>
   );
 }

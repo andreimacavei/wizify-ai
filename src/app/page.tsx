@@ -11,10 +11,6 @@ export default async function Home() {
   }
 
 
-  return (
-    <>
-      <ProductIntro user={undefined} />;
-      </>
-  )
+  return <ProductIntro user={undefined} />;
   
 }

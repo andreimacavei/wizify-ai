@@ -13,15 +13,15 @@ export default function UseCaseExample({useCase}: {useCase: UseCaseProps}) {
         <div className="h-6 rounded-md font-bold">{useCase.name}</div>
         {useCase.inputType === 'input' &&
           <input type="text" placeholder={useCase.content}
-        // value={useCase.content}
+            value={useCase.content}
             className="rounded-md border border-gray-200 p-2"
             style={useCase.style}
           />
         }
         {useCase.inputType === 'textarea' &&
           <textarea placeholder={useCase.content}
-            // value={useCase.content}
-            className="rounded-md border border-gray-200 p-2"
+            value={useCase.content}
+            className="rounded-md border border-gray-200 p-2 resize-none"
             style={useCase.style}
           />
         }

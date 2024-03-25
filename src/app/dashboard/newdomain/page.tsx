@@ -1,6 +1,5 @@
 
 import NewDomain from '@/components/RegisterDomains';
-import DefaultLayout from '@/components/Layouts/DefaultLayout';
 import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
@@ -12,8 +11,6 @@ export default async function NewDomainPage() {
   }
 
   return (
-		<DefaultLayout>
-			<NewDomain />
-      </DefaultLayout>
+    <NewDomain />
 	)
 }

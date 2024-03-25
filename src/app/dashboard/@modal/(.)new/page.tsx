@@ -1,23 +1,26 @@
 'use client'
-import Link from 'next/link'
-import { registerNewDomain } from '@/app/lib/actions'
-// import { getServerSession } from "next-auth/next";
-// import { authOptions } from '@/app/lib/auth';
-// import { redirect } from 'next/navigation';
-import ModalRadix from "@/components/ModalRadix";
-import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react'
 
-export default function NewModal() {
+import Link from 'next/link'
+
+import { registerNewDomain } from '@/app/lib/actions'
+import { useRouter } from 'next/navigation';
+import { useState } from 'react'
+import ModalRadix from "@/components/ModalRadix";
+
+const urlRegex = /^(((http|https):\/\/|)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?)$/;
+
+export default function NewDomainModal() {
 
 	const [loading, setLoading] = useState(false)
-	const [error, setError] = useState(false)
+  const [error, setError] = useState(false)
+  const [errors, setErrors] = useState([]); 
+	const [success, setSuccess] = useState(false)
 	const router = useRouter();
 
   // Get user session token
-  // const session = await getServerSession(authOptions);
+  // const {data: session, status} = useSession();
   // if (!session || !session.user)
-  //   redirect('/')
+  //   redirect('/signin')
 
 	const handleSubmit = async (
 		e: React.FormEvent<HTMLFormElement>
@@ -28,55 +31,57 @@ export default function NewModal() {
 		setError(false)
 		setLoading(true)
 		let result = await registerNewDomain(formData)
-		setLoading(false)
-		if (result){
-			router.back()
-			// TODO: update habits array state
-			// I think habits array state should be moved to parent component then passed down as props to this component
-			// then we can update the habits array state of any current page (dashboard, broken or finished or none)
-			// BUT for now, I just refresh the current page!
+    setLoading(false)
 
-			// TODO: close modal
-			//! Bad Idea, and do not what I want
-			// router.push('/dashboard')
-		} else
-			setError(true)
+		if (result.status === 'success'){
+			setSuccess(true)
+			router.back()
+			// router.push('/dashboard/newdomain')
+    } else {
+      setError(true) 
+      setErrors(result.errors);
+    }
+			
 	}
 
 	return (
-    // <Modal className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
-			<ModalRadix>
-			<h2 className="text-xl text-orange-500 border-b border-orange-500 pb-2 my-4">New Habit:</h2>
+		<ModalRadix>
+		<div className='col-span-1 auto-rows-min grid-cols-1 lg:col-span-5 border-gray-50 rounded-lg border-2 bg-white mt-4 p-3 shadow sm:p-4'>
+			<h2 className="text-xl text-blue-500 border-b border-blue-500 pb-2 my-4">Add Wizzard AI to your website:</h2>
 			<form onSubmit={(e)=>handleSubmit(e)} className="flex flex-col gap-4">
-				<label htmlFor="name" className="text-slate-400 text-xs">
-					What habit do you want to streak up?
+				<label htmlFor="domain" className="text-slate-600 text-xm">
+					Which site/domain you want to add to? ([http/https]://example.com)
 				</label>
 				<div className='flex gap-4 items-center'>
-					<input id="name" name="habitName" type="text" minLength={3} maxLength={50} required
-						placeholder='Example: Read books for 30 min'
+					<input id="domain" name="domain" type="text" minLength={5} maxLength={50} required
+						placeholder='Example: mywebsite.com'
 						className="grow border border-slate-300 rounded px-2 py-1 outline-none text-slate-800" />
-					
 				</div>
-				<label htmlFor="habitType" className="text-slate-400 text-xs">
-					How often do you want to do it?
-				</label>
-				
-				<label htmlFor="habitGoal" className="text-slate-400 text-xs">
-					Set a goal but not a long one!
-				</label>
-				<div className='flex gap-4 items-center'>
-					<input id="goal" name="habitGoal" type="number" min={7} max={256} defaultValue={30} required
+        <label className="text-slate-600 text-xm">
+          After you add your domain you can use Wizzard AI on your website.
+        </label>
+
+				{/* <label htmlFor="maxCredits" className="text-slate-400 text-xs">
+					Set a limit of credits to use!
+				</label> */}
+				{/* <div className='flex gap-4 items-center'>
+					<input id="maxCredits" name="maxCredits" type="number" min={1000} max={user.credits} defaultValue={5000} required
 						className="border border-slate-300 rounded px-2 py-1 outline-none text-slate-800" />
 					days
-				</div>
+				</div> */}
 				<div className='flex justify-end gap-2'>
-					<button type="submit" className="border text-orange-500 border-orange-500 rounded px-2 py-1 hover:bg-orange-500 hover:bg-opacity-20 focus-within:bg-orange-500 focus-within:bg-opacity-20 active:scale-95 transition-all duration-75">Create</button>
-					<button onClick={router.back} type='button' className='border border-gray-300 rounded px-2 py-1 hover:bg-gray-200 focus-within:bg-gray-200 active:scale-95 transition-all duration-75'>Cancel</button>
+					<button type="submit" disabled={loading} className="border text-blue-500 border-blue-500 rounded px-2 py-1 hover:bg-blue-500 hover:bg-opacity-20 focus-within:bg-orange-500 focus-within:bg-opacity-20 enabled:active:scale-95 transition-all duration-75 disabled:cursor-default">Create</button>
+					<button onClick={router.back} className='border border-gray-300 rounded px-2 py-1 hover:bg-gray focus-within:bg-gray-200 active:scale-95 transition-all duration-75'>Cancel</button>
 				</div>
 				{loading && <p className='mt-4 text-green-500 text-center'>Loading...</p>}
-				{error && <p className='mt-4 text-red-500 text-center'>Something went wrong. Please try again.</p>}
+          {/* {error && <p className='mt-4 text-red text-center'>Something went wrong. Please try again.</p>} */}
+          <div className="mt-4 text-red text-center">
+            {errors.find((error) => error.for === "domainURL")?.message}
+          </div>
+					{success && <p className='mt-4 text-green-500 text-center'>Website registered!</p>}
+					{error && <p className='mt-4 text-red-500 text-center'>Something went wrong. Please try again.</p>}
 			</form>
+			</div>
 			</ModalRadix>
-    // </Modal>
 	)
 }

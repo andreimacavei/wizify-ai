@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/lib/authOptions";
 import { prisma } from "@/lib/db/db";
 import { z } from "zod";
+import { sanitizeString } from "@/utils/sanitize";
 import { client } from "@/lib/redis";
 
 const urlRegex = /^(((http|https):\/\/|)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?)$/;
@@ -67,4 +68,58 @@ export async function registerNewDomain(data: FormData) {
   console.log('result redis: ', result);
 
   return {status: 'success'};
-} 
+}
+
+export async function deleteDomain(id: string) {
+  'server'
+  let result;
+  try {
+    result = await prisma.domains.delete({
+      where: {
+        id
+      }
+    });
+    console.log('result postgres: ', result);
+
+  } catch (error) {
+    console.log('error postgres: ', error);
+    return false;
+  }
+
+  // Save to redis db (edge cache)
+  result = await client.srem('domains', result.hostname);
+  console.log('result redis: ', result);
+
+  return true;
+}
+
+/**
+ * Update User Profile
+ */
+export async function updateProfile(data: FormData) {
+	'use server'
+
+	// Get user session token
+  const session = await getServerSession(authOptions);
+	if (!session || !session.user)
+		throw new Error('User not logged in')
+
+	// Get posted data
+	let name = data.get('name')?.valueOf().toString() || ''
+
+	// Sanitize posted data
+	name = sanitizeString( name )
+
+	// Validate posted data
+	if ( typeof name !== 'string' || name.length === 0 )
+		throw new Error('User Full Name Error');
+
+	return await prisma.user.update({
+    where: {
+      id: session.user.id
+    },
+		data: {
+			name,
+		}
+	})
+}

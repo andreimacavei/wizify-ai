@@ -44,7 +44,7 @@ export default function Profile() {
   const { user } = session;
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger className="flex gap-2 items-center px-4 py-2 rounded-md hover:bg-gray-100">
+      <DropdownMenu.Trigger className="flex gap-2 items-center px-4 py-2 rounded-md hover:bg-gray">
         {user.name?? user.email}
         <Image className="w-7 h-7 rounded-full" src={
           user.image ||
@@ -56,22 +56,22 @@ export default function Profile() {
           <b className="block font-bold">{user.name || ''}</b>
           <div className="text-gray-500">{user.email}</div>
         </div>
-        <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray-100"
+        <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray"
           onSelect={() => router.push('/dashboard')}>
           Dashboard
         </DropdownMenu.Item>
-        <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray-100"
-          onSelect={() => router.push('/profile')}>
+        <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray"
+          onSelect={() => router.push('/dashboard/profile')}>
           Update Profile
         </DropdownMenu.Item>
         {/* <UserDeleteDialog id={user.id} open={deleteDialogOpen} setOpen={setDeleteDialogOpen} trigger={(
-          <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray-100"
+          <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray"
             onSelect={(e) => { e.preventDefault(); setDeleteDialogOpen(true) }}>
             Delete Account
           </DropdownMenu.Item>          
         )} /> */}
 
-        <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray-100"
+        <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray"
           onSelect={(e) => handleSignout(e)}>
           Sign out
         </DropdownMenu.Item>

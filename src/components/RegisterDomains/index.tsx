@@ -44,7 +44,7 @@ export default function NewDomain() {
 
   return (
 		<div className='col-span-1 auto-rows-min grid-cols-1 lg:col-span-5 border-gray-50 rounded-lg border-2 bg-white mt-4 p-3 shadow sm:p-4'>
-			<h2 className="text-xl text-blue-500 border-b border-blue-500 pb-2 my-4">Add WizzardAI to your website:</h2>
+			<h2 className="text-xl text-blue-500 border-b border-blue-500 pb-2 my-4">Add Wizzard AI to your website:</h2>
 			<form onSubmit={(e)=>handleSubmit(e)} className="flex flex-col gap-4">
 				<label htmlFor="domain" className="text-slate-400 text-xs">
 					Which site/domain you want to add to? <span className='font-bold'> ([http/https]://example.com)</span>
