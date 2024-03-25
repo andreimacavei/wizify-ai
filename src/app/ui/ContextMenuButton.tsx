@@ -5,7 +5,7 @@ import { VerticalEllipsis } from '@/app/ui/icons'
 import { DomainDeleteDialog } from '@/app/ui'
 import { useState } from 'react'
 
-export default function ContextMenuButton({ id, remove }: { id: string, remove: (id: string) => Promise<boolean> }) {
+export default function ContextMenuButton({ id, remove }: { id: number, remove: (id: number) => Promise<boolean> }) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
 
   return (

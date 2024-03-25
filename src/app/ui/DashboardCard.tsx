@@ -30,7 +30,7 @@ export default function DashboardCard() {
     })();
   }, []);
 
-  const removeDomain = async (id: string): Promise<boolean> => {
+  const removeDomain = async (id: number): Promise<boolean> => {
     if (domains === null) return false;
 
     try {

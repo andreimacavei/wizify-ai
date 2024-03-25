@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react';
 
 type Props = {
   trigger?: React.ReactNode;
-  id: string;
+  id: number;
   open?: boolean;
   setOpen?: (open: boolean) => void;
-  remove: (id: string) => Promise<boolean>;
+  remove: (id: number) => Promise<boolean>;
 };
 
 export default function DomainDeleteDialog({

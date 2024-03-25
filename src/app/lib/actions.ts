@@ -70,7 +70,7 @@ export async function registerNewDomain(data: FormData) {
   return {status: 'success'};
 }
 
-export async function deleteDomain(id: string) {
+export async function deleteDomain(id: number) {
   'server'
   let result;
   try {
