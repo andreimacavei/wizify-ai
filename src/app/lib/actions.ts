@@ -18,14 +18,13 @@ export async function registerNewDomain(data: FormData) {
   
   // Get form data
   let domainField = data.get('domain') as string;
-  const hostname = domainField.trim().toLowerCase();
+  const domainURL = domainField.trim().toLowerCase();
   
-  console.log('hostname: ', hostname)
   const schema = z.object({
-    hostname: z.string().regex(urlRegex)
+    domainURL: z.string().regex(urlRegex)
   });
 
-  const validation = schema.safeParse({hostname});
+  const validation = schema.safeParse({domainURL});
   if (validation.success === false) { 
     let errorArr = [];
     const err = validation.error;
@@ -41,7 +40,9 @@ export async function registerNewDomain(data: FormData) {
     }
   }
   console.log("user: ", session.user);
-  // Save domain to main database
+  // Save domain to main database 
+  const hostname = new URL(domainURL).hostname;
+
   let result;
   try {
     result = await prisma.domains.create({

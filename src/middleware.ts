@@ -61,7 +61,6 @@ export default async function middleware(request: NextRequest) {
       },
     });
   }
-  console.log('allowed ', isValidDomain)
   //TODO check for subscription status
 
   const response = NextResponse.next();

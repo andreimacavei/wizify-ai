@@ -47,7 +47,7 @@ export default function NewDomain() {
 			<h2 className="text-xl text-blue-500 border-b border-blue-500 pb-2 my-4">Add WizzardAI to your website:</h2>
 			<form onSubmit={(e)=>handleSubmit(e)} className="flex flex-col gap-4">
 				<label htmlFor="domain" className="text-slate-400 text-xs">
-					Which domain/hostname you want to add to? Make sure to add the domain without the protocol (http/https)
+					Which site/domain you want to add to? <span className='font-bold'> ([http/https]://example.com)</span>
 				</label>
 				<div className='flex gap-4 items-center'>
 					<input id="domain" name="domain" type="text" minLength={5} maxLength={50} required
@@ -55,7 +55,7 @@ export default function NewDomain() {
 						className="grow border border-slate-300 rounded px-2 py-1 outline-none text-slate-800" />
 				</div>
         <label className="text-slate-800 text-xm">
-          Your new domain will be added to your account and you will be able to use WizzardAI on it.
+          Your website will be added to your account and you will be able to use WizzardAI on it.
           Just copy the code snippet from the dashboard and paste it into your website's HTML.
         </label>
 
@@ -74,9 +74,9 @@ export default function NewDomain() {
 				{loading && <p className='mt-4 text-green-500 text-center'>Loading...</p>}
           {/* {error && <p className='mt-4 text-red text-center'>Something went wrong. Please try again.</p>} */}
           <div className="mt-4 text-red text-center">
-            {errors.find((error) => error.for === "hostname")?.message}
+            {errors.find((error) => error.for === "domainURL")?.message}
           </div>
-				{success && <p className='mt-4 text-green-500 text-center'>Domain registered!</p>}
+				{success && <p className='mt-4 text-green-500 text-center'>Website registered!</p>}
 			</form>
       </div>
 	)
