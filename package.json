@@ -7,6 +7,7 @@
     "build": "esbuild src/lib/js/*.js --outdir=public/ --allow-overwrite --minify; prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "prisma generate",
     "migrate": "dotenv -e .env.local npx prisma migrate dev"
   },
   "prisma": {
@@ -18,7 +19,9 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@heroicons/react": "^2.1.1",
+    "@neondatabase/serverless": "^0.9.0",
     "@next-auth/prisma-adapter": "^1.0.7",
+    "@prisma/adapter-neon": "^5.11.0",
     "@prisma/client": "^5.11.0",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",

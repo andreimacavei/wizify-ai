@@ -49,6 +49,7 @@ export default async function middleware(request: NextRequest) {
   const urlOrigin = new URL(origin ?? referer).origin;
   const hostname = new URL(origin ?? referer).hostname;
   console.log('urlOrigin:', urlOrigin)
+  console.log('hostname:', hostname)
   
   const isValidDomain = await validateDomain(hostname);
   if (!isValidDomain) {
@@ -63,7 +64,15 @@ export default async function middleware(request: NextRequest) {
   }
   //TODO check for subscription status
 
-  const response = NextResponse.next();
+  // Set the hostname as header to be used in the API
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('hostname', hostname);
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    }
+  }
+  );
   // Set the Access-Control-Allow-Origin header for CORS issues
   response.headers.set('Access-Control-Allow-Origin', urlOrigin);
   return response;
@@ -72,7 +81,6 @@ export default async function middleware(request: NextRequest) {
 async function validateDomain(urlOrigin: string) {
     
   const whitelistedDomains = await client.smembers('domains');
-  console.log('whitelistedDomains:', whitelistedDomains)
 
   if (!whitelistedDomains.includes(urlOrigin)) {
     return false;

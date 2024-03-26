@@ -20,6 +20,7 @@ export async function registerNewDomain(data: FormData) {
   // Get form data
   let domainField = data.get('domain') as string;
   const domainURL = domainField.trim().toLowerCase();
+  console.log('domainURL: ', domainURL)
   
   const schema = z.object({
     domainURL: z.string().regex(urlRegex)
@@ -35,6 +36,7 @@ export async function registerNewDomain(data: FormData) {
         message: error.message,
       });
     });
+    console.log('error validate domain: ', err)
     return {
       status: 'error',
       errors: errorArr
