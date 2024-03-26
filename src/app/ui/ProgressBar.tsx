@@ -78,7 +78,7 @@ export default function ProgressBar({
             strokeWidth={indicatorWidth}
             strokeDasharray={dashArray}
             strokeDashoffset={dashOffset}
-            stroke-linecap={indicatorCap}
+            // stroke-linecap={indicatorCap}
             // strokeLinecap={indicatorCap}
           />
         </svg>

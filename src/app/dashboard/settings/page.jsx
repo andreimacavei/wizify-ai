@@ -15,7 +15,7 @@ export default function SettingsPage() {
         <p className="text-lg">
           Use Wizzard AI on your website/webapp by adding this JS.
         </p>
-        <pre className="mt-4 rounded-md bg-graydark p-4 text-xs text-white">
+        <pre className="mt-4 text-wrap rounded-md bg-graydark p-4 text-xs text-white">
           {`<script src="http://wizzard.vercel.app/widget.js" ></script>`}
         </pre>
       </div>

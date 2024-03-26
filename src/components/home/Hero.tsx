@@ -20,8 +20,8 @@ export default function Hero({
         }
         </div>
         <h2 className='mt-4 text-gray-600 sm:text-xl'>Just create an account and add the following JS code to your website!</h2>
-        <pre className="mt-1 rounded-md bg-white p-4 text-xs text-graydark">
-            {`<script src="http://wizzard.vercel.app/widget.js" ></script>`}
+        <pre className="mt-1 rounded-md bg-white p-4 text-xs text-graydark text-wrap">
+            {`<script src="https://aiwizzard.vercel.app/widget.js" ></script>`}
         </pre>
     </div>
   )
