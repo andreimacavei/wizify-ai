@@ -5,17 +5,16 @@ import { Suspense } from "react";
 import { fetchAllData } from "@/app/lib/data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
-import { ContextMenuButton, NoDomains, ProgressBar } from "@/app/ui";
+import { ContextMenuButton, NoDomains } from "@/app/ui";
 import { VerticalEllipsis } from "@/app/ui/icons"
 import { deleteDomain } from "@/app/lib/actions";
+import Image  from "next/image";
 
 export default function DashboardCard() {
   const [domains, setDomains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const maxCredits = 3000;
-  const usedCredits = 1500;
-
+  
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -60,18 +59,19 @@ export default function DashboardCard() {
         {domains.length > 0 && (
           <>
             <h2 className="text-2xl font-bold">Your registrated domains</h2>
-            <ul className="grid grid-cols-1 mt-4">
+              <ul className="grid grid-cols-1 mt-4">
               {domains.map((domain) => (
                 <li key={domain.id}
                   className="flex gap-4 items-center border-gray rounded-lg border-2 bg-white p-3 pr-1 shadow transition-all hover:shadow-md sm:p-4"
                   role="listitem">
+                  {/* TODO: add a preview image of website */}
                   <div className="aspect-square">
-                  <ProgressBar size={90} progress={(100/maxCredits)*usedCredits} label={`${usedCredits}/${maxCredits} credits`} />
+                  
                   </div>
                   <div className="grow flex gap-4 sm:items-center flex-col sm:flex-row">
                     <div className="flex flex-col grow">
                       <div className="text-lg py-2">
-                        {domain.hostname}
+                        <a href={`https://${domain.hostname}`} target="_blank" rel="noreferrer" className="font-bold">{domain.hostname}</a>
                       </div>
                       <time className="hidden sm:flex gap-1 text-slate-400 text-xs">
                       <FontAwesomeIcon icon={faCalendarDays} className="w-3" />
@@ -80,9 +80,13 @@ export default function DashboardCard() {
                     </div>
                   </div>
                   <div className="self-end sm:self-center flex gap-2 items-center">
-                  <Suspense fallback={<VerticalEllipsis className="p-1 fill-gray-500" />}>
-                    <ContextMenuButton id={domain.id} remove={removeDomain} />
-                  </Suspense>
+                    <div className="flex gap-1 items-center">
+                      <span className="text-gray-400">Used credits:</span>
+                      <span className="text-gray-400 font-bold">{domain.usage}</span>
+                    </div>
+                    <Suspense fallback={<VerticalEllipsis className="p-1 fill-gray-500" />}>
+                      <ContextMenuButton id={domain.id} remove={removeDomain} />
+                    </Suspense>
                   </div>
                 </li>
               ))}

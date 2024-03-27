@@ -1,5 +1,4 @@
 'use client';
-// import { ProgressBar } from '@/app/ui';
 import { useEffect, useState } from 'react';
 import { fetchUserData } from '@/app/lib/data';
 import { CircularProgressbar } from 'react-circular-progressbar';
@@ -48,12 +47,11 @@ export default function UsageCard() {
           </div>
           <p className="text-gray-400"><span className='font-bold'>{planCredits - credits}</span>  out of <span className='font-bold'>{planCredits}</span> used credits</p>
           <p className="text-gray-400">You have <span className='font-bold'>{credits}</span> credits left.</p>
-          {/* <ProgressBar progress={(100/planCredits)*credits} label={`${credits}/${planCredits} credits`} /> */}
         </div>
         <div className="grow flex gap-4 sm:items-center flex-col lg:items-start">
           <p className="text-gray-400">Your are on a <span className='font-bold'>{plan.name}</span> plan which includes:</p>
           <div className="flex flex-col gap-4 items-left">
-            <p className="text-gray-400"><span className='font-bold'>{planCredits}</span> credits per month</p>
+            <p className="text-gray-400"><span className='font-bold'>{planCredits}</span> credits {plan.name === 'Free'? "" : "per month" }</p>
             <p className="text-gray-400"><span className='font-bold'>{plan.domainsAllowed}</span> domains allowed</p>
             </div>
         </div>

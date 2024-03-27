@@ -3,7 +3,6 @@ import CreateDomainBtn from "./CreateDomainBtn";
 import DashboardCard from "./DashboardCard";
 import DomainDeleteDialog from "./DomainDeleteDialog";
 import NoDomains from "./NoDomains";
-import ProgressBar from "./ProgressBar";
 import Sidebar from "./Sidebar";
 
 export {
@@ -12,6 +11,5 @@ export {
   DashboardCard,
   DomainDeleteDialog,
   NoDomains,
-  ProgressBar,
   Sidebar,
 }
