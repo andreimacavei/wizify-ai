@@ -50,7 +50,7 @@ export default function NewDomain() {
 					Which site/domain you want to add to? <span className='font-bold'> ([http/https]://example.com)</span>
 				</label>
 				<div className='flex gap-4 items-center'>
-					<input id="domain" name="domain" type="text" minLength={5} maxLength={50} required
+					<input id="domain" name="domain" type="text" minLength={5} maxLength={100} required
 						placeholder='Example: mywebsite.com'
 						className="grow border border-slate-300 rounded px-2 py-1 outline-none text-slate-800" />
 				</div>

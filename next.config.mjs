@@ -28,6 +28,7 @@ const nextConfig = {
   webpack(config) {
     config.experiments ??= {};
     config.experiments.asyncWebAssembly = true;
+    // config.experiments.topLevelAwait = true;
 
     return config;
   },

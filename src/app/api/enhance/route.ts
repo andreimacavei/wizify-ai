@@ -35,7 +35,7 @@ const language = {
 }
 
 // IMPORTANT! Set the runtime to edge
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 // Create a new Prisma client
 const neon = new Pool({ connectionString: process.env.POSTGRES_MICRO_AI_PRISMA_URL })
@@ -64,6 +64,7 @@ export async function GET(req: Request) {
   }
   const userId = domain?.userId;
   
+  // TODO Check if user is on a subscription plan also
   // Check if the user has enough tokens to make the request
   const user = await prisma.user.findUnique({
     where: {
@@ -105,20 +106,23 @@ export async function GET(req: Request) {
   }
 
   // Ask OpenAI for a streaming completion given the prompt
-  const response = await openai.completions.create({
-    model: 'gpt-3.5-turbo-instruct',
-    max_tokens: 150,
-    prompt,
-  });
+  // const response = await openai.completions.create({
+  //   model: 'gpt-3.5-turbo-instruct',
+  //   max_tokens: 150,
+  //   prompt,
+  // });
  
   // Mock response data for now
-  // const response = {
-  //   choices: [
-  //     {
-  //       text: 'This is a mock response. Make money online with this one weird trick!',
-  //     },
-  //   ],
-  // };
+  const response = {
+    choices: [
+      {
+        text: 'This is a mock response. Make money online with this one weird trick!',
+      },
+    ],
+    usage: {
+      total_tokens: 5,
+    },
+  };
 
   console.log('Response usage:', response.usage);
   
@@ -136,6 +140,19 @@ export async function GET(req: Request) {
   });
   console.log('Updated user credits:', updatedUser.credits);
 
+  // Update the domain usage
+  const updatedDomain = await prisma.domains.update({
+    where: {
+      id: domain.id,
+    },
+    data: {
+      usage: {
+        increment: tokenCount,
+      },
+    },
+  });
+  console.log('Updated domain usage:', updatedDomain.usage);
+
   let aiResponseText = response.choices[0].text.trim();
 
   // Check if the response text starts with double quotes and remove them
@@ -143,6 +160,13 @@ export async function GET(req: Request) {
     // Remove the first and last characters (double quotes) from the response text
     aiResponseText = aiResponseText.substring(1, aiResponseText.length - 1);
   }
+
+  // End the `Pool` inside the same request handler as per here:
+  // https://github.com/prisma/prisma/issues/20566#issuecomment-1992552703
+  // (unlike `await`, `waitUntil` won't hold up the response)
+  // Not working with route handler => see workaround here: https://github.com/vercel/next.js/issues/50522
+  // waitUntil(async () => await prisma.$disconnect());
+  // waitUntil(async () => await pool.end());
 
   // Respond with the stream
   return new Response(aiResponseText, {

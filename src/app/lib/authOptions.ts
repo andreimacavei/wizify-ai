@@ -6,6 +6,7 @@ import { Resend } from 'resend';
 import { NextAuthOptions } from "next-auth";
 import { prisma } from "@/lib/db/db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { addSubscription } from "@/app/lib/actions";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -76,6 +77,7 @@ export const authOptions: NextAuthOptions = {
 
       return true;
     },
+
     session: async ({ session, token }) => {
       if (session?.user) {
         session.user.id = token.sub;
@@ -88,24 +90,15 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    // async session({ session, user, token}) {
-    //   if (session.user) {
-    //     let res = await prisma.user.findUnique({
-    //       where: {
-    //         id: user.id
-    //       }
-    //     });
-    //     // session.user.timezone = res!.timezone
-    //     session.user.id = user.id;
-    //   }
-
-    //   return session;
-    // },
   },
-  // events: {
-  //   createUser: async (message) => {
-  //     // Record event log: new user signup
-  //     await recordEvent('signup')
-  //   }
-  // }
+  
+  events: {
+    createUser: async (message) => {
+      // Record event log: new user signup
+      // await recordEvent('signup')
+      // Add user to a free subscription plan after signup
+      console.log('New user signed up:', message.user.email, message.user.id)
+      await addSubscription('Free', message.user.id)
+    }
+  }
 }

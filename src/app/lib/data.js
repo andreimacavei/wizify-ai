@@ -22,7 +22,6 @@ export const fetchAllData = async () => {
     },
     take: 20,
   });
-  console.log("userDomains", userDomains);
 
   return userDomains;
 };

@@ -125,3 +125,58 @@ export async function updateProfile(data: FormData) {
 		}
 	})
 }
+
+export async function addSubscription(planType: string, userId: string) {
+  console.log("addSubscription: ", planType, userId)
+  let subscription;
+  let plan;
+
+  // Retrieve plan id
+  try {
+    plan = await prisma.plan.findUnique({
+      where: {
+        name: planType
+      }
+    });
+
+  } catch (error) {
+    console.log('error getting plan: ', error);
+    return false;
+  }
+
+  // Create subscription
+  try {
+    subscription = await prisma.subscription.create({
+      data: {
+        planId: plan.id,
+        userId
+      }
+    });
+
+  } catch (error) {
+    console.log('error creating subscription: ', error);
+    return false;
+  }
+
+  // Update user credits
+  let updatedUser;
+  try {
+    updatedUser = await prisma.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        credits: {
+          // TODO sanitize this value
+          increment: plan.creditsPerMonth
+        }
+      }
+    });
+
+  } catch (error) {
+    console.log('error updating user credits: ', error);
+    return false;
+  }
+
+  return true;
+}
