@@ -11,8 +11,8 @@ const urlRegex = /^(((http|https):\/\/|)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2
 export default function NewDomain() {
 
 	const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
-  const [errors, setErrors] = useState([]); 
+	const [error, setError] = useState(false)
+	const [statusMsg, setStatusMsg] = useState('')
 	const [success, setSuccess] = useState(false)
 	const router = useRouter();
 
@@ -36,8 +36,8 @@ export default function NewDomain() {
 			setSuccess(true)
 			router.push('/dashboard/newdomain')
     } else {
-      setError(true) 
-      setErrors(result.errors);
+			setError(true) 
+			setStatusMsg(result.msg);
     }
 			
 	}
@@ -73,9 +73,7 @@ export default function NewDomain() {
 				</div>
 				{loading && <p className='mt-4 text-green-500 text-center'>Loading...</p>}
           {/* {error && <p className='mt-4 text-red text-center'>Something went wrong. Please try again.</p>} */}
-          <div className="mt-4 text-red text-center">
-            {errors.find((error) => error.for === "domainURL")?.message}
-          </div>
+          <p className={`mt-4 ${success? "text-green-500": "text-red"} text-center`}>{statusMsg } </p>
 				{success && <p className='mt-4 text-green-500 text-center'>Website registered!</p>}
 			</form>
       </div>

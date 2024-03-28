@@ -2,11 +2,9 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/lib/authOptions";
 import { prisma } from "@/lib/db/db";
-import { z } from "zod";
 import { sanitizeString } from "@/utils/sanitize";
 import { client } from "@/lib/redis";
 
-const urlRegex = /^(((http|https):\/\/|)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?)$/;
 /* 
  * Register new domain
  */
@@ -20,60 +18,75 @@ export async function registerNewDomain(data: FormData) {
   // Get form data
   let domainField = data.get('domain') as string;
   const domainURL = domainField.trim().toLowerCase();
-  console.log('domainURL: ', domainURL)
-  
-  const schema = z.object({
-    domainURL: z.string().regex(urlRegex)
-  });
+  console.log('domain URL: ', domainURL)
 
-  const validation = schema.safeParse({domainURL});
-  if (validation.success === false) { 
-    let errorArr = [];
-    const err = validation.error;
-    err.errors.forEach((error) => {
-      errorArr.push({
-        for: error.path[0],
-        message: error.message,
-      });
-    });
-    console.log('error validate domain: ', err)
+  // Validate URL
+  let url;
+  try {
+    url = new URL(domainURL);
+  } catch (error) {
+    console.log('Invalid URL:', domainURL)
     return {
       status: 'error',
-      errors: errorArr
+      msg: 'Invalid URL'
     }
   }
-  console.log("user: ", session.user);
+  
   // Save domain to main database 
-  const hostname = new URL(domainURL).hostname;
+  const hostname = url.hostname;
 
-  let result;
+  let existingDomain;
   try {
-    result = await prisma.domains.create({
+    existingDomain = await prisma.domains.findFirst({
+      where: {
+        hostname,
+        userId: session.user.id
+      }
+    });
+  } catch (error) {
+    console.log('error postgres: ', error);
+    return {
+      status: 'error',
+      msg: error
+    }
+  }
+
+  console.log('existing domain ?: ', existingDomain);
+  if (existingDomain) {
+    return {
+      status: 'error',
+      msg: 'Domain already added'
+    }
+  }
+
+  // If domain does not exist for current user, add it
+  let newDomain;
+  try {
+    newDomain = await prisma.domains.create({
       data: {
         hostname,
         userId: session.user.id
       }
     });
-    console.log('result postgres: ', result);
+    console.log('new domain postgres: ', newDomain);
 
   } catch (error) {
     console.log('error postgres: ', error);
     return {
       status: 'error',
-      errors: [error]
+      msg: error
     }
   }
-  
 
   // Save to redis db (edge cache)
-  result = await client.sadd('domains', hostname);
+  const result = await client.sadd('domains', hostname);
   console.log('result redis: ', result);
 
-  return {status: 'success'};
+  return {status: 'success', msg: 'Domain added successfully', data: newDomain};
 }
 
 export async function deleteDomain(id: number) {
-  'server'
+  'use server'
   let result;
   try {
     result = await prisma.domains.delete({
@@ -94,6 +107,7 @@ export async function deleteDomain(id: number) {
 
   return true;
 }
+
 
 /**
  * Update User Profile
@@ -126,7 +140,8 @@ export async function updateProfile(data: FormData) {
 	})
 }
 
-export async function addSubscription(planType: string, userId: string) {
+export async function initUserData(planType: string, userId: string, userKey: string) {
+  'use server'
   console.log("addSubscription: ", planType, userId)
   let subscription;
   let plan;
@@ -158,7 +173,7 @@ export async function addSubscription(planType: string, userId: string) {
     return false;
   }
 
-  // Update user credits
+  // Update user data
   let updatedUser;
   try {
     updatedUser = await prisma.user.update({
@@ -169,14 +184,64 @@ export async function addSubscription(planType: string, userId: string) {
         credits: {
           // TODO sanitize this value
           increment: plan.creditsPerMonth
+        },
+        activeKey: userKey,
+        userKeys: {
+          create: {
+            key: userKey
+          }
         }
       }
     });
 
   } catch (error) {
-    console.log('error updating user credits: ', error);
+    console.log('error updating user data: ', error);
     return false;
   }
 
   return true;
 }
+
+export async function validateDomainAndUserKey(
+  domains: any[],
+  userkey: string
+) {
+  'use server';
+
+  //TODO refactor and check active key
+
+  // Get user with same userkey
+  const userKey = await prisma.userKey.findFirst({
+    where: {
+      key: userkey
+    }
+  })
+  if (!userKey) {
+    return false;
+  }
+  console.log('userKey: ', userKey);
+  // Validate domain is owned by user
+  let validatedDomain = null;
+  domains.forEach((domain) => {
+    if (domain.userId === userKey.userId) {
+      validatedDomain = domain;
+      return;
+    }
+  });
+  if (!validatedDomain) {
+    return validatedDomain;
+  }
+  console.log('validatedDomain: ', validatedDomain);
+  // Validate domain in database so next calls can be faster
+  await prisma.domains.update({
+    where: {
+      id: validatedDomain.id
+    },
+    data: {
+      validated: true
+    }
+  });
+
+  return validatedDomain;
+}
+

@@ -2,23 +2,26 @@
 
 import { useEffect, useState } from "react";
 import { Suspense } from "react";
-import { fetchAllData } from "@/app/lib/data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import { ContextMenuButton, NoDomains } from "@/app/ui";
 import { VerticalEllipsis } from "@/app/ui/icons"
 import { deleteDomain } from "@/app/lib/actions";
 import Image  from "next/image";
+import { useRouter } from "next/navigation";
 
-export default function DashboardCard() {
+export default function DashboardCard(
+  { userDomains }: { userDomains: [{}] }
+) {
   const [domains, setDomains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const router = useRouter();
   
   useEffect(() => {
     (async () => {
       setLoading(true);
-      let data = await fetchAllData();
+      let data = userDomains;
       setLoading(false);
       
       if (data === null) {
@@ -38,6 +41,9 @@ export default function DashboardCard() {
         // Update domains state
         let updatedDomains = domains.filter(domain => domain.id !== id)
         setDomains(updatedDomains)
+        
+        // revalidate the domains
+        router.refresh()
 
         return true;
       }
@@ -55,7 +61,7 @@ export default function DashboardCard() {
       {error && <div>Not logged in</div>}
       {domains && (
         <>
-        {domains.length === 0 && <NoDomains />}
+          {domains.length === 0 && <NoDomains updateDomains={setDomains} />}
         {domains.length > 0 && (
           <>
             <h2 className="text-2xl font-bold">Your registrated domains</h2>

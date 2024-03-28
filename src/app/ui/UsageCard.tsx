@@ -21,7 +21,7 @@ export default function UsageCard() {
       let data = await fetchUserData();
       setLoading(false);
 
-      setCredits(data.userCredits);
+      setCredits(data.user.credits);
       setPlanCredits(data.subscriptionPlan.creditsPerMonth);
       setPlan({
         name: data.subscriptionPlan.name,
@@ -36,6 +36,12 @@ export default function UsageCard() {
     console.log('Upgrade plan')
   }
 
+  function getPercentage(nominator: number, denominator: number) {
+    const result = +(nominator / denominator).toFixed(3) * 100;
+    return result;
+  }
+
+
   return (
     <div className="col-span-1 auto-rows-min grid-cols-1 lg:col-span-5">
       {/* <div className="bg-white shadow-md rounded-md p-6"> */}
@@ -43,7 +49,9 @@ export default function UsageCard() {
         
         <div className="flex flex-col items-center gap-2">
           <div style={{ width: 150, height: 150 }}>
-            <CircularProgressbar value={((planCredits - credits) / planCredits) * 100} text={`${((planCredits - credits) / planCredits) * 100}%`} />
+            <CircularProgressbar
+              value={getPercentage(planCredits - credits, planCredits)}
+              text={`${getPercentage(planCredits - credits, planCredits)}%`} />
           </div>
           <p className="text-gray-400"><span className='font-bold'>{planCredits - credits}</span>  out of <span className='font-bold'>{planCredits}</span> used credits</p>
           <p className="text-gray-400">You have <span className='font-bold'>{credits}</span> credits left.</p>

@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { Pool } from '@neondatabase/serverless' 
+import { validateDomainAndUserKey } from '@/app/lib/actions';
 
 // Create an OpenAI API client (that's edge friendly!)
 const openai = new OpenAI({
@@ -35,12 +36,13 @@ const language = {
 }
 
 // IMPORTANT! Set the runtime to edge
-// export const runtime = 'edge';
+export const runtime = 'edge';
 
 // Create a new Prisma client
 const neon = new Pool({ connectionString: process.env.POSTGRES_MICRO_AI_PRISMA_URL })
 const adapter = new PrismaNeon(neon)
 const prisma = new PrismaClient({ adapter })
+
 
 
 export async function GET(req: Request) {
@@ -53,24 +55,48 @@ export async function GET(req: Request) {
     return new Response('Missing content or action', { status: 400 });
   }
 
-  // Get the user from the database
-  const domain = await prisma.domains.findFirst({
+  // Get domains with same hostname
+  const domains = await prisma.domains.findMany({
     where: {
       hostname: req.headers.get('hostname'),
     },
   });
-  if (!domain) {
+  if (!domains) {
     return new Response('Domain not found', { status: 404 });
   }
-  const userId = domain?.userId;
+  console.log('Domains existing:', domains);
+
+  // Check if any db entries is a validated domain
+  let isValid = false, validatedDomain = null;
+  domains.forEach((domain) => {
+    if (domain.validated) {
+      isValid = true;
+      validatedDomain = domain;
+    }
+  });
+
+  // If no validated domain found, validate the domain and user key
+  if (!isValid) {
+    validatedDomain = await validateDomainAndUserKey(domains, searchParams.get('userkey'));
+  }
   
-  // TODO Check if user is on a subscription plan also
+  if (!validatedDomain) {
+    return new Response('Domain or userkey not found', { status: 404 });
+  }
+  const userId = validatedDomain.userId;
+  
   // Check if the user has enough tokens to make the request
   const user = await prisma.user.findUnique({
     where: {
       id: userId,
+      activeKey: searchParams.get('userkey'),
     },
   });
+  
+  if (!user) {
+    return new Response('User has no active client keys', { status: 404 });
+  }
+
   if (user.credits < 10) {
     return new Response('Not enough credits', { status: 402 });
   }
@@ -143,7 +169,7 @@ export async function GET(req: Request) {
   // Update the domain usage
   const updatedDomain = await prisma.domains.update({
     where: {
-      id: domain.id,
+      id: validatedDomain.id,
     },
     data: {
       usage: {

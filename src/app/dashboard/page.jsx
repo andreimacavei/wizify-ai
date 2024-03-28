@@ -1,7 +1,7 @@
-import DashboardLayout from "@/components/Layouts/DefaultLayout";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/lib/authOptions";
 import { getServerSession } from "next-auth";
+import { fetchUserDomains } from "@/app/lib/data";
 import DashboardCard from "@/app/ui/DashboardCard";
 
 export default async function DashboardPage() {
@@ -10,5 +10,7 @@ export default async function DashboardPage() {
     redirect("/signin");
   }
 
-  return <DashboardCard />;
+  const userDomains = await fetchUserDomains();
+
+  return <DashboardCard userDomains={userDomains} />;
 }

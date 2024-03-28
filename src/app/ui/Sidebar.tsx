@@ -62,7 +62,7 @@ export default function Sidebar() {
           </li>
           <li>
             <Link className='flex gap-2 items-center rounded px-4 py-2 hover:bg-gray focus-within:bg-gray transition-all duration-75'
-              href="/dashboard/settings">
+              href="/dashboard/keys">
             <svg
                 className="fill-current"
                 width="18"
@@ -92,7 +92,7 @@ export default function Sidebar() {
                   </clipPath>
                 </defs>
               </svg>
-              Settings
+              API Keys
             </Link>
           </li>
           <li className='hidden lg:block'>

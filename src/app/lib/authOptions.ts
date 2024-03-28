@@ -6,7 +6,8 @@ import { Resend } from 'resend';
 import { NextAuthOptions } from "next-auth";
 import { prisma } from "@/lib/db/db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { addSubscription } from "@/app/lib/actions";
+import { initUserData } from "@/app/lib/actions";
+import { generateUrlSafeBase64ApiKey } from "@/utils/generateB64Key";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -40,7 +41,7 @@ export const authOptions: NextAuthOptions = {
           await resend.emails.send({
             from: provider.from,
             to: identifier,
-            subject: 'Your AI Wizzard Login Link',
+            subject: 'Your Wizzard AI Login Link',
             html: '<html><body>\
               <h2>Your Login Link</h2>\
               <p>Welcome to AIWizzard!</p>\
@@ -98,7 +99,8 @@ export const authOptions: NextAuthOptions = {
       // await recordEvent('signup')
       // Add user to a free subscription plan after signup
       console.log('New user signed up:', message.user.email, message.user.id)
-      await addSubscription('Free', message.user.id)
+      const userKey = generateUrlSafeBase64ApiKey();
+      await initUserData('Free', message.user.id, userKey)
     }
   }
 }

@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/lib/authOptions";
 
 // Fetch all domains but limited to 20
-export const fetchAllData = async () => {
+export const fetchUserDomains = async () => {
   // Check if user is logged in
   const session = await getServerSession(authOptions);
   if (!session || !session.user) return null;
@@ -24,6 +24,23 @@ export const fetchAllData = async () => {
   });
 
   return userDomains;
+};
+
+export const fetchUserApiKeys = async () => {
+  "use server";
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user) return null;
+
+  const { user } = session;
+  const userApiKeys = await prisma.userKey.findMany({
+    where: {
+      user: {
+        id: user.id,
+      },
+    },
+  });
+
+  return userApiKeys;
 };
 
 export const fetchUserData = async () => {
@@ -62,7 +79,7 @@ export const fetchUserData = async () => {
   // });
 
   return {
-    userCredits: userData.credits,
+    user: userData,
     subscriptionPlan: userSubscriptionPlan.subscription.plan,
   };
 };

@@ -7,10 +7,12 @@ declare global {
 }
 
 function ProductIntro({ user }: { user: any }) {
-  
+  //TODO hardcoded client key for now to make development easy
+  let clientKey = "Saj9efJD0rdChcPuZCCISTwzeR2ZRKnrjsOyYOh5uBQ";
+
   return (
     <>
-      <Script src="./widget.js"
+      <Script src={`./widget.js?client_key=${clientKey}`}
         strategy='lazyOnload'
         onReady={() => {
           try {

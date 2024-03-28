@@ -51,12 +51,12 @@ export default function ModalRadix({
         <Dialog.Overlay
           // for detecting when there's an active opened modal
           id="modal-backdrop"
-          className="animate-fade-in fixed inset-0 z-40 bg-gray-100 bg-opacity-50 backdrop-blur-md"
+          className="animate-fade-in fixed inset-0 z-40 bg-gray bg-opacity-50 backdrop-blur-md"
         />
         <Dialog.Content
           onOpenAutoFocus={(e) => e.preventDefault()}
           onCloseAutoFocus={(e) => e.preventDefault()}
-          className={`animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-lg overflow-hidden border border-gray-200 bg-white shadow-xl sm:rounded-xl p-8 ` + className}
+          className={`animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-lg overflow-hidden border border-gray bg-white shadow-xl sm:rounded-xl p-8 ` + className}
         >
           {children}
         </Dialog.Content>

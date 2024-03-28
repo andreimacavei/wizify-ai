@@ -22,7 +22,7 @@ export default async function Page() {
           <a href="https://aiwizzard.vercel.app">
             <Image src="/images/logo/mage_ai.png" width="80" height="80" className="w-16" alt="Mage AI Logo" />
           </a>
-          <h3 className="text-xl font-semibold">Sign in to AI Wizzard</h3>
+          <h3 className="text-xl font-semibold">Sign in to Wizzard AI</h3>
           <p className="text-sm text-gray-500">Start using AI on your website.</p>
         </div>
         <div className="flex flex-col space-y-3 bg-gray-50 px-4 py-10 sm:px-16">

@@ -1,4 +1,13 @@
 let BASE_URL = "https://aiwizzard.vercel.app/api/enhance";
+let CLIENT_KEY =
+  extractClientId(document.currentScript.getAttribute("src")) || "";
+
+function extractClientId(url) {
+  const regex = /client_key=([^&]*)/;
+  const match = url.match(regex);
+  if (!match) return null;
+  return match[1];
+}
 
 function emToPixels(em, contextElement) {
   // If no context element is provided, default to the document's root element (<html>)
@@ -326,16 +335,24 @@ function enhanceInputElement(inputElement) {
         }
         if (!url) return;
         try {
-          url += "&location=" + encodeURIComponent(window.location.href);
+          url += "&userkey=" + encodeURIComponent(CLIENT_KEY);
           const response = await fetch(url);
-          //   console.log("response: ", response);
+          // console.log("response: ", response);
           if (
             response.status === 400 ||
             response.status === 401 ||
             response.status === 403 ||
+            response.status === 404 ||
             response.status === 429
           ) {
-            const errorData = await response.json();
+            let errorData;
+            try {
+              errorData = await response.json();
+            } catch (e) {
+              alert("An error occurred. Check error logs.");
+              return;
+            }
+
             alert(errorData.error);
             console.error("Error: ", errorData.error);
             return;

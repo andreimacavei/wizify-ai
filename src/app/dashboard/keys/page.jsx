@@ -1,0 +1,29 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/authOptions";
+import ApiKeyCard from "@/app/ui/ApiKeyCard";
+import { fetchUserApiKeys } from "@/app/lib/data";
+
+export default async function SettingsPage() {
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user) {
+    redirect("/sigin");
+  }
+
+  const userKeys = await fetchUserApiKeys();
+
+  return (
+    <div className="col-span-1 mt-4 auto-rows-min grid-cols-1 lg:col-span-5">
+      <h2 className="text-center text-xl font-semibold">Your API keys</h2>
+      <ApiKeyCard userKeys={userKeys} />
+      <div className="mt-12">
+        <p className="text-center text-lg font-semibold">
+          Include the next script to your website and start using Wizzard AI .
+        </p>
+        <pre className="mt-2 text-wrap rounded-md bg-graydark p-4 text-lg text-white">
+          {`<script src="http://wizzard.vercel.app/widget.js?client_key=${userKeys[0].key}"></script>`}
+        </pre>
+      </div>
+    </div>
+  );
+}
