@@ -11,9 +11,9 @@ export default function ApiKeyCard(
           // role="listitem">
           <div key={key.id} className="flex items-center gap-4" role="listitem">
             <div>
-              <pre className="mt-4 text-wrap rounded-md bg-graydark p-4 text-white">
+              <p className="mt-4 text-wrap rounded-md bg-graydark p-4 text-white overflow-auto">
               {key.key}
-            </pre> 
+            </p> 
             </div>
             <div className="ml-4">
               <span className="text-2xl font-bold text-green-400">Active</span>

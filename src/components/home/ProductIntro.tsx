@@ -48,12 +48,9 @@ function ProductIntro({ user }: { user: any }) {
           }} />
         </ul>
         <div className="mt-14">
-          <h2 className="text-gray-600 sm:text-xl">Wizzard AI is running on Edge Environments making it really fast for your script calls!</h2>
+          <h2 className="text-gray-600 sm:text-xl">Wizzard AI is running on Edge Environments making it really fast!</h2>
         </div>
       </div>
-      {/* <Script src="widget.js"
-        strategy='lazyOnload'
-        /> */}
     </>
   )
 }

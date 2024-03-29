@@ -20,9 +20,9 @@ export default async function SettingsPage() {
         <p className="text-center text-lg font-semibold">
           Include the next script to your website and start using Wizzard AI .
         </p>
-        <pre className="mt-2 text-wrap rounded-md bg-graydark p-4 text-lg text-white">
+        <p className="mt-2 overflow-auto text-wrap rounded-md bg-graydark p-4 text-lg text-white">
           {`<script src="http://wizzard.vercel.app/widget.js?client_key=${userKeys[0].key}"></script>`}
-        </pre>
+        </p>
       </div>
     </div>
   );
