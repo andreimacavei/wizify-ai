@@ -7,21 +7,22 @@ import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import { ContextMenuButton, NoDomains } from "@/app/ui";
 import { VerticalEllipsis } from "@/app/ui/icons"
 import { deleteDomain } from "@/app/lib/actions";
+import { fetchUserDomains } from "@/app/lib/data";
 import Image  from "next/image";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export default function DashboardCard(
-  { userDomains }: { userDomains: [{}] }
+  // { userDomains }: { userDomains: [{}] }
 ) {
   const [domains, setDomains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
   
   useEffect(() => {
     (async () => {
       setLoading(true);
-      let data = userDomains;
+      let data = await fetchUserDomains();
       setLoading(false);
       
       if (data === null) {
@@ -42,9 +43,8 @@ export default function DashboardCard(
         let updatedDomains = domains.filter(domain => domain.id !== id)
         setDomains(updatedDomains)
         
-        // revalidate the domains
-        router.refresh()
-
+        // revalidate the domains when using static rendering
+        // router.refresh()
         return true;
       }
 

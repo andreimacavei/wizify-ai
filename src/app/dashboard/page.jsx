@@ -10,7 +10,7 @@ export default async function DashboardPage() {
     redirect("/signin");
   }
 
-  const userDomains = await fetchUserDomains();
+  // const userDomains = await fetchUserDomains();
 
-  return <DashboardCard userDomains={userDomains} />;
+  return <DashboardCard />;
 }

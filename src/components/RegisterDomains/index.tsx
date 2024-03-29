@@ -68,7 +68,9 @@ export default function NewDomain() {
 					days
 				</div> */}
 				<div className='flex justify-end gap-2'>
-					<button type="submit" disabled={loading} className="border text-blue-500 border-blue-500 rounded px-2 py-1 hover:bg-blue-500 hover:bg-opacity-20 focus-within:bg-orange-500 focus-within:bg-opacity-20 enabled:active:scale-95 transition-all duration-75 disabled:cursor-default">Create</button>
+					<button type="submit" disabled={loading} className="border text-blue-500 border-blue-500 rounded px-2 py-1 hover:bg-blue-500 hover:bg-opacity-20 focus-within:bg-orange-500 focus-within:bg-opacity-20 enabled:active:scale-95 transition-all duration-75 disabled:cursor-default">
+						Add
+					</button>
 					<Link href="/dashboard" className='border border-gray-300 rounded px-2 py-1 hover:bg-gray-200 focus-within:bg-gray-200 active:scale-95 transition-all duration-75'>Back</Link>
 				</div>
 				{loading && <p className='mt-4 text-green-500 text-center'>Loading...</p>}
