@@ -37,7 +37,7 @@ export default function UsageCard() {
   }
 
   function getPercentage(nominator: number, denominator: number) {
-    const result = +(nominator / denominator).toFixed(3) * 100;
+    const result = +(nominator / denominator).toFixed(2) * 100;
     return result;
   }
 

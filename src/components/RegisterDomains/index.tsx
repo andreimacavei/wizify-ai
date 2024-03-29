@@ -73,7 +73,7 @@ export default function NewDomain() {
 				</div>
 				{loading && <p className='mt-4 text-green-500 text-center'>Loading...</p>}
           {/* {error && <p className='mt-4 text-red text-center'>Something went wrong. Please try again.</p>} */}
-          <p className={`mt-4 ${success? "text-green-500": "text-red"} text-center`}>{statusMsg } </p>
+				{error && <p className="mt-4  text-red text-center">{statusMsg} </p>}
 				{success && <p className='mt-4 text-green-500 text-center'>Website registered!</p>}
 			</form>
       </div>

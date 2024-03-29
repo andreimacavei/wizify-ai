@@ -8,7 +8,6 @@ import { prisma } from "@/lib/db/db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { initUserData } from "@/app/lib/actions";
 import generateUrlSafeBase64ApiKey from "@/utils/generateB64Key";
-// import generateUrlSafeString from "@/utils/generateKey";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
