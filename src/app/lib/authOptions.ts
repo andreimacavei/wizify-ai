@@ -7,7 +7,8 @@ import { NextAuthOptions } from "next-auth";
 import { prisma } from "@/lib/db/db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { initUserData } from "@/app/lib/actions";
-import { generateUrlSafeBase64ApiKey } from "@/utils/generateB64Key";
+import generateUrlSafeBase64ApiKey from "@/utils/generateB64Key";
+// import generateUrlSafeString from "@/utils/generateKey";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -99,7 +100,9 @@ export const authOptions: NextAuthOptions = {
       // await recordEvent('signup')
       // Add user to a free subscription plan after signup
       console.log('New user signed up:', message.user.email, message.user.id)
+      // TODO generate using crypto-js
       const userKey = generateUrlSafeBase64ApiKey();
+      // console.log('Generated user key:', userKey)
       await initUserData('Free', message.user.id, userKey)
     }
   }

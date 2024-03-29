@@ -1,12 +1,9 @@
-import { crypto } from "crypto";
+export default function generateUrlSafeBase64ApiKey(length = 32) {
+  // Generate a random buffer of bytes
+  const buffer = crypto.randomBytes(length);
 
-export function generateUrlSafeBase64ApiKey(length = 32) {
-  // Generate a random array of bytes
-  const randomBytes = new Uint8Array(length);
-  crypto.getRandomValues(randomBytes);
-
-  // Convert the bytes to Base64
-  const base64String = btoa(String.fromCharCode.apply(null, randomBytes));
+  // Convert the buffer to a Base64 string
+  const base64String = buffer.toString("base64");
 
   // Make the Base64 string URL-safe by replacing '+' with '-', '/' with '_', and removing '='
   const urlSafeBase64String = base64String

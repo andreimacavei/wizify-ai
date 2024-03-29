@@ -36,7 +36,7 @@ const language = {
 }
 
 // IMPORTANT! Set the runtime to edge
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 // Create a new Prisma client
 const neon = new Pool({ connectionString: process.env.POSTGRES_MICRO_AI_PRISMA_URL })
