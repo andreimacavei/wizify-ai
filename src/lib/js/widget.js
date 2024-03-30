@@ -349,7 +349,7 @@ function enhanceInputElement(inputElement) {
             try {
               errorData = await response.json();
             } catch (e) {
-              alert("An error occurred. Check error logs.");
+              alert("An error occurred", e);
               return;
             }
 

@@ -7,7 +7,7 @@ import { fetchUserApiKeys } from "@/app/lib/data";
 export default async function SettingsPage() {
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
-    redirect("/sigin");
+    redirect("/signin");
   }
 
   const userKeys = await fetchUserApiKeys();

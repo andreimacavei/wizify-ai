@@ -21,7 +21,7 @@ export default function Hero({
         </div>
         <h2 className='mt-4 text-gray-600 sm:text-xl'>Just create an account and add the following JS code to your website!</h2>
         <p className="mt-1 rounded-md bg-white p-4 text-xs text-graydark text-wrap overflow-auto">
-            {`<script src="https://aiwizzard.vercel.app/widget.js?client_id={YOUR_CLIENT_ID}"></script>`}
+            {`<script src="https://aiwizzard.vercel.app/widget.js?client_key={YOUR_CLIENT_KEY}"></script>`}
         </p>
     </div>
   )

@@ -7,7 +7,7 @@ import { authOptions } from "@/app/lib/authOptions";
 export default async function NewDomainPage() {
 	const session = await getServerSession(authOptions);
   if (!session || !session.user) {
-    redirect("/sigin");
+    redirect("/signin");
   }
 
   return (

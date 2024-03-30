@@ -7,7 +7,7 @@ import UsageCard from "@/app/ui/UsageCard";
 export default async function UsagePage() {
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
-    redirect("/sigin");
+    redirect("/signin");
   }
   return <UsageCard />;
 }
