@@ -1,3 +1,5 @@
+import * as crypto from "crypto";
+
 export default function generateUrlSafeBase64ApiKey(length = 32) {
   // Generate a random buffer of bytes
   const buffer = crypto.randomBytes(length);
