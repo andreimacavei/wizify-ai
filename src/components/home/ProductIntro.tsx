@@ -29,7 +29,7 @@ function ProductIntro({ user }: { user: any }) {
         }
       }
       />
-      <div className="mx-auto max-w-xl sm:max-w-lg text-center">
+      <div className="mx-auto max-w-xl sm:max-w-lg text-left">
         {user && <Hero loggedIn />}
         {!user && <Hero />}
         <h2 className="text-gray-600 sm:text-xl">Here are some usecase example for text inputs</h2>

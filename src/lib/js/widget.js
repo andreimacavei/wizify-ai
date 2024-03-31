@@ -1,4 +1,4 @@
-let BASE_URL = "https://aiwizzard.vercel.app/api/enhance";
+let BASE_URL = "http://localhost:3000/api/enhance";
 let CLIENT_KEY =
   extractClientId(document.currentScript.getAttribute("src")) || "";
 
@@ -102,10 +102,13 @@ function loadStyle() {
         top: 0;
     }
     .micro-ai-menu.show {
-        display: block;
+        display: flex;
+        flex-direction:column;
+        align-items: flex-start;
     }
     .micro-ai-menu-item {
         cursor: pointer;
+        width: max-content;
         margin: 2px;
         border-radius: 0.5em;
         padding: 0.3em;
@@ -131,7 +134,7 @@ function loadStyle() {
         height: 1em;
         display: inline-block;
         right: 0.5em;
-        position: absolute;
+        position: revert;
         font-family: monospace;
     }
     `;

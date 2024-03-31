@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/lib/authOptions";
 import { prisma } from "@/lib/db/db";
 import { sanitizeString } from "@/utils/sanitize";
-import { client } from "@/lib/redis";
+// import { client } from "@/lib/redis";
 
 /* 
  * Register new domain
@@ -78,9 +78,10 @@ export async function registerNewDomain(data: FormData) {
     }
   }
 
+  // TODO uncomment this when fxing issue with deletion
   // Save to redis db (edge cache)
-  const result = await client.sadd('domains', hostname);
-  console.log('result redis: ', result);
+  // const result = await client.sadd('domains', hostname);
+  // console.log('result redis: ', result);
 
   return {status: 'success', msg: 'Domain added successfully', data: newDomain};
 }
@@ -101,9 +102,10 @@ export async function deleteDomain(id: number) {
     return false;
   }
 
+  // TODO uncomment this when fxing issue with deletion
   // Save to redis db (edge cache)
-  result = await client.srem('domains', result.hostname);
-  console.log('result redis: ', result);
+  // result = await client.srem('domains', result.hostname);
+  // console.log('result redis: ', result);
 
   return true;
 }
