@@ -5,10 +5,32 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/',
-        destination: '/index.html',
+        source: "/demo",
+        destination: "/index.html",
       },
     ];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        port: "",
+        pathname: "/u/**",
+      },
+    ],
+  },
+  webpack(config) {
+    config.experiments ??= {};
+    config.experiments.asyncWebAssembly = true;
+    // config.experiments.topLevelAwait = true;
+
+    return config;
   },
 };
 

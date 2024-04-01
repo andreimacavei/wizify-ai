@@ -1,0 +1,26 @@
+[
+  {
+      "name": "Free",
+      "price": 0.00,
+      "domainsAllowed": 1,
+      "creditsPerMonth": 5000
+  },
+  {
+      "name": "Standard",
+      "price": 19.99,
+      "domainsAllowed": 3,
+      "creditsPerMonth": 1500000
+  },
+  {
+      "name": "Premium",
+      "price": 49.99,
+      "domainsAllowed": 10,
+      "creditsPerMonth": 10000000
+  },
+  {
+      "name": "VIP",
+      "price": 99.99,
+      "domainsAllowed": 100,
+      "creditsPerMonth": 100000000
+  }
+]
