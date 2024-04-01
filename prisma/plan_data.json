@@ -13,14 +13,14 @@
   },
   {
       "name": "Premium",
-      "price": 29.99,
+      "price": 49.99,
       "domainsAllowed": 10,
-      "creditsPerMonth": 5000000
+      "creditsPerMonth": 10000000
   },
   {
       "name": "VIP",
-      "price": 49.99,
+      "price": 99.99,
       "domainsAllowed": 100,
-      "creditsPerMonth": 10000000
+      "creditsPerMonth": 100000000
   }
 ]

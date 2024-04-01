@@ -92,8 +92,8 @@ export default function DashboardCard(
                         <span className="text-gray-400 font-bold">{domain.usage}</span>
                       </div>
                       <div className="flex text-sm italic">
-                        <span className={`${domain.valid ? "text-green-500" : "text-red"}`}>
-                        {domain.valid ? "Validated" : "Not Validated"}
+                        <span className={`${domain.validated ? "text-green-500" : "text-red"}`}>
+                        {domain.validated ? "Validated" : "Not Validated"}
                         </span>
                       </div>
                     </div>
