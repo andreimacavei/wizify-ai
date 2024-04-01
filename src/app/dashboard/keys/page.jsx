@@ -16,7 +16,7 @@ export default async function SettingsPage() {
   const scriptText = `<script src="${wizzardUrl}/widget.js?client_key=${userKeys[0].key}"></script>`;
 
   return (
-    <div className="col-span-1 auto-rows-min grid-cols-1 lg:col-span-5">
+    <div className="col-span-1 mt-4 auto-rows-min grid-cols-1 lg:col-span-5">
       <h2 className="text-left text-xl font-semibold">Your CLIENT keys</h2>
       {userKeys && userKeys.length > 0 && <ApiKeyCard userKeys={userKeys} />}
 

@@ -92,7 +92,7 @@ export default function Sidebar() {
                   </clipPath>
                 </defs>
               </svg>
-              API Keys
+              Client Keys
             </Link>
           </li>
           <li className='hidden lg:block'>
