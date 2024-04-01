@@ -1,8 +1,11 @@
 import Link from 'next/link'
+import CopyToClipboardButton from '@/app/ui/CopyToClipboardButton'
 
 export default function Hero({
   loggedIn = false }: { loggedIn?: boolean}
 ) {
+  const scriptText = `<script src="https://app.wizzardai.dev/widget.js?client_key=CLIENT_KEY">\n</script>`
+  
   return (
     <div className="flex flex-col gap-5 py-12 px-2.5 sm:px-0">
       <h1 className="font-display text-3xl font-bold leading-[1.15] text-black sm:text-6xl sm:leading-[1.15]">
@@ -20,9 +23,20 @@ export default function Hero({
         }
         </div>
         <h2 className='mt-4 text-gray-600 sm:text-xl'>Just create an account and add the following JS code to your website!</h2>
-        <p className="mt-1 rounded-md bg-white p-4 text-xs text-graydark text-wrap overflow-auto">
-            {`<script src="https://aiwizzard.vercel.app/widget.js?client_key={YOUR_CLIENT_KEY}"></script>`}
-        </p>
+      
+        <div className="mt-4 bg-graydark rounded-lg overflow-auto">
+          <div className="flex p-1">
+          <CopyToClipboardButton scriptText={scriptText} />
+          </div>
+          <div className="px-3 py-2">
+            <pre className="language-xml">
+            <code className="text-sm ">
+{scriptText}
+              </code>
+            </pre>
+          </div>
+      </div>
+      <div className='text-sm italic'>*You need to first create an account and then replace CLIENT_KEY with your own client key.</div>
     </div>
   )
 }

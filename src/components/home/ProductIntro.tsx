@@ -29,7 +29,7 @@ function ProductIntro({ user }: { user: any }) {
         }
       }
       />
-      <div className="mx-auto max-w-xl sm:max-w-lg text-left">
+      <div className="mx-auto max-w-xl sm:max-w-lg text-center">
         {user && <Hero loggedIn />}
         {!user && <Hero />}
         <h2 className="text-gray-600 sm:text-xl">Here are some usecase example for text inputs</h2>
@@ -41,7 +41,7 @@ function ProductIntro({ user }: { user: any }) {
             style: { width: '100%', height: '25px' }
           }} />
           <UseCaseExample useCase={{
-            name: 'Example simple input',
+            name: 'Example text area',
             content: 'Hi, I am a wizzard widget and I want show you how I can help! Just click the bottom right corner!',
             inputType: 'textarea',
             style: { width: '100%', height: '100px' }

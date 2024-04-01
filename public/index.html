@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AI Mage - Enhance user input</title>
+    <title>Wizzard AI - Enhance user input</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="widget.js?"></script>
@@ -42,10 +42,48 @@
 }
 
     </style>
+    <!-- Prism.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <!-- Prism.js theme CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-okaidia.min.css">
 </head>
 <body style="padding: 3em">
 
-    <h1>Add micro AI mage to enhance your web-app with AI! </h1>
+<div class="max-w-sm mx-auto mt-24 bg-gray-900 rounded-lg overflow-hidden">
+
+  <div class="p-4">
+    <div class="flex items-center justify-between">
+      <span class="text-gray-200 text-xl font-bold">Code Snippet</span>
+      <button id="copyButton" class="px-4 py-2 text-white bg-teal-500 rounded hover:bg-teal-600 focus:outline-none focus:ring focus:ring-red-400">Copy</button>
+    </div>
+  </div>
+
+  <div class="px-3 py-2">
+    <pre class="language-javascript"><code class="text-sm">// Your JavaScript code goes here
+function greet(name) {
+    return `Hello, ${name}!`;
+}</code></pre>
+  </div>
+</div>
+
+
+
+<!-- JavaScript to copy the code -->
+<script>
+  document.getElementById('copyButton').addEventListener('click', function() {
+      const codeElement = document.querySelector('.language-javascript code');
+      const textArea = document.createElement('textarea');
+      textArea.value = codeElement.textContent;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      alert('Code copied to clipboard!');
+  });
+</script>
+
+
+    <h1>Add Wizzard AI to enhance your web-app with AI! </h1>
 
     <p>How? just load add this JS to your website/webapp!</p>
 

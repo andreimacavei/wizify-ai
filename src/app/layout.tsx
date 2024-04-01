@@ -10,8 +10,8 @@ import { Footer, Header } from "@/components/templates";
 
 export const metadata: Metadata = {
   title:
-    "Mage AI - Enhance your Web App with AI",
-  description: "Mage AI - Enhance your Web App with AI",
+    "Wizzard AI - Enhance your Web App with AI",
+  description: "Wizzard AI - Enhance your Web App with AI",
 };
 
 export default async function RootLayout({
@@ -34,6 +34,7 @@ export default async function RootLayout({
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link id="theme-link" rel="stylesheet" href="/themes/prism-okaidia/theme.min.css" />
       </head>
       <body suppressHydrationWarning={true}>
         <SessionProvider session={session}>

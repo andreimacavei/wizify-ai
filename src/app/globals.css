@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+}
+
 body {
   background: #05639a;
   padding: 40px 20px;

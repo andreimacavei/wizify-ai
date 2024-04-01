@@ -86,9 +86,16 @@ export default function DashboardCard(
                     </div>
                   </div>
                   <div className="self-end sm:self-center flex gap-2 items-center">
-                    <div className="flex gap-1 items-center">
-                      <span className="text-gray-400">Used credits:</span>
-                      <span className="text-gray-400 font-bold">{domain.usage}</span>
+                    <div className="flex flex-col">
+                      <div className="flex gap-1 items-center">
+                        <span className="text-gray-400">Used credits:</span>
+                        <span className="text-gray-400 font-bold">{domain.usage}</span>
+                      </div>
+                      <div className="flex text-sm italic">
+                        <span className={`${domain.valid ? "text-green-500" : "text-red"}`}>
+                        {domain.valid ? "Validated" : "Not Validated"}
+                        </span>
+                      </div>
                     </div>
                     <Suspense fallback={<VerticalEllipsis className="p-1 fill-gray-500" />}>
                       <ContextMenuButton id={domain.id} remove={removeDomain} />
