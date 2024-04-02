@@ -64,7 +64,7 @@ export async function GET(req: Request) {
   if (!domains) {
     return new Response('Domain not found', { status: 404 });
   }
-  console.log('Domains existing:', domains);
+  // console.log('Domains existing:', domains);
 
   // Check if any db entries is a validated domain
   let isValid = false, validatedDomain = null;
@@ -97,13 +97,11 @@ export async function GET(req: Request) {
     return new Response('User has no active client keys', { status: 404 });
   }
 
-  if (user.credits < 10) {
+  // TODO: Compute the actual cost of the request before comparing
+  if (user.credits < 100) {
     return new Response('Not enough credits', { status: 402 });
   }
 
-  console.log('Prompt:', content);
-  console.log('Action:', action);
- 
   let prompt = '';
   switch (action.toLowerCase()) {
     case 'fix_spelling':
@@ -132,23 +130,23 @@ export async function GET(req: Request) {
   }
 
   // Ask OpenAI for a streaming completion given the prompt
-  // const response = await openai.completions.create({
-  //   model: 'gpt-3.5-turbo-instruct',
-  //   max_tokens: 150,
-  //   prompt,
-  // });
+  const response = await openai.completions.create({
+    model: 'gpt-3.5-turbo-instruct',
+    max_tokens: 100,
+    prompt,
+  });
  
   // Mock response data for now
-  const response = {
-    choices: [
-      {
-        text: 'This is a mock response. Make money online with this one weird trick!',
-      },
-    ],
-    usage: {
-      total_tokens: 5,
-    },
-  };
+  // const response = {
+  //   choices: [
+  //     {
+  //       text: 'This is a mock response. Make money online with this one weird trick!',
+  //     },
+  //   ],
+  //   usage: {
+  //     total_tokens: 5,
+  //   },
+  // };
 
   console.log('Response usage:', response.usage);
   
@@ -164,7 +162,7 @@ export async function GET(req: Request) {
       },
     },
   });
-  console.log('Updated user credits:', updatedUser.credits);
+  // console.log('Updated user credits:', updatedUser.credits);
 
   // Update the domain usage
   const updatedDomain = await prisma.domains.update({
@@ -177,7 +175,7 @@ export async function GET(req: Request) {
       },
     },
   });
-  console.log('Updated domain usage:', updatedDomain.usage);
+  // console.log('Updated domain usage:', updatedDomain.usage);
 
   let aiResponseText = response.choices[0].text.trim();
 

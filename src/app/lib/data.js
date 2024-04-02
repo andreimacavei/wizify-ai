@@ -43,7 +43,7 @@ export const fetchUserApiKeys = async () => {
   return userApiKeys;
 };
 
-export const fetchUserData = async () => {
+export const fetchUserUsageData = async () => {
   const session = await getServerSession(authOptions);
   if (!session || !session.user) return null;
 
@@ -53,7 +53,7 @@ export const fetchUserData = async () => {
       id: user.id,
     },
   });
-  console.log("userData: ", userData);
+  // console.log("userData: ", userData);
 
   // Create a join query to fetch user subscription plan
   const userSubscriptionPlan = await prisma.user.findUnique({
@@ -68,7 +68,7 @@ export const fetchUserData = async () => {
       },
     },
   });
-  console.log("userSubscriptionPlan: ", userSubscriptionPlan);
+  // console.log("userSubscriptionPlan: ", userSubscriptionPlan);
 
   // const userDomains = await prisma.domains.findMany({
   //   where: {

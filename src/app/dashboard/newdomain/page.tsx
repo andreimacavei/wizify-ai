@@ -1,5 +1,5 @@
 
-import NewDomain from '@/components/RegisterDomains';
+import NewDomain from '@/components/NewDomain';
 import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";

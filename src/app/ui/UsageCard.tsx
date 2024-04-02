@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { fetchUserData } from '@/app/lib/data';
+import { fetchUserUsageData } from '@/app/lib/data';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -18,7 +18,7 @@ export default function UsageCard() {
     (async () => {
       setLoading(true)
       // Fetch user data from the server
-      let data = await fetchUserData();
+      let data = await fetchUserUsageData();
       setLoading(false);
 
       setCredits(data.user.credits);

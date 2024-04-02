@@ -18,7 +18,6 @@ export async function registerNewDomain(data: FormData) {
   // Get form data
   let domainField = data.get('domain') as string;
   const domainURL = domainField.trim().toLowerCase();
-  console.log('domain URL: ', domainURL)
 
   // Validate URL
   let url;
@@ -31,15 +30,14 @@ export async function registerNewDomain(data: FormData) {
       msg: 'Invalid URL'
     }
   }
-  
-  // Save domain to main database 
-  const hostname = url.hostname;
 
-  let existingDomain;
+  // For now we have to run 2 queries to check if domain exists and, if not, to add it
+  // This is because we can't use upsert with unique constraints
+  // See more here: https://github.com/prisma/prisma/issues/5436
+  let existingDomains;
   try {
-    existingDomain = await prisma.domains.findFirst({
+    existingDomains = await prisma.domains.findMany({
       where: {
-        hostname,
         userId: session.user.id
       }
     });
@@ -51,11 +49,43 @@ export async function registerNewDomain(data: FormData) {
     }
   }
 
-  console.log('existing domain ?: ', existingDomain);
+  // Check if user is allowed to add more domains
+  const subscription = await prisma.subscription.findUnique({
+    where: {
+      userId: session.user.id,
+    },
+    include: {
+      plan: {
+        select: {
+          domainsAllowed: true
+        }
+      }
+    }
+  });
+
+  if (!subscription || !subscription.plan) {
+    return {
+      status: 'error',
+      msg: 'No subscription plan found!'
+    }
+  }
+
+  if (existingDomains.length >= subscription.plan.domainsAllowed) {
+    return {
+      status: 'error',
+      msg: 'You have reached the maximum number of domains allowed for your subscription plan'
+    }
+  }
+    
+  // Save domain to main database 
+  const hostname = url.hostname;
+
+  const existingDomain = existingDomains.find((domain) => domain.hostname === hostname);
+
   if (existingDomain) {
     return {
       status: 'error',
-      msg: 'Domain already added'
+      msg: 'Domain already existing!'
     }
   }
 
@@ -68,7 +98,6 @@ export async function registerNewDomain(data: FormData) {
         userId: session.user.id
       }
     });
-    console.log('new domain postgres: ', newDomain);
 
   } catch (error) {
     console.log('error postgres: ', error);
@@ -192,7 +221,13 @@ export async function initUserData(planType: string, userId: string, userKey: st
           create: {
             key: userKey
           }
-        }
+        },
+        subscription: {
+          connect: {
+            id: subscription.id
+          }
+        },
+        subscriptionId: subscription.id
       }
     });
 
@@ -209,8 +244,6 @@ export async function validateDomainAndUserKey(
   userkey: string
 ) {
   'use server';
-
-  //TODO refactor and check active key
 
   // Get user with same userkey
   const userKey = await prisma.userKey.findFirst({
@@ -233,7 +266,7 @@ export async function validateDomainAndUserKey(
   if (!validatedDomain) {
     return validatedDomain;
   }
-  console.log('validatedDomain: ', validatedDomain);
+  // console.log('validatedDomain: ', validatedDomain);
   // Validate domain in database so next calls can be faster
   await prisma.domains.update({
     where: {
