@@ -81,7 +81,7 @@ model VerificationToken {
 model domains {
   id        Int      @id @default(autoincrement())
   hostname  String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   usage     Int      @default(0)
   createdAt DateTime @default(now())

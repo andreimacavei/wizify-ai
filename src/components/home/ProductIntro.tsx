@@ -6,9 +6,7 @@ declare global {
   let enhanceInputElement: () => void;
 }
 
-function ProductIntro({ user }: { user: any }) {
-  //TODO hardcoded client key for now to make development easy
-  let clientKey = "Saj9efJD0rdChcPuZCCISTwzeR2ZRKnrjsOyYOh5uBQ";
+function ProductIntro({ user, clientKey }: { user: any, clientKey: string }) {
 
   return (
     <>
