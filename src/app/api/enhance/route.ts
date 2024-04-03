@@ -35,6 +35,10 @@ const language = {
   'ro': 'Romanian',
 }
 
+// TODO We cannot use edge runtime because of an incompatibility issue with NextAuth
+// https://github.com/vercel/next.js/issues/50444
+// We can either switch to Auth.js (Beta) or drop it and use a different auth provider such
+// as Supabase
 // IMPORTANT! Set the runtime to edge
 // export const runtime = 'edge';
 
