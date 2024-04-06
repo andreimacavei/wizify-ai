@@ -1,18 +1,23 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { registerNewDomain } from "@/app/lib/actions";
+import { Stepper } from "@/app/ui";
 
 export default function NoDomains(
-  { updateDomains }: { updateDomains: React.Dispatch<React.SetStateAction<any>> }
+  { updateDomains }:
+    {
+      updateDomains: React.Dispatch<React.SetStateAction<any>>,
+    }
 ) {
   return (
     <div className="flex flex-col items-center justify-center h-full">
+      
       <div className="text-center">
-        <h2 className="text-2xl font-bold">No Domains</h2>
-        <p className="text-gray-500 mt-2">You haven't added any domains yet.</p>
+        <h2 className="text-3xl font-bold">No Domains</h2>
+        <p className="text-gray-500 font-semibold mt-8 mb-8">You haven't added any domains yet.</p>
       </div>
-      {/* <CreateDomainBtn className="mt-4" /> */}
-      <AddDomainDialog updateDomains={ updateDomains } />
+      <AddDomainDialog updateDomains={updateDomains} />
+      <Stepper />
     </div>
   );
 }
@@ -49,8 +54,9 @@ function AddDomainDialog(
 			
       <Dialog.Trigger asChild>
         {/* <button className="text-blue-500 border-black px-2 py-1 hover:underline"> */}
-        <button className="Button text-blue-500 border-black px-2 py-1 hover:underline">
-          Add new domain
+        {/* <button className="Button text-blue-500 border-black px-2 py-1 hover:underline"> */}
+        <button className="group flex items-center space-x-3 rounded-md border border-black bg-white px-3 py-2 text-sm font-medium text-black transition-all duration-75 hover:bg-black hover:text-white active:scale-95">
+          Add Domain
         </button>
       </Dialog.Trigger>
 			<Dialog.Portal>

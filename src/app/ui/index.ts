@@ -4,6 +4,7 @@ import DashboardCard from "./DashboardCard";
 import DomainDeleteDialog from "./DomainDeleteDialog";
 import NoDomains from "./NoDomains";
 import Sidebar from "./Sidebar";
+import Stepper from "./Stepper";
 import CopyToClipboardButton from "./CopyToClipboardButton";
 
 export {
@@ -14,4 +15,5 @@ export {
   DomainDeleteDialog,
   NoDomains,
   Sidebar,
+  Stepper
 }

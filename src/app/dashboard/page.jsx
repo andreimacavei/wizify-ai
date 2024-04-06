@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/lib/authOptions";
 import { getServerSession } from "next-auth";
-import { fetchUserDomains } from "@/app/lib/data";
+import { fetchUserApiKeys, fetchUserDomains } from "@/app/lib/data";
 import DashboardCard from "@/app/ui/DashboardCard";
 
 export default async function DashboardPage() {
@@ -9,8 +9,12 @@ export default async function DashboardPage() {
   if (!session || !session.user) {
     redirect("/signin");
   }
-
+  const userKeys = await fetchUserApiKeys();
+  const wizzardUrl = process.env.WIZZARD_AI_PUBLIC_URL;
+  const scriptText = `<script src="${wizzardUrl}/widget.js?client_key=${userKeys[0].key}"></script>`;
+  console.log("scriptText: ", scriptText);
+  // TODO fetch here domains and pass to children
   // const userDomains = await fetchUserDomains();
 
-  return <DashboardCard />;
+  return <DashboardCard scriptText={scriptText} />;
 }

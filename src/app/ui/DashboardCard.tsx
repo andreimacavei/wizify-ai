@@ -8,11 +8,12 @@ import { ContextMenuButton, NoDomains } from "@/app/ui";
 import { VerticalEllipsis } from "@/app/ui/icons"
 import { deleteDomain } from "@/app/lib/actions";
 import { fetchUserDomains } from "@/app/lib/data";
-import Image  from "next/image";
+import { CopyToClipboardButton } from "@/app/ui";
 // import { useRouter } from "next/navigation";
 
 export default function DashboardCard(
   // { userDomains }: { userDomains: [{}] }
+  { scriptText }: { scriptText: string }
 ) {
   const [domains, setDomains] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -103,7 +104,25 @@ export default function DashboardCard(
                   </div>
                 </li>
               ))}
-            </ul>
+              </ul>
+              {scriptText && (
+                <div className="mt-8 lg:mt-10">
+                <h2 className="mt-2 text-left text-xl font-semibold">
+                Copy the following script and paste it into your website's HTML
+                code.
+              </h2>
+                <div className="mt-4 overflow-auto rounded-lg bg-graydark">
+                  <div className="flex p-1">
+                    <CopyToClipboardButton scriptText={scriptText} />
+                  </div>
+                  <div className="px-3 py-2">
+                    <pre className="language-xml">
+                      <code className="text-sm ">{scriptText}</code>
+                    </pre>
+                  </div>
+                  </div>
+                </div>
+              )}
           </>
           )}
         </> 

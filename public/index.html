@@ -649,7 +649,7 @@
                 style="max-height: 50px">
             <strong>Wizard AI</strong></a>
         <div class="auth">
-            <a href="https://app.wizzardai.dev/dashboard">Login</a>
+            <a href="/dashboard">Login</a>
             <button class="ml20 get_started">Sign Up</button>
         </div>
     </header>
@@ -1047,8 +1047,8 @@
                 element.addEventListener("click",function(event) {
                 event.preventDefault()
                 // go to the signup page
-                // window.location.href = "https://app.wizzardai.dev/signup";
-                location.href = "https://app.wizzardai.dev/signin";
+                console.log(location.href)
+                location.href = location.href + "signin";
             });
           });
         });
