@@ -25,12 +25,12 @@ export default async function SettingsPage() {
           (userKeys.length === 0 && (
             <p className="text-red">You don't have any API keys yet.</p>
           ))}
-        {userKeys && userKeys.length > 0 && (
+        {/* {userKeys && userKeys.length > 0 && (
           <h2 className="mt-2 text-left text-xl font-semibold">
             Copy the following script and paste it into your website's HTML
             code.
           </h2>
-        )}
+        )} */}
         {/* {userKeys && userKeys.length > 0 && scriptText && (
           <div className="mt-4 overflow-auto rounded-lg bg-graydark">
             <div className="flex p-1">
