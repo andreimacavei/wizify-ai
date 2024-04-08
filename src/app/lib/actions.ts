@@ -173,7 +173,7 @@ export async function updateProfile(data: FormData) {
 
 export async function initUserData(planType: string, userId: string, userKey: string) {
   'use server'
-  console.log("addSubscription: ", planType, userId)
+  console.log("Created new subscription : ", planType, userId)
   let subscription;
   let plan;
 
@@ -195,7 +195,8 @@ export async function initUserData(planType: string, userId: string, userKey: st
     subscription = await prisma.subscription.create({
       data: {
         planId: plan.id,
-        userId
+        userId,
+        credits: plan.credits,
       }
     });
 
@@ -212,10 +213,6 @@ export async function initUserData(planType: string, userId: string, userKey: st
         id: userId
       },
       data: {
-        credits: {
-          // TODO sanitize this value
-          increment: plan.creditsPerMonth
-        },
         activeKey: userKey,
         userKeys: {
           create: {

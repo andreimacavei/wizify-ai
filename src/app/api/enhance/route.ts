@@ -39,8 +39,9 @@ const language = {
 // https://github.com/vercel/next.js/issues/50444
 // We can either switch to Auth.js (Beta) or drop it and use a different auth provider such
 // as Supabase
-// IMPORTANT! Set the runtime to edge
-// export const runtime = 'edge';
+
+//  Set the runtime to edge for production and nodejs for development
+export const runtime = process.env.NODE_ENV === "development"? 'nodejs':'edge';
 
 // Create a new Prisma client
 const neon = new Pool({ connectionString: process.env.POSTGRES_MICRO_AI_PRISMA_URL })
@@ -68,7 +69,6 @@ export async function GET(req: Request) {
   if (!domains) {
     return new Response('Domain not found', { status: 404 });
   }
-  // console.log('Domains existing:', domains);
 
   // Check if any db entries is a validated domain
   let isValid = false, validatedDomain = null;
@@ -101,8 +101,14 @@ export async function GET(req: Request) {
     return new Response('User has no active client keys', { status: 404 });
   }
 
-  // TODO: Compute the actual cost of the request before comparing
-  if (user.credits < 100) {
+  // Check if the current subscription has enough credits to make the request
+  const subscription = await prisma.subscription.findFirst({
+    where: {
+      userId: userId,
+    },
+  });
+
+  if (subscription.usedCredits >= subscription.credits) {
     return new Response('Not enough credits', { status: 402 });
   }
 
@@ -154,19 +160,19 @@ export async function GET(req: Request) {
 
   console.log('Response usage:', response.usage);
   
-  // Update the token count for the user
+  // Update the credits count for the user's subscription
   const tokenCount = response.usage.total_tokens;
-  const updatedUser = await prisma.user.update({
+  const updatedSubscription = await prisma.subscription.update({
     where: {
-      id: userId,
+      id: subscription.id,
     },
     data: {
-      credits: {
-        decrement: tokenCount,
+      usedCredits: {
+        increment: tokenCount,
       },
     },
   });
-  // console.log('Updated user credits:', updatedUser.credits);
+  console.log(`Updated user ${user.email} credits: ${updatedSubscription.usedCredits}`);
 
   // Update the domain usage
   const updatedDomain = await prisma.domains.update({

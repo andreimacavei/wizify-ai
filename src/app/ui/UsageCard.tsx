@@ -5,8 +5,8 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 export default function UsageCard() {
-  const [credits, setCredits] = useState(0)
-  const [planCredits, setPlanCredits] = useState(0)
+  const [usedCredits, setUsedCredits] = useState(0)
+  const [subscriptionCredits, setSubscriptionCredits] = useState(0)
   const [loading, setLoading] = useState(true)
   const [plan, setPlan] = useState({
     name: '',
@@ -21,12 +21,12 @@ export default function UsageCard() {
       let data = await fetchUserUsageData();
       setLoading(false);
 
-      setCredits(data.user.credits);
-      setPlanCredits(data.subscriptionPlan.creditsPerMonth);
+      setUsedCredits(data.subscription.usedCredits);
+      setSubscriptionCredits(data.subscription.credits);
       setPlan({
-        name: data.subscriptionPlan.name,
-        creditsPerMonth: data.subscriptionPlan.creditsPerMonth,
-        domainsAllowed: data.subscriptionPlan.domainsAllowed
+        name: data.plan.name,
+        creditsPerMonth: data.plan.creditsPerMonth,
+        domainsAllowed: data.plan.domainsAllowed
       })
       
     })()
@@ -50,16 +50,16 @@ export default function UsageCard() {
         <div className="flex flex-col items-center gap-2">
           <div style={{ width: 150, height: 150 }}>
             <CircularProgressbar
-              value={getPercentage(planCredits - credits, planCredits)}
-              text={`${getPercentage(planCredits - credits, planCredits)}%`} />
+              value={getPercentage(usedCredits, subscriptionCredits)}
+              text={`${getPercentage(usedCredits, subscriptionCredits)}%`} />
           </div>
-          <p className="text-gray-400"><span className='font-bold'>{planCredits - credits}</span>  out of <span className='font-bold'>{planCredits}</span> used credits</p>
-          <p className="text-gray-400">You have <span className='font-bold'>{credits}</span> credits left.</p>
+          <p className="text-gray-400"><span className='font-bold'>{usedCredits}</span>  out of <span className='font-bold'>{subscriptionCredits}</span> used credits</p>
+          <p className="text-gray-400">You have <span className='font-bold'>{subscriptionCredits - usedCredits}</span> credits left.</p>
         </div>
         <div className="grow flex gap-4 sm:items-center flex-col lg:items-start">
           <p className="text-gray-400">Your are on a <span className='font-bold'>{plan.name}</span> plan which includes:</p>
           <div className="flex flex-col gap-4 items-left">
-            <p className="text-gray-400"><span className='font-bold'>{planCredits}</span> credits {plan.name === 'Free'? "" : "per month" }</p>
+            <p className="text-gray-400"><span className='font-bold'>{plan.creditsPerMonth}</span> credits {plan.name === 'Free'? "" : "per month" }</p>
             <p className="text-gray-400"><span className='font-bold'>{plan.domainsAllowed}</span> domains allowed</p>
             </div>
         </div>

@@ -69,15 +69,6 @@ function NewDomainDialog() {
 								placeholder='Example: https://mywebsite.com'
 								className="grow border border-slate-300 rounded px-2 py-1 outline-none text-slate-800" />
 						</div>
-
-						{/* <label htmlFor="maxCredits" className="text-slate-400 text-xs">
-							Set a limit of credits to use!
-						</label> */}
-						{/* <div className='flex gap-4 items-center'>
-							<input id="maxCredits" name="maxCredits" type="number" min={1000} max={user.credits} defaultValue={5000} required
-								className="border border-slate-300 rounded px-2 py-1 outline-none text-slate-800" />
-							days
-						</div> */}
             <div className='flex justify-end gap-2'>
               <Dialog.Close className='border border-gray-300 rounded px-2 py-1 hover:bg-gray focus-within:bg-gray-200 active:scale-95 transition-all duration-75'>Cancel</Dialog.Close>
 							<button type="submit" disabled={loading}

@@ -53,7 +53,6 @@ export const fetchUserUsageData = async () => {
       id: user.id,
     },
   });
-  // console.log("userData: ", userData);
 
   // Create a join query to fetch user subscription plan
   const userSubscriptionPlan = await prisma.user.findUnique({
@@ -63,6 +62,8 @@ export const fetchUserUsageData = async () => {
     select: {
       subscription: {
         select: {
+          credits: true,
+          usedCredits: true,
           plan: true,
         },
       },
@@ -80,6 +81,7 @@ export const fetchUserUsageData = async () => {
 
   return {
     user: userData,
-    subscriptionPlan: userSubscriptionPlan.subscription.plan,
+    subscription: userSubscriptionPlan.subscription,
+    plan: userSubscriptionPlan.subscription.plan,
   };
 };

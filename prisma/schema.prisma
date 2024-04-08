@@ -52,7 +52,6 @@ model User {
   sessions       Session[]
   tokens         Int           @default(10)
   domains        domains[]
-  credits        Int           @default(0)
   subscription   Subscription?
   subscriptionId Int?
   createdAt      DateTime      @default(now())
@@ -90,13 +89,15 @@ model domains {
 }
 
 model Subscription {
-  id        Int      @id @default(autoincrement())
-  plan      Plan     @relation(fields: [planId], references: [id])
-  planId    Int
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  plan        Plan     @relation(fields: [planId], references: [id])
+  planId      Int
+  credits     Int      @default(0)
+  usedCredits Int      @default(0)
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Plan {
