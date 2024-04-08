@@ -19,7 +19,14 @@ export default function Sidebar() {
           <li>
             <Link
               className='flex gap-2 items-center rounded px-4 py-2 hover:bg-gray focus-within:bg-gray transition-all duration-75'
-              href="/dashboard/newdomain">
+              href="/dashboard/usage">
+              <FontAwesomeIcon icon={faChartSimple} className='w-4' />
+              Usage
+            </Link>
+          </li>
+          <li>
+            <Link className='flex gap-2 items-center rounded px-4 py-2 hover:bg-gray focus-within:bg-gray transition-all duration-75'
+              href="/dashboard/keys">
               <svg
                   className="fill-current"
                   width="18"
@@ -48,22 +55,16 @@ export default function Sidebar() {
                     d="M16.875 16.1156H1.77187C1.43438 16.1156 1.125 16.3969 1.125 16.7625C1.125 17.1281 1.40625 17.4094 1.77187 17.4094H16.875C17.2125 17.4094 17.5219 17.1281 17.5219 16.7625C17.5219 16.3969 17.2125 16.1156 16.875 16.1156Z"
                     fill="white"
                   />
-                </svg>
-              Add Domain
+              </svg>
+              Client Keys
             </Link>
           </li>
           <li>
-            <Link
+          <Link
               className='flex gap-2 items-center rounded px-4 py-2 hover:bg-gray focus-within:bg-gray transition-all duration-75'
-              href="/dashboard/usage">
-              <FontAwesomeIcon icon={faChartSimple} className='w-4' />
-              Usage
-            </Link>
-          </li>
-          <li>
-            <Link className='flex gap-2 items-center rounded px-4 py-2 hover:bg-gray focus-within:bg-gray transition-all duration-75'
-              href="/dashboard/keys">
-            <svg
+              href="/dashboard/config">
+
+              <svg
                 className="fill-current"
                 width="18"
                 height="19"
@@ -92,7 +93,7 @@ export default function Sidebar() {
                   </clipPath>
                 </defs>
               </svg>
-              Client Keys
+              Config
             </Link>
           </li>
           <li className='hidden lg:block'>
