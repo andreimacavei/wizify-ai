@@ -1,129 +1,1079 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html dir="ltr" lang="en-US" prefix="og: https://ogp.me/ns#">
+
 <head>
     <meta charset="UTF-8">
-    <title>Wizzard AI - Enhance user input</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="widget.js?"></script>
+    <!-- All in One SEO 4.5.7.3 - aioseo.com -->
+    <meta name="description"
+        content="Example of use cases Contact Form Forum Chat Product Review Search Box Prev Next Enhance user experience like never before Wizzard AI allows the users to Change Text Tone Professional Friendly Straightforward Casual Translate To English To German To French Many more... Improve text Fix spelling mistakes Make text shorted Make text longer Membership and" />
+    <meta name="robots" content="max-image-preview:large" />
+    <link rel="canonical" href="https://wizzardai.dev/" />
+    <meta name="generator" content="All in One SEO (AIOSEO) 4.5.7.3" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="-" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Wizzard AI -" />
+    <meta property="og:description"
+        content="Example of use cases Contact Form Forum Chat Product Review Search Box Prev Next Enhance user experience like never before Wizzard AI allows the users to Change Text Tone Professional Friendly Straightforward Casual Translate To English To German To French Many more... Improve text Fix spelling mistakes Make text shorted Make text longer Membership and" />
+    <meta property="og:url" content="https://wizzardai.dev/" />
+    <meta property="og:image" content="https://wizzardai.dev/wp-content/uploads/2024/04/logo.png" />
+    <meta property="og:image:secure_url" content="https://wizzardai.dev/wp-content/uploads/2024/04/logo.png" />
+    <meta property="article:published_time" content="2024-03-29T07:52:00+00:00" />
+    <meta property="article:modified_time" content="2024-04-02T21:20:13+00:00" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Wizzard AI -" />
+    <meta name="twitter:description"
+        content="Example of use cases Contact Form Forum Chat Product Review Search Box Prev Next Enhance user experience like never before Wizzard AI allows the users to Change Text Tone Professional Friendly Straightforward Casual Translate To English To German To French Many more... Improve text Fix spelling mistakes Make text shorted Make text longer Membership and" />
+    <meta name="twitter:image" content="https://wizzardai.dev/wp-content/uploads/2024/04/logo.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
 
-#postUploadInputUploadWidget {
-    --walls-storybook-red-color: #C0392B;
-    --walls-storybook-pink-color: #c5429e;
-    --walls-storybook-green-color: #00A898;
-    --walls-storybook-blue-color: #4653E9;
-    --walls-storybook-yellow-color: #F3B200;
-    --walls-storybook-white-color: #FFFFFF;
-    --walls-storybook-black-color: #00222D;
-    --walls-storybook-gray-color: #CCD2D5;
-    --walls-storybook-red-color-rgb: 192, 57, 43;
-    --walls-storybook-pink-color-rgb: 197, 66, 158;
-    --walls-storybook-green-color-rgb: 0, 168, 152;
-    --walls-storybook-blue-color-rgb: 70, 83, 233;
-    --walls-storybook-yellow-color-rgb: 242, 178, 0;
-    --walls-storybook-white-color-rgb: 255, 255, 255;
-    --walls-storybook-black-color-rgb: 0, 34, 45;
-    --walls-storybook-gray-color-rgb: 204, 210, 213;
-    --walls-storybook-font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
-    visibility: visible;
-    box-sizing: inherit;
-    color: inherit;
-    font: inherit;
-    margin: 0;
-    border: none;
-    outline: none;
-    background: none;
-    max-width: 100%;
-    flex-grow: 1;
-    width: 300px;
-    font-family: "Source Sans Pro",sans-serif;
-}
+        body * {
+            font-family: 'Roboto', Arial, sans-serif;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
 
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        label,
+        .logo strong {
+            font-family: 'Poppins', Arial, sans-serif
+        }
+
+        h1,
+        .heading {
+            font-size: 55px;
+            margin: 0;
+            padding: 0
+        }
+
+        .heading {
+            text-align: center;
+        }
+
+        p {
+            line-height: 1.6;
+            padding: 20px 0;
+            font-size: 16px
+        }
+
+        #slider p {
+            font-size: 20px;
+        }
+
+        a,
+        a:visited {
+            color: #1F35B3
+        }
+
+        .logo strong {
+            color: #1F35B3;
+            font-weight: 700;
+            font-size: 20px;
+            margin: -25px 0 0 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        button,
+        input [type=submit] {
+            height: 48px;
+            font-family: 'Roboto', sans-serif;
+            line-height: 48px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            background-color: #1F35B3;
+            color: white;
+            border-radius: 5px;
+            border: 0;
+            padding: 0 24px;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+
+        .example_form {
+            color: white !important;
+        }
+
+        .example_form label {
+            margin-bottom: 5px;
+            display: block;
+            color: white !important
+        }
+
+        .example_form input,
+        .example_form textarea {
+            border-radius: 20px;
+            border: 0;
+            padding: 8px 16px;
+            display: block;
+            width: 100%;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .input {
+            border-radius: 5px;
+            border: 1px solid #D1D5DB;
+            padding: 8px 16px;
+            font-size: 16px;
+            line-height: 1.6;
+            min-width: 40%;
+        }
+
+        .example_form {
+            display: block;
+            background-color: #27262C;
+            padding: 20px 30px;
+            border-radius: 10px;
+        }
+
+        .example_form textarea {
+            min-height: 60px;
+            text-align: left;
+        }
+
+        .example_form input[type="submit"] {
+            background-color: #e22262;
+            color: white;
+            border-radius: 20px;
+            border: 0;
+            padding: 10px 20px;
+            margin-right: 30px;
+            display: inline-block;
+            width: auto;
+            cursor: pointer;
+        }
+        .example_form input[type="submit"]:disabled {
+            background-color: #ccc;
+            color: white;
+            border-radius: 20px;
+            border: 0;
+            padding: 10px 20px;
+            margin-right: 30px;
+            display: inline-block;
+            width: auto;
+            cursor: not-allowed;
+        }
+
+        .example_form small {
+            margin-left: 10px;
+            color: #999;
+        }
+
+        #steps strong {
+            color: #1F35B3;
+            font-size: 24px;
+        }
+
+        #steps h3 {
+            font-size: 32px;
+        }
+
+        #steps p {
+            font-size: 16px;
+            padding: 0
+        }
+
+        .block {
+            display: block !important;
+        }
+
+        .m20auto {
+            margin: 20px auto
+        }
+
+        .mt20 {
+            margin-top: 20px;
+        }
+
+        .mb20 {
+            margin-bottom: 20px;
+        }
+
+        .mb0 {
+            margin-bottom: 0;
+        }
+
+        .flex {
+            display: flex;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .flex-space-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-rows: repeat(1, 1fr);
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px
+        }
+
+
+        .grid-4 {
+            display: grid;
+            grid-template-rows: repeat(1, 1fr);
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px
+        }
+
+        .mw1200 {
+            max-width: 1200px;
+            margin: 10px auto
+        }
+
+        button.mt20 {
+            margin-top: 20px
+        }
+
+        .mt40 {
+            margin-top: 40px
+        }
+
+        .mt60 {
+            margin-top: 60px
+        }
+
+        .mt100 {
+            margin-top: 100px
+        }
+
+        .ml20 {
+            margin-left: 20px
+        }
+
+        .mr20 {
+            margin-right: 20px
+        }
+
+        .ph10 {
+            padding: 0 10px
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .auth a {
+            font-weight: bold;
+        }
+
+        .w100 {
+            width: 100%
+        }
+
+        .f32 {
+            font-size: 32px
+        }
+
+        nav {
+            margin-top: -64px;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px
+        }
+
+        nav a,
+        nav a:visited {
+            color: #232323;
+            margin: 0 10px;
+            padding-bottom: 5px;
+            border-bottom: 3px solid transparent;
+            transition: 0.23s border-bottom
+        }
+
+        nav a:hover {
+            color: #1F35B3;
+            border-bottom: 3px solid #1F35B3
+        }
+
+        #features1>div {
+            background: rgb(249, 242, 255);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        #features1 h2 {
+            font-size: 32px;
+            margin: 0
+        }
+
+        #features1 p {
+            padding-top: 0;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        #features1 img {
+            display: block;
+            margin: 0 20px 0 0;
+            max-width: 40px;
+        }
+
+        #steps div:nth-of-type(2) {
+            padding-left: 20px
+        }
+
+        #testimonials {
+            min-height: 300px;
+            padding-top: 100px;
+            padding-bottom: 15px;
+            overflow: hidden;
+        }
+
+        #testimonials .content div {
+            white-space: normal;
+            color: gray;
+            display: inline-block;
+            width: 480px;
+            text-align: center;
+            font-style: italic;
+            padding: 20px 20px 40px 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 30px -1px;
+            margin: 10px;
+        }
+
+        #testimonials .content div b {
+            font-style: normal;
+            color: initial
+        }
+
+        #testimonials img {
+            border-radius: 100px;
+            margin-top: -80px
+        }
+
+        #testimonials p {
+            margin: 0
+        }
+
+        .marquee {
+            width: 100%;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .content {
+            display: inline-block;
+            animation: marquee 300s linear infinite;
+        }
+
+        .content div {
+            margin-right: 20px;
+            /* Adjust as needed */
+            display: inline-block;
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto
+        }
+
+        .carousel-slide {
+            display: flex;
+            transition: transform 0.5s ease;
+            /* Smooth transition */
+        }
+
+        .carousel-item {
+            width: 100%;
+            flex: 0 0 auto;
+            margin-right: 20px;
+            /* Adjust spacing between items */
+        }
+
+        .carousel-title {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .carousel-image {
+            width: 100%;
+            height: auto;
+        }
+
+        #pricing .pricing-card {
+            background: #e6e6e6;
+            border-radius: 10px;
+            display: block;
+            color: black
+        }
+
+        #pricing h3 {
+            text-align: center;
+            font-size: 24px;
+            margin: 0;
+            padding: 10px 0;
+            display: block;
+            margin-bottom: 0;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        #pricing p {
+            margin-top: 0;
+            line-height: 2;
+            padding: 20px
+        }
+
+        #pricing b {
+            font-size: 32px;
+        }
+
+        #pricing button {
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+
+        #actions_counter {
+            background-color: #1F35B3;
+            color: white;
+            text-align: center;
+            padding: 100px 20px
+        }
+
+        #actions_counter h3 {
+            font-size: 55px;
+            color: white;
+        }
+
+        #actions_counter p {
+            margin: 0;
+            padding: 0;
+            font-size: 24px
+        }
+
+        #actions_counter button {
+            background-color: #e22262;
+        }
+
+        footer {
+            text-align: center;
+        }
+
+        footer a,
+        footer a:visited {
+            margin: 0 20px
+        }
+
+        .micro-ai {
+            line-height: 1 !important;
+            border-radius: 40px !important;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+
+            .text-center-mobile {
+                text-align: center;
+            }
+
+            .mobile-block {
+                display: block !important;
+                line-height: 2;
+            }
+
+            .logo strong {
+                font-size: 14px;
+                margin-top: -35px
+            }
+
+            .logo img {
+                margin-left: 10px
+            }
+
+            header button {
+                font-size: 14px;
+                padding: 6px 12px;
+                height: 32px;
+                line-height: 22px;
+                margin-right: 10px
+            }
+
+            h1 {
+                text-align: center;
+                font-size: 32px;
+                line-height: 1.6;
+                padding: 0
+            }
+
+            h2,
+            h3,
+            h4 {
+                text-align: center;
+            }
+
+            h2 {
+                font-size: 32px !important;
+            }
+
+            .f14-mobile {
+                font-size: 14px
+            }
+
+            #features1 h2 {
+                font-size: 24px !important;
+            }
+
+            p {
+                font-size: 14px;
+                line-height: 1.6;
+                text-align: center;
+            }
+
+            .example_form input[type="submit"] {
+                margin-right: 10px;
+            }
+
+            .example_form textarea {
+                min-height: 200px
+            }
+
+            #slider .get_started {
+                margin: 20px auto;
+                display: block
+            }
+
+            #features1 * {
+                text-align: left;
+            }
+
+            nav {
+                margin-top: 0;
+            }
+
+            .grid-2,
+            .grid-4 {
+                grid-template-rows: repeat(1, 1fr);
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            section {
+                overflow: hidden;
+            }
+
+            #steps div:nth-of-type(2) {
+                padding-left: 0
+            }
+
+            #steps h3 {
+                font-size: 20px;
+            }
+
+            #steps strong {
+                display: block;
+                text-align: center;
+            }
+
+            #steps button {
+                margin: 20px auto;
+                display: block;
+            }
+
+            #testimonials {
+                white-space: normal;
+                padding: 0 10px
+            }
+
+            #testimonials .track,
+            #testimonials .content {
+                animation: none;
+            }
+
+            #testimonials .content div {
+                width: 100%;
+                margin: 80px 0 20px 0;
+            }
+
+            #pricing {
+                padding: 0 10px
+            }
+
+            #pricing .pricing-card {
+                margin: 20px 0
+            }
+
+            footer a {
+                display: block;
+                margin-top: 20px
+            }
+        }
     </style>
-    <!-- Prism.js JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
-    <!-- Prism.js theme CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-okaidia.min.css">
+    <title>Wizzard AI</title>
+    <script src="https://app.wizzardai.dev/widget.js?client_key=HoTpDxfwr2veQHPcJiTpg9IwfaSTd-z1si41jh25fCE"></script>
 </head>
-<body style="padding: 3em">
 
-<div class="max-w-sm mx-auto mt-24 bg-gray-900 rounded-lg overflow-hidden">
+<body>
+    <header class="mw1200 flex-space-between">
+        <a class="logo" href="/"><img decoding="async" src="https://wizzardai.dev/wp-content/uploads/2024/04/logo.png"
+                style="max-height: 50px">
+            <strong>Wizard AI</strong></a>
+        <div class="auth">
+            <a href="/dashboard">Login</a>
+            <button class="ml20 get_started">Sign Up</button>
+        </div>
+    </header>
+    <nav>
+        <a href="#overview">Overview</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#pricing">Pricing</a>
+    </nav>
+    <section id="slider" class="mw1200 grid-2 mt40 ph10">
+        <div>
+            <h1>Add AI to your website in minutes!</h1>
+            <p class="mb0">Unlock the full potential of your website with Wizzard AI:
+                One widget away from revolutionary AI-powered content
+                generation, editing, translation, and more.</p>
+            <div class="mb20 text-center-mobile">
+                <span class="mobile-block"><svg style="vertical-align: middle;" viewBox="0 0 32 31"
+                        xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
+                        stroke-linecap="round" stroke-miterlimit="10" class="icon-checkMark" width="24px" height="24px">
+                        <path
+                            d="M29.495 15.01c0 7.455-6.044 13.5-13.5 13.5s-13.5-6.045-13.5-13.5c0-7.456 6.044-13.5 13.5-13.5s13.5 6.044 13.5 13.5"
+                            fill="transparent" fill-rule="nonzero"></path>
+                        <path d="M10.567 16.026l4.513 4.412 6.129-9.709" fill="none" stroke="#2c4bff" stroke-width="2">
+                        </path>
+                    </svg> Try for free</span>
+                <span class="mobile-block"><svg style="vertical-align: middle;" viewBox="0 0 32 31"
+                        xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
+                        stroke-linecap="round" stroke-miterlimit="10" class="icon-checkMark" width="24px" height="24px">
+                        <path
+                            d="M29.495 15.01c0 7.455-6.044 13.5-13.5 13.5s-13.5-6.045-13.5-13.5c0-7.456 6.044-13.5 13.5-13.5s13.5 6.044 13.5 13.5"
+                            fill="transparent" fill-rule="nonzero"></path>
+                        <path d="M10.567 16.026l4.513 4.412 6.129-9.709" fill="none" stroke="#2c4bff" stroke-width="2">
+                        </path>
+                    </svg> No credit card required</span>
+                <span class="mobile-block"><svg style="vertical-align: middle;" viewBox="0 0 32 31"
+                        xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
+                        stroke-linecap="round" stroke-miterlimit="10" class="icon-checkMark" width="24px" height="24px">
+                        <path
+                            d="M29.495 15.01c0 7.455-6.044 13.5-13.5 13.5s-13.5-6.045-13.5-13.5c0-7.456 6.044-13.5 13.5-13.5s13.5 6.044 13.5 13.5"
+                            fill="transparent" fill-rule="nonzero"></path>
+                        <path d="M10.567 16.026l4.513 4.412 6.129-9.709" fill="none" stroke="#2c4bff" stroke-width="2">
+                        </path>
+                    </svg> Cancel any time</span>
+            </div>
+            <input name="email" type="email" class="input mr20" placeholder="Enter your email..."
+                style="display: none;">
+            <button class="get_started" type="submit">Try now</button>
 
-  <div class="p-4">
-    <div class="flex items-center justify-between">
-      <span class="text-gray-200 text-xl font-bold">Code Snippet</span>
-      <button id="copyButton" class="px-4 py-2 text-white bg-teal-500 rounded hover:bg-teal-600 focus:outline-none focus:ring focus:ring-red-400">Copy</button>
-    </div>
-  </div>
+        </div>
+        <form class="example_form">
+            <label>Full name *</label>
+            <div
+                style="display: grid; grid-template-rows: repeat(1, 1fr); grid-template-columns: repeat(2, 1fr); gap: 10px">
+                <div>
+                    <input id="first_name" value="John" />
+                    <small>first</small>
+                </div>
+                <div>
+                    <input id="last_name" value="Doe" />
+                    <small>last</small>
+                </div>
+            </div>
 
-  <div class="px-3 py-2">
-    <pre class="language-javascript"><code class="text-sm">// Your JavaScript code goes here
-function greet(name) {
-    return `Hello, ${name}!`;
-}</code></pre>
-  </div>
-</div>
-
-
-
-<!-- JavaScript to copy the code -->
-<script>
-  document.getElementById('copyButton').addEventListener('click', function() {
-      const codeElement = document.querySelector('.language-javascript code');
-      const textArea = document.createElement('textarea');
-      textArea.value = codeElement.textContent;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      alert('Code copied to clipboard!');
-  });
-</script>
+            <label for="email" class="mt20">Email *</label>
+            <input id="email" type="email" value="johndoe@example.com" />
 
 
-    <h1>Add Wizzard AI to enhance your web-app with AI! </h1>
+            <label for="message" class="mt20">Leave us a few words *</label>
+            <textarea id="message"
+                class="wizzard-ai">Hi, I am a wizzard widget and I want show you how I can help! Just click the bottom right corner!</textarea>
+            <input type="submit" value="Submit" class="mt20" disabled /><span class="f14-mobile">* THIS IS AN
+                EXAMPLE
+                FORM</span>
+        </form>
+    </section>
+    <!-- <h2 class="heading mt100">Features overview</h2> -->
+    <section id="features1" class="mw1200 grid-2 mt100 ph10" style="gap: 20px">
+        <div class="flex">
+            <img
+                src="https://static.buffer.com/cdn-cgi/image/w=96,quality=90,format=auto/marketing/static/ai-assistant/png/feature-bulb.png" />
+            <div>
+                <h2>Brainstorm ideas</h2>
+                <p>Generate relevant post ideas at the cllick of a button.</p>
+            </div>
+        </div>
+        <div class="flex">
+            <img
+                src="https://static.buffer.com/cdn-cgi/image/w=96,quality=90,format=auto/marketing/static/ai-assistant/png/feature-write.png" />
+            <div>
+                <h2>Write faster</h2>
+                <p>Instant suggestions to quickly generate engaging posts.</p>
+            </div>
+        </div>
+        <div class="flex">
+            <img
+                src="https://static.buffer.com/cdn-cgi/image/w=96,quality=90,format=auto/marketing/static/ai-assistant/png/feature-recycle.png" />
+            <div>
+                <h2>Repurpose
+                    posts</h2>
+                <p>Turn a LinkedIn post into a Twitter thread in mere seconds.</p>
+            </div>
+        </div>
+        <div class="flex">
+            <img
+                src="https://static.buffer.com/cdn-cgi/image/w=96,quality=90,format=auto/marketing/static/ai-assistant/png/feature-inspiration.png" />
+            <div>
+                <h2>Post
+                    inspiration</h2>
+                <p>Get social media post suggestions from long-form content.</p>
+            </div>
+        </div>
+    </section>
+    <h2 class="heading mt100">Integration steps</h2>
+    <section id="steps" class="mw1200 mt40 ph10">
+        <div class="mt100 grid-2">
+            <div><img class="w100"
+                    src="https://wizzardai.dev/wp-content/uploads/2024/04/97093aba-f210-4a00-83f9-be025f8eeb39.jpg" />
+            </div>
+            <div>
+                <strong>1. Create API key</strong>
+                <h3>Before we add the tag and class name</h3>
+                <p>You need to create an account and then replace CLIENT_KEY with your own client key.</p>
+                <button class="get_started">Signup</button>
+            </div>
+        </div>
+        <div class="mt100 grid-2">
+            <div>
+                <img class="w100" src="https://wizzardai.dev/wp-content/uploads/2024/04/copy_script.png" />
+                <img class="w100" src="https://wizzardai.dev/wp-content/uploads/2024/04/Step2-Image.png" />
+            </div>
+            <div>
+                <strong>2. Embedding</strong>
+                <h3>Add the script tag and the class "wizzard-ai"</h3>
+                <p>After you replace the CLIENT_KEY with your key, add the script tag to the head element and add the
+                    class to any inputs that you want to enhance
+                    with AI.</p>
+                <strong>You're done!</strong>
+                <h3>Was that fast or what?</h3>
+                <!-- <button>Start Now!</button> -->
+            </div>
+        </div>
+        <h2 class="heading mt100">How to use it</h2>
+        <div class="mt100 grid-2">
+            <div><img class="w100" src="https://wizzardai.dev/wp-content/uploads/2024/04/Step3-Image.png" />
+            </div>
+            <div>
+                <h3><strong>AI Enhance button</strong></h3>
+                <p>We’ll now magically add the purple “AI” button to the textarea in your UI:</p>
+                <!-- <button>Start now!</button> -->
+            </div>
+        </div>
+        <div class="mt100 grid-2">
+            <div><img class="w100" src="https://wizzardai.dev/wp-content/uploads/2024/04/Step-4-Image.png" />
+            </div>
+            <div>
+                <h3>One button to rule them all</h3>
+                <p>When clicking the “AI Enhance” button, users are presented a popup menu. The dialogue offers several
+                    options how to
+                    enhance the text that’s in the textarea or input.</p>
+                <strong>Explore current available actions</strong>
+                <!-- <button>Start now!</button> -->
+            </div>
+        </div>
+        <div class="mt100 grid-2">
+            <div><img class="w100"
+                    src="https://wizzardai.dev/wp-content/uploads/2024/04/Screen-Shot-2024-04-04-at-00.02.52.png" />
+            </div>
+            <div>
+                <h3>And we're just getting started</h3>
+                <p>After choosing an option from the popup menu, the action is performed on the textarea / input
+                    content.</p>
+                <button>Start now!</button>
+            </div>
+        </div>
+    </section>
+    <h2 class="heading mt100">Use cases</h2>
+    <section class="mw1200 mt40">
+        <div class="carousel-container">
+            <div class="carousel-slide" style="transform: translateX(0);">
+                <div class="carousel-item">
+                    <div class="carousel-title">Contact Form</div>
+                    <img decoding="async" src="https://wizzardai.dev/wp-content/uploads/2024/03/contact_form.png"
+                        class="carousel-image">
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-title">Forum Chat</div>
+                    <img decoding="async" src="https://wizzardai.dev/wp-content/uploads/2024/03/forum_chat.png"
+                        class="carousel-image">
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-title">Product Review</div>
+                    <img decoding="async"
+                        src="https://wizzardai.dev/wp-content/uploads/2024/04/product_review_example.png"
+                        class="carousel-image">
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-title">Search Box</div>
+                    <img decoding="async" src="https://wizzardai.dev/wp-content/uploads/2024/03/search_box.png"
+                        class="carousel-image">
+                </div>
+            </div>
+        </div>
+    </section>
+    <h2 class="heading mt100">Testimonials</h2>
+    <section id="testimonials" class="marquee mt40">
+        <div class="track">
+            <div class="content">
+                <div>
+                    <img src="https://wizzardai.dev/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-04-at-12.19.03-AM.jpeg"
+                        alt="Rodrigo Hyago, Social Media Content Manager's Photo" height="110" width="110"
+                        loading="lazy">
+                    <p>Integrating Wizzard AI was a game-changer for my blog. The content generation tool spiced up my
+                        posts, attracting more
+                        readers than ever before.
+                    </p>
+                    <b>Alex Martin, Tech Blogger</b>
+                </div>
+                <div>
+                    <img src="https://wizzardai.dev/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-04-at-12.19.01-AM-2.jpeg"
+                        alt="Rodrigo Hyago, Social Media Content Manager's Photo" height="110" width="110"
+                        loading="lazy">
+                    <p>With Wizzard AI, we've personalized the shopping experience with instant language translations,
+                        seeing a significant
+                        boost in international sales.
+                    </p>
+                    <b>Sofia Chang, E-commerce Owner</b>
+                </div>
+                <div>
+                    <img src="https://wizzardai.dev/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-04-at-12.19.02-AM.jpeg"
+                        alt="Rodrigo Hyago, Social Media Content Manager's Photo" height="110" width="110"
+                        loading="lazy">
+                    <p>Wizzard AI's ability to auto-generate course content has allowed me to focus on teaching rather
+                        than content creation, enhancing the learning experience for my students.
+                    </p>
+                    <b>Jordan Lee, Online Educator</b>
+                </div>
+                <div>
+                    <img src="https://wizzardai.dev/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-04-at-12.19.00-AM.jpeg"
+                        alt="Rodrigo Hyago, Social Media Content Manager's Photo" height="110" width="110"
+                        loading="lazy">
+                    <p>We integrated Wizzard AI into our website in minutes, and it's been pivotal in scaling our user
+                        engagement without needing a team of AI experts.
+                    </p>
+                    <b>Mia Thompson, Startup Founder</b>
+                </div>
+                <div>
+                    <img src="https://wizzardai.dev/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-04-at-12.19.02-AM-1.jpeg"
+                        alt="Rodrigo Hyago, Social Media Content Manager's Photo" height="110" width="110"
+                        loading="lazy">
+                    <p>Wizzard AI made it incredibly easy to offer cutting-edge AI features to my clients' websites.
+                        It's my go-to for quick, impactful upgrades.
+                    </p>
+                    <b>Chris Johnson, Freelance Web Developer</b>
+                </div>
+                <div>
+                    <img src="https://wizzardai.dev/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-04-at-12.19.01-AM-3.jpeg"
+                        alt="Rodrigo Hyago, Social Media Content Manager's Photo" height="110" width="110"
+                        loading="lazy">
+                    <p>The seamless integration of Wizzard AI has revolutionized our content marketing strategy, driving
+                        more engagement across our digital platforms.
+                    </p>
+                    <b>Emma Rodriguez, Digital Marketer</b>
+                </div>
+                <div>
+                    <img src="https://wizzardai.dev/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-04-at-12.19.01-AM-1.jpeg"
+                        alt="Rodrigo Hyago, Social Media Content Manager's Photo" height="110" width="110"
+                        loading="lazy">
+                    <p>Thanks to Wizzard AI, our non-profit's website now offers multi-language support, making our
+                        resources accessible to a wider audience.
+                    </p>
+                    <b>Liam Smith, Non-Profit Organizer</b>
+                </div>
+                <div>
+                    <img src="https://wizzardai.dev/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-04-at-12.19.02-AM-2.jpeg"
+                        alt="Rodrigo Hyago, Social Media Content Manager's Photo" height="110" width="110"
+                        loading="lazy">
+                    <p>The ease of adding AI-driven product descriptions and recommendations through Wizzard AI has
+                        significantly improved our e-commerce site's performance.
+                    </p>
+                    <b>Ava Wilson, Online Retailer</b>
+                </div>
+                <div>
+                    <img src="https://wizzardai.dev/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-04-at-12.19.01-AM.jpeg"
+                        alt="Rodrigo Hyago, Social Media Content Manager's Photo" height="110" width="110"
+                        loading="lazy">
+                    <p>Wizzard AI's widget integrates so smoothly, it's as if it was custom-made for our site, enhancing
+                        user experience without disrupting the design.
+                    </p>
+                    <b>Noah Kim, UX/UI Designer</b>
+                </div>
+                <div>
+                    <img src="https://wizzardai.dev/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-04-at-12.19.03-AM-1.jpeg"
+                        alt="Rodrigo Hyago, Social Media Content Manager's Photo" height="110" width="110"
+                        loading="lazy">
+                    <p>Content generation has never been easier. Wizzard AI has saved us countless hours while keeping
+                        our website fresh and engaging.
+                    </p>
+                    <b>Isabella Garcia, Content Manager</b>
+                </div>
+            </div>
+        </div>
+    </section>
+    <h2 class="heading mt100">Pricing</h2>
+    <section id="pricing" class="mw1200 mt40">
+        <div class="grid-4">
+            <a href="#" class="pricing-card">
+                <h3 style="background-color: #a5a5a5">Free Tier</h3>
+                <p><b>Free</b><br>• 5000 credits<br>• 1 domain allowed</p>
+                <button style="background-color: #a5a5a5">Learn more</button>
+            </a>
+            <a href="#" class="pricing-card" style="background-color: #e3ffe3;">
+                <h3 style="background-color: #68c768">Standard Tier</h3>
+                <p><b>$19.00</b><br>• 1.5 million credits / month<br>• 3 max domains</p>
+                <button style="background-color: #68c768">Learn more</button>
+            </a>
+            <a href="#" class="pricing-card" style="background-color: #fffedc;">
+                <h3 style="background-color: #dac75c">Premium Tier</h3>
+                <p><b>$49.99</b><br>• 10 million credits / month<br>• 10 max domains</p>
+                <button style="background-color: #dac75c">Learn more</button>
+            </a>
+            <a href="#" class="pricing-card" style="background-color: #ffe1e1;">
+                <h3 style="background-color: #da6969">VIP Tier</h3>
+                <p><b>$99.99</b><br>• 100 million credits / month<br>• Unlimited domains</p>
+                <button style="background-color: #da6969">Learn more</button>
+            </a>
+        </div>
 
-    <p>How? just load add this JS to your website/webapp!</p>
+    </section>
 
-    <textarea style="width: 500px; font-family: courier;"><script src="https://app.wizzardai.dev/dashboard/keys/widget.js?client_key={CLIENT_KEY}"></script>    </textarea>
+    <h2 class="heading mt100">Support</h2>
+    <section id="pricing" class="mw1200 mt40 grid-2">
+        <div style="text-align: right;"><img src="https://wizzardai.dev/wp-content/uploads/2024/04/contact-us.jpg"
+                style="max-height: 300px;" />
+        </div>
+        <div>
+            <h2 class="mt60">We are here to help</h2>
+            <p style="padding: 0;">We offer free support to all our subscribers.<br> Contact us at: <a
+                    href="mailto:wizzardai.co@gmail.com" target="_blank">wizzardai.co@gmail.com</a></p>
+        </div>
+    </section>
+    <section id="actions_counter" class="mt40">
+        <h3 class="mb0">10000+ widget actions</h3>
+        <p>were performed in the last 24 hours</p>
+        <button class="mt40 get_started">Try now</button>
+    </section>
 
-    <h2>Input examples with variable heights</h2>
-
-    <input class="enhance" type="text" placeholder="Enter text here..." value="Get some work done with AI" style="width:300px; ">
-    <br><br>
-    <input class="enhance" type="text" placeholder="Enter text here..." value="Get some work done with AI" style="width:300px; height: 10px;">
-    <br><br>
-
-    <input class="enhance" type="text" placeholder="Enter text here..." value="Get some work done with AI" style="width:300px; height: 20px;">
-    <br><br>
-
-    <input class="enhance" type="text" placeholder="Enter text here..." value="Get some work done with AI" style="width:300px; height: 30px;">
-    <br><br>
-
-    <input class="enhance" type="text" placeholder="Enter text here..." value="Get some work done with AI"style="width:300px; height: 50px;">
-    <br><br>
-
-
-    <div style="background-color:#e0e0e0; width:305px;">
-        <input type="text" placeholder="Example with small height…" id="postUploadInputUploadWidget" value="">
-    </div>
-
-    <br><rb>
+    <footer class="mw1200 mt40">
+        <div>
+            <div>
+                <a href="#" style="color: #55acee; margin-right: 10px;"><i class="fab fa-twitter-square fa-2x"></i></a>
+                <a href="#" style="color: #3b5998; margin-right: 10px;"><i class="fab fa-facebook-square fa-2x"></i></a>
+                <a href="#" style="color: #dd4b39; margin-right: 10px;"><i
+                        class="fab fa-google-plus-square fa-2x"></i></a>
+                <a href="#" style="color: #0077B5;"><i class="fab fa-linkedin fa-2x"></i></a>
+            </div>
+        </div>
+        <p>
+            <a href="#">Disclaimer</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Refund Policy</a>
+        </p>
+        <p>
+            © 2024 Wizard AI. All Rights Reserved.
+        </p>
+    </footer>
 
 
-    <h2>Textarea examples with variable height</h2>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                // true for mobile device
+                //document.write("mobile device");
+            } else {
+                // false for not mobile device
+                var track = document.querySelector('.track');
+                var content = document.querySelector('.content');
+                var clone = content.cloneNode(true);
+                track.appendChild(clone);
 
-    <textarea class="enhance" style="width: 300px; height: 20px;" placeholder="Enter longer text here...">Get some more work done using the power of a mage AI</textarea>
-    <br><br>
+                function moveContent() {
+                    var width = content.scrollWidth;
+                    var animationDuration = (width / 100) * 3; // Adjust speed by changing '3'
 
-    <textarea class="enhance" style="width: 300px; height: 100px;" placeholder="Enter longer text here...">Get some more work done using the power of a mage AI</textarea>
-    <br><br>
+                    track.style.animationDuration = animationDuration + 's';
+                }
 
-    <textarea class="enhance" style="width: 300px; height: 200px;" placeholder="Enter longer text here...">Get some more work done using the power of a mage AI</textarea>
-    <br><br>
+                moveContent();
+            }
+            document.querySelector('.example_form').addEventListener("click",function(event) {
+              event.preventDefault()
+            });
 
+            // document.querySelectorAll('.get_started').addEventListener("click",function(event) {
+              document.querySelectorAll('.get_started').forEach(function(element) {
+                element.addEventListener("click",function(event) {
+                event.preventDefault()
+                // go to the signup page
+                console.log(location.href)
+                location.href = location.href + "signin";
+            });
+          });
+        });
+
+
+    </script>
+
+    <script>
+        const slide = document.querySelector('.carousel-slide');
+        const slideItems = document.querySelectorAll('.carousel-item');
+
+        let counter = 0;
+        const width = slideItems[0].clientWidth + 20; // Including margin
+
+        function nextSlide() {
+            if (counter >= slideItems.length - 1) {
+                counter = 0;
+            } else {
+                counter++;
+            }
+            slide.style.transform = `translateX(${-width * counter}px)`;
+        }
+
+        setInterval(nextSlide, 5000); // Autoplay every 3 seconds
+    </script>
 </body>
-</html>
 
+</html>

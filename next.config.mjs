@@ -5,7 +5,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/demo",
+        source: "/",
         destination: "/index.html",
       },
     ];
@@ -29,7 +29,9 @@ const nextConfig = {
     config.experiments ??= {};
     config.experiments.asyncWebAssembly = true;
     // config.experiments.topLevelAwait = true;
-
+    // config.resolve.fallback = {
+    //   crypto: false,
+    // };
     return config;
   },
 };

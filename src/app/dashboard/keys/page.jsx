@@ -13,7 +13,7 @@ export default async function SettingsPage() {
 
   const userKeys = await fetchUserApiKeys();
   const wizzardUrl = process.env.WIZZARD_AI_PUBLIC_URL;
-  const scriptText = `<script src="${wizzardUrl}/widget.js?client_key=${userKeys[0].key}"></script>`;
+  // const scriptText = `<script src="${wizzardUrl}/widget.js?client_key=${userKeys[0].key}"></script>`;
 
   return (
     <div className="col-span-1 mt-4 auto-rows-min grid-cols-1 lg:col-span-5">
@@ -25,13 +25,13 @@ export default async function SettingsPage() {
           (userKeys.length === 0 && (
             <p className="text-red">You don't have any API keys yet.</p>
           ))}
-        {userKeys && userKeys.length > 0 && (
+        {/* {userKeys && userKeys.length > 0 && (
           <h2 className="mt-2 text-left text-xl font-semibold">
             Copy the following script and paste it into your website's HTML
             code.
           </h2>
-        )}
-        {userKeys && userKeys.length > 0 && scriptText && (
+        )} */}
+        {/* {userKeys && userKeys.length > 0 && scriptText && (
           <div className="mt-4 overflow-auto rounded-lg bg-graydark">
             <div className="flex p-1">
               <CopyToClipboardButton scriptText={scriptText} />
@@ -42,7 +42,7 @@ export default async function SettingsPage() {
               </pre>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

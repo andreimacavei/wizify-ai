@@ -1,4 +1,4 @@
-import { CreateDomainBtn } from "@/app/ui";
+import { NewDomainDialog } from "@/app/ui";
 
 export default function SubHeader(props: {
   sidebarOpen: string | boolean | undefined;
@@ -14,7 +14,7 @@ export default function SubHeader(props: {
               Welcome back 👋
             </h1>
           </div>
-          {/* <CreateDomainBtn text="Add your domain" /> */}
+          <NewDomainDialog />
         </div>
       </div>
     </div>
