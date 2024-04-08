@@ -7,8 +7,10 @@ import Sidebar from "./Sidebar";
 import Stepper from "./Stepper";
 import CopyToClipboardButton from "./CopyToClipboardButton";
 import NewDomainDialog from "./NewDomainDialog";
+import ConfigCard from "./ConfigCard";
 
 export {
+  ConfigCard,
   ContextMenuButton,
   CopyToClipboardButton,
   CreateDomainBtn,

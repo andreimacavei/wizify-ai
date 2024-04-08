@@ -1,3 +1,4 @@
+'use client';
 import * as Dialog from "@radix-ui/react-dialog";
 import { useContext, useState } from "react";
 import { registerNewDomain } from "@/app/lib/actions";
@@ -35,7 +36,8 @@ function NewDomainDialog() {
       <Dialog.Trigger asChild>
         {/* <button className="text-blue-500 border-black px-2 py-1 hover:underline"> */}
         {/* <button className="Button text-blue-500 border-black px-2 py-1 hover:underline"> */}
-        <button className="group flex items-center space-y-3 space-x-3 rounded-md border border-black bg-white px-3 py-2 text-sm font-medium text-black transition-all duration-75 hover:bg-black hover:text-white active:scale-95">
+        <button onClick={() => setStatusMsg('')}
+          className="group flex items-center space-y-3 space-x-3 rounded-md border border-black bg-white px-3 py-2 text-sm font-medium text-black transition-all duration-75 hover:bg-black hover:text-white active:scale-95">
           Add Domain
         </button>
       </Dialog.Trigger>

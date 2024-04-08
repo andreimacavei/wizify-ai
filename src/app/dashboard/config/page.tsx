@@ -1,9 +1,14 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/authOptions";
+import { ConfigCard } from "@/app/ui";
 
-export default function ConfigPage() {
+export default async function ConfigPage() {
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user)
+    redirect('/')
+  const { user } = session
 
-  return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <h3>Configure your Wizzard AI widget</h3>
-    </div>
-  )
+
+  return <ConfigCard/>
 }
