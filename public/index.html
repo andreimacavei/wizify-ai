@@ -236,7 +236,7 @@
         .grid-4 {
             display: grid;
             grid-template-rows: repeat(1, 1fr);
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px
         }
 
@@ -820,11 +820,11 @@
                 <h3>And we're just getting started</h3>
                 <p>After choosing an option from the popup menu, the action is performed on the textarea / input
                     content.</p>
-                <button>Start now!</button>
+                <button class="get_started">Start now!</button>
             </div>
         </div>
     </section>
-    <h2 class="heading mt100">Use cases</h2>
+    <h2 id="capabilities" class="heading mt100">Use cases</h2>
     <section class="mw1200 mt40">
         <div class="carousel-container">
             <div class="carousel-slide" style="transform: translateX(0);">
@@ -852,8 +852,8 @@
             </div>
         </div>
     </section>
-    <h2 class="heading mt100">Testimonials</h2>
-    <section id="testimonials" class="marquee mt40">
+    <!-- <h2 class="heading mt100">Testimonials</h2> -->
+    <!-- <section id="testimonials" class="marquee mt40">
         <div class="track">
             <div class="content">
                 <div>
@@ -949,30 +949,30 @@
                     <b>Isabella Garcia, Content Manager</b>
                 </div>
             </div>
-        </div>
-    </section>
+        </div> -->
+    <!-- </section> -->
     <h2 class="heading mt100">Pricing</h2>
     <section id="pricing" class="mw1200 mt40">
         <div class="grid-4">
-            <a href="#" class="pricing-card">
-                <h3 style="background-color: #a5a5a5">Free Tier</h3>
-                <p><b>Free</b><br>• 5000 credits<br>• 1 domain allowed</p>
-                <button style="background-color: #a5a5a5">Learn more</button>
-            </a>
-            <a href="#" class="pricing-card" style="background-color: #e3ffe3;">
-                <h3 style="background-color: #68c768">Standard Tier</h3>
+            <!-- <a href="#" class="pricing-card">
+                <h3 style="background-color: #3b41ad">Free Tier</h3>
+                <p><b>Free</b><br>• 5000 free credits<br>• 1 domain allowed</p>
+                <button style="background-color: #3b41ad">Learn more</button>
+            </a> -->
+            <a href="#" class="pricing-card" style="background-color: #719bb7;">
+                <h3 style="background-color: #149dd3">Pro</h3>
                 <p><b>$19.00</b><br>• 1.5 million credits / month<br>• 3 max domains</p>
-                <button style="background-color: #68c768">Learn more</button>
+                <button style="background-color: #149dd3">Subscribe</button>
             </a>
-            <a href="#" class="pricing-card" style="background-color: #fffedc;">
-                <h3 style="background-color: #dac75c">Premium Tier</h3>
-                <p><b>$49.99</b><br>• 10 million credits / month<br>• 10 max domains</p>
-                <button style="background-color: #dac75c">Learn more</button>
+            <a href="#" class="pricing-card" style="background-color: #6790c2;">
+                <h3 style="background-color: #5258c3fd">Business</h3>
+                <p><b>$99.99</b><br>• 10 million credits / month<br>• 10 max domains</p>
+                <button style="background-color: #3b41ad">Subscribe</button>
             </a>
-            <a href="#" class="pricing-card" style="background-color: #ffe1e1;">
-                <h3 style="background-color: #da6969">VIP Tier</h3>
-                <p><b>$99.99</b><br>• 100 million credits / month<br>• Unlimited domains</p>
-                <button style="background-color: #da6969">Learn more</button>
+            <a href="#" class="pricing-card" style="background-color: #817edd;">
+                <h3 style="background-color: #3415b1c4">Enterprise</h3>
+                <p><b>$499.99</b><br>• Unlimited credits <br>• Unlimited domains</p>
+                <button style="background-color: #3415b1c4">Subscribe</button>
             </a>
         </div>
 
@@ -1024,10 +1024,10 @@
                 //document.write("mobile device");
             } else {
                 // false for not mobile device
-                var track = document.querySelector('.track');
-                var content = document.querySelector('.content');
-                var clone = content.cloneNode(true);
-                track.appendChild(clone);
+                // var track = document.querySelector('.track');
+                // var content = document.querySelector('.content');
+                // var clone = content.cloneNode(true);
+                // track.appendChild(clone);
 
                 function moveContent() {
                     var width = content.scrollWidth;
@@ -1036,7 +1036,7 @@
                     track.style.animationDuration = animationDuration + 's';
                 }
 
-                moveContent();
+                // moveContent();
             }
             document.querySelector('.example_form').addEventListener("click",function(event) {
               event.preventDefault()
@@ -1047,8 +1047,8 @@
                 element.addEventListener("click",function(event) {
                 event.preventDefault()
                 // go to the signup page
-                console.log(location.href)
-                location.href = location.href + "signin";
+                console.log(location.origin)
+                location.href = location.origin + "/signin";
             });
           });
         });
