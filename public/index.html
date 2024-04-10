@@ -698,31 +698,12 @@
             <button class="get_started" type="submit">Try now</button>
 
         </div>
-        <form class="example_form">
-            <label>Full name *</label>
-            <div
-                style="display: grid; grid-template-rows: repeat(1, 1fr); grid-template-columns: repeat(2, 1fr); gap: 10px">
-                <div>
-                    <input id="first_name" value="John" />
-                    <small>first</small>
-                </div>
-                <div>
-                    <input id="last_name" value="Doe" />
-                    <small>last</small>
-                </div>
-            </div>
+        <div>
+            <img class=""
+                src="https://wizzardai.dev/wp-content/uploads/2024/04/slider1-square.jpg" 
+                />
+        </div>
 
-            <label for="email" class="mt20">Email *</label>
-            <input id="email" type="email" value="johndoe@example.com" />
-
-
-            <label for="message" class="mt20">Leave us a few words *</label>
-            <textarea id="message"
-                class="wizzard-ai">Hi, I am a wizzard widget and I want show you how I can help! Just click the bottom right corner!</textarea>
-            <input type="submit" value="Submit" class="mt20" disabled /><span class="f14-mobile">* THIS IS AN
-                EXAMPLE
-                FORM</span>
-        </form>
     </section>
     <!-- <h2 class="heading mt100">Features overview</h2> -->
     <section id="features1" class="mw1200 grid-2 mt100 ph10" style="gap: 20px">
@@ -824,11 +805,73 @@
             </div>
         </div>
     </section>
+    <style>
+        #confirmation-message {
+          display: none;
+          color: white;
+          margin-top: 10px;
+        }
+
+        .product-info { max-width: 600px; }
+        .product-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+        .store-link, .details-link { color: #007bff; text-decoration: none; }
+        .rating-stars { color: #ff9900; }
+        .rating, .price-section, .specifications { font-size: 14px; margin-bottom: 4px; }
+        .original-price { text-decoration: line-through; color: #767676; }
+        .price { color: #B12704; }
+        .specification { margin-bottom: 2px; }
+        .shipping-info { font-size: 12px; margin-bottom: 2px; }
+
+        .question-box {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .question-box .question {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .question-box .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .comment-box {
+            border-top: 1px solid #ddd;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+        .comment-box input[type="text"] {
+            border: 1px solid #ddd;
+            border-radius: 18px;
+            padding: 8px 16px;
+            width: 100%;
+        }
+        .btn-comment {
+            background-color: #000;
+            color: #fff;
+            border-radius: 18px;
+            padding: 8px 16px;
+        }
+        .comment-section {
+            margin-top: 20px;
+        }
+        .comment {
+            background-color: #f9f9f9;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #007bff;
+            font-size: 0.9rem;
+        }
+      </style>
     <h2 id="capabilities" class="heading mt100">Use cases</h2>
     <section class="mw1200 mt40">
-        <div class="carousel-container">
-            <div class="carousel-slide" style="transform: translateX(0);">
-                <div class="carousel-item">
+        <!-- <div class="carousel-container"> -->
+            <!-- <div class="carousel-slide" style="transform: translateX(0);"> -->
+                <!-- <div class="carousel-item">
                     <div class="carousel-title">Contact Form</div>
                     <img decoding="async" src="https://wizzardai.dev/wp-content/uploads/2024/03/contact_form.png"
                         class="carousel-image">
@@ -848,10 +891,211 @@
                     <div class="carousel-title">Search Box</div>
                     <img decoding="async" src="https://wizzardai.dev/wp-content/uploads/2024/03/search_box.png"
                         class="carousel-image">
+                </div> -->
+            <!-- </div> -->
+        <!-- </div> -->
+        <div class="carousel-title">Contact Forms</div>
+        <div >
+            <div class="mw1200 grid-2 ph10">
+                <div class="">
+                    <img class="w100" decoding="async" 
+                        src="https://wizzardai.dev/wp-content/uploads/2024/03/young-friendly-operator-woman-agent-600nw-712414813.webp"
+                    >
+                </div>
+                <div>
+                    <form class="example_form">
+                        <label>Full name *</label>
+                        <div
+                            style="display: grid; grid-template-rows: repeat(1, 1fr); grid-template-columns: repeat(2, 1fr); gap: 10px">
+                            <div>
+                                <input id="first_name" value="John" />
+                                <small>first</small>
+                            </div>
+                            <div>
+                                <input id="last_name" value="Doe" />
+                                <small>last</small>
+                            </div>
+                        </div>
+            
+                        <label for="email" class="mt20">Email *</label>
+                        <input id="email" type="email" value="johndoe@example.com" />
+            
+            
+                        <label for="message" class="mt20">Leave us a few words *</label>
+                        <textarea id="message"
+                            class="wizzard-ai">Hi, I am a wizzard widget and I want show you how I can help! Just click the bottom right corner!</textarea>
+                        <input type="submit" onclick="sendMessage" value="Submit" class="mt20"  />
+                        <span id="confirmation-message" class="f14-mobile">Your message has been sent!</span>
+                        <!-- <span class="f14-mobile">* THIS IS AN
+                            EXAMPLE
+                            FORM</span> -->
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-title mt60">Product Review</div>
+        <div class="mw1200 grid-2 ph10">
+            <div class="">
+                <img class="w100" decoding="async" 
+                    src="https://wizzardai.dev/wp-content/uploads/2024/04/laptop-1.png"
+                >
+            </div>
+            <div>
+                <div class="product-info">
+                    <div class="product-title"> 3511 15.6" Laptop -, 8GB RAM, 256GB SSD, - Carbon Black</div>
+                  
+                    <span class="rating">4.1 <span class="rating-stars">⭐⭐⭐⭐</span> 347 ratings</span> |
+                    <span class="price-section">$327.00 
+                    <div class="shipping-info">
+                        $100.74 Shipping & Import Fees to Romania 
+                        <a href="#" class="details-link">Details</a>
+                    </div>
+                    <div class="specifications">
+                        <div class="specification">Screen: 15.6 Inches, Black</div>
+                        <div class="specification">CPU: Core i3, RAM: 8GB</div>
+                        <div class="specification">Storage: 256GB SSD</div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="question-box">
+                      <div class="question">
+                        Leave a product review:
+                      </div>
+                      <div class="comment-box mt20">
+                        <input type="text" id="reviewText" placeholder="Write a review..." onkeydown="checkForEnterReview(event)">
+                        <br><br>
+                        <button class="mt20" onclick="addReview()">Submit Review</button>
+                      </div>
+                      <div class="comment-section" id="reviews">
+                        <!-- Product reviews will be added here -->
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <div class="carousel-title mt60">Forum Chat</div>
+        <div>
+            <div class="mw1200 grid-2 ph10">
+                <div class="">
+                    <img class="w100" decoding="async" 
+                        src="https://wizzardai.dev/wp-content/uploads/2024/03/2854891.png"
+                    >
+                </div>
+                <div>
+                <div class="container">
+                    <div class="question-box">
+                        <div class="question">
+                        What are some freelance websites to find work in 2024?
+                        </div>
+                        <div class="controls">
+                        <div>
+                            <span>Answer</span> •
+                            <span>Follow</span> •
+                            <span>Request</span>
+                        </div>
+                        <div>
+                            <span>...</span>
+                        </div>
+                        </div>
+                        <div class="comment-box mt20">
+                        <input type="text" id="commentText" placeholder="Add a comment..." onkeydown="checkForEnter(event)">
+                        <br><br>
+                        <button id="add-comment" class="mt20" onclick="addComment()">Add comment</button>
+                        </div>
+                        <div class="comment-section" id="comments">
+                        <!-- Enhanced Comments with timestamps and Enter key support will be added here -->
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+    <script>
+        // Contact form
+        const forms = document.querySelectorAll('.example_form');
+        forms.forEach(form => {
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            sendMessage();
+          });
+        });
+        
+        function sendMessage() {
+          // Here you would normally handle form submission to your server.
+          // For demonstration, we're just showing a confirmation message.
+          document.getElementById('confirmation-message').style.display = 'inline-block';
+        }
+        var countReviews = 0;
+        const exampleRviews = [
+            "Great laptop! I've been using it for a few weeks now and it's been working great.",
+            "I'm very happy with this laptop. It's lightweight and the battery life is excellent."]
+        // Add example reviews to the product review section
+        exampleRviews.forEach(review => addReview(review));
+        // Product review
+        function addReview(review) {
+            if (countReviews >= 5) {
+                return;
+            }
+            var reviewBox = document.getElementById('reviewText');
+            var reviewsContainer = document.getElementById('reviews');
+            var newReview = document.createElement('div');
+            newReview.classList.add('comment');
+
+            var currentDateTime = new Date().toISOString();
+            var formattedDateTime = currentDateTime.slice(0, 16).replace('T', ' at ');
+
+            newReview.textContent = `${formattedDateTime} Reviewer: ${review? review: reviewBox.value}`;
+            reviewsContainer.appendChild(newReview);
+            reviewBox.value = ''; 
+            countReviews++;
+        }
+
+        function checkForEnterReview(event) {
+            if (event.key === "Enter") {
+            event.preventDefault();
+            addReview();
+            }
+        }
+
+        // Forum Chat
+        var countComments = 0;
+        const exampleComms = [
+            "Great question! I've found Upwork and Freelancer to be great platforms for finding freelance work.",
+            "I've had success with Fiverr and Toptal for freelance work. They have a wide range of projects available.",
+            "I recommend checking out PeoplePerHour and Guru for freelance work. They have a variety of projects to choose from."]
+        // Add example comments to the comment section
+        exampleComms.forEach(comment => addComment("Wizzard AI", comment));
+        function addComment(fullname="John Doe", comment) {
+            const commentBox = document.getElementById('commentText');
+            const commentsContainer = document.getElementById('comments');
+            if (countComments >= 10 || !commentBox.value && !comment) {
+                return;
+            }
+
+            const newComment = document.createElement('div');
+            newComment.classList.add('comment');
+
+            // Get current timestamp in UTC format "year-month-dayThour:minute"
+            const currentDateTime = new Date().toISOString();
+            const formattedDateTime = currentDateTime.slice(0, 16).replace('T', ' at '); // "year-month-day at hour:minute"
+
+            newComment.textContent = `${formattedDateTime} ${fullname} replied: ${comment? comment: commentBox.value}`;
+            commentsContainer.appendChild(newComment);
+            commentBox.value = ''; // Clear the input field
+            countComments++;
+        }
+
+        function checkForEnter(event) {
+            // Check if the Enter key is pressed
+            if (event.key === "Enter") {
+            event.preventDefault(); // Prevent the default action to avoid line breaks in the input field
+            addComment(); // Call the addComment function
+            }
+        }
+    </script>
     <!-- <h2 class="heading mt100">Testimonials</h2> -->
     <!-- <section id="testimonials" class="marquee mt40">
         <div class="track">
@@ -961,12 +1205,12 @@
             </a> -->
             <a href="#" class="pricing-card" style="background-color: #719bb7;">
                 <h3 style="background-color: #149dd3">Pro</h3>
-                <p><b>$19.00</b><br>• 1.5 million credits / month<br>• 3 max domains</p>
+                <p><b>$49.00</b><br>• 1.5 million credits / month<br>• 3 max domains</p>
                 <button style="background-color: #149dd3">Subscribe</button>
             </a>
             <a href="#" class="pricing-card" style="background-color: #6790c2;">
                 <h3 style="background-color: #5258c3fd">Business</h3>
-                <p><b>$99.99</b><br>• 10 million credits / month<br>• 10 max domains</p>
+                <p><b>$199.99</b><br>• 10 million credits / month<br>• 10 max domains</p>
                 <button style="background-color: #3b41ad">Subscribe</button>
             </a>
             <a href="#" class="pricing-card" style="background-color: #817edd;">
@@ -1057,22 +1301,22 @@
     </script>
 
     <script>
-        const slide = document.querySelector('.carousel-slide');
-        const slideItems = document.querySelectorAll('.carousel-item');
+        // const slide = document.querySelector('.carousel-slide');
+        // const slideItems = document.querySelectorAll('.carousel-item');
 
-        let counter = 0;
-        const width = slideItems[0].clientWidth + 20; // Including margin
+        // let counter = 0;
+        // const width = slideItems[0].clientWidth + 20; // Including margin
 
-        function nextSlide() {
-            if (counter >= slideItems.length - 1) {
-                counter = 0;
-            } else {
-                counter++;
-            }
-            slide.style.transform = `translateX(${-width * counter}px)`;
-        }
+        // function nextSlide() {
+        //     if (counter >= slideItems.length - 1) {
+        //         counter = 0;
+        //     } else {
+        //         counter++;
+        //     }
+        //     slide.style.transform = `translateX(${-width * counter}px)`;
+        // }
 
-        setInterval(nextSlide, 5000); // Autoplay every 3 seconds
+        // setInterval(nextSlide, 5000); // Autoplay every 3 seconds
     </script>
 </body>
 
