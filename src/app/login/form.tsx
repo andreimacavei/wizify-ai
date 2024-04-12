@@ -40,7 +40,7 @@ const SignInForm = () => {
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
             <p className="2xl:px-20">
-              Welcome to <span className="font-bold">Wizzard AI</span> - Enhance
+              Welcome to <span className="font-bold">Wizard AI</span> - Enhance
               your web app with AI
             </p>
 
@@ -173,7 +173,7 @@ const SignInForm = () => {
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <span className="mb-1.5 block font-medium">Start for free</span>
             <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-              Sign In to Wizzard AI
+              Sign In to Wizard AI
             </h2>
 
             <form onSubmit={loginUser}>

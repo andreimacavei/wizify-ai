@@ -14,7 +14,7 @@ export default async function Header() {
 				<h1 className="text-3xl">
 					<Link href="/" className='flex flex-row gap-1 items-center font-medium'>
 						<Image src="/images/logo/mage_ai.png" alt='Logo' width={34} height={34} />
-						Wizzard AI
+						Wizard AI
 					</Link>
 				</h1>
 

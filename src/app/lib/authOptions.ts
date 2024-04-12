@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
           await resend.emails.send({
             from: provider.from,
             to: identifier,
-            subject: 'Your Wizzard AI Login Link',
+            subject: 'Your Wizard AI Login Link',
             html: '<html><body>\
               <h2>Your Login Link</h2>\
               <p>Welcome to AIWizzard!</p>\

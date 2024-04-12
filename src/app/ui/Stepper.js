@@ -28,7 +28,7 @@ export default function Stepper() {
                     Add a domain
                   </h4>
                   <p className="text-gray-500 mt-2 text-base leading-6">
-                    Add your website where you want to use Wizzard AI.
+                    Add your website where you want to use Wizard AI.
                     <br />
                     Example: https://mywebsite.com
                   </p>
