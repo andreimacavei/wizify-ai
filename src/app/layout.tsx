@@ -35,6 +35,7 @@ export default async function RootLayout({
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link id="theme-link" rel="stylesheet" href="/themes/prism-okaidia/theme.min.css" />
+        <link rel="icon" href="/favicon.ico" />
       </head>
       <body suppressHydrationWarning={true}>
         <SessionProvider session={session}>
