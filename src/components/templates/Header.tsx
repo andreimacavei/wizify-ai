@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Profile, ProfileServer } from '@/components/templates'
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/lib/authOptions";
-import DarkModeSwitcher from '../Header/DarkModeSwitcher';
+
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
