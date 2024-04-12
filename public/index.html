@@ -67,6 +67,18 @@
             text-align: center;
         }
 
+        .subheading {
+            font-size: 24px;
+            margin: 0;
+            padding: 0;
+            color:#3b41ad;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        .subheading {
+            text-align: center;
+        }
+
         p {
             line-height: 1.6;
             padding: 20px 0;
@@ -233,7 +245,7 @@
         }
 
 
-        .grid-4 {
+        .grid-3 {
             display: grid;
             grid-template-rows: repeat(1, 1fr);
             grid-template-columns: repeat(3, 1fr);
@@ -583,7 +595,7 @@
             }
 
             .grid-2,
-            .grid-4 {
+            .grid-3 {
                 grid-template-rows: repeat(1, 1fr);
                 grid-template-columns: repeat(1, 1fr);
             }
@@ -700,7 +712,7 @@
         </div>
         <div>
             <img class=""
-                src="https://wizzardai.dev/wp-content/uploads/2024/04/slider1-square.jpg" 
+                src="https://wizzardai.dev/wp-content/uploads/2024/03/young-friendly-operator-woman-agent-600nw-712414813.webp" 
                 />
         </div>
 
@@ -806,12 +818,13 @@
         </div>
     </section>
     <style>
+        /* Style-part for Contact Form section */
         #confirmation-message {
           display: none;
           color: white;
           margin-top: 10px;
         }
-
+        /* Style for Product Review section */
         .product-info { max-width: 600px; }
         .product-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; }
         .store-link, .details-link { color: #007bff; text-decoration: none; }
@@ -822,6 +835,7 @@
         .specification { margin-bottom: 2px; }
         .shipping-info { font-size: 12px; margin-bottom: 2px; }
 
+        /* Style for Forum Chat section */
         .question-box {
             padding: 15px;
             border: 1px solid #ddd;
@@ -866,9 +880,91 @@
             border-left: 3px solid #007bff;
             font-size: 0.9rem;
         }
+
+        /* Style for Customer Support */
+        .support-comment-box {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .comment-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .comment-body {
+            font-size: 14px;
+        }
+        .comment-footer {
+            text-align: right;
+            font-size: 12px;
+        }
+        .reply-form textarea {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .main-content {
+            padding: 10px;
+        }
+        .ticket-header {
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 4px;
+        }
+        .ticket-header .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .ticket-header .text-left {
+            flex: 2;
+        }
+        .ticket-header .text-right {
+            flex: 1;
+            text-align: right;
+        }
+
+        .ticket-comment {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .tag {
+            display: inline-block;
+            margin-right: 5px;
+            padding: 0.25em 0.75em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.375rem;
+            color: #fff;
+            background-color: #17a2b8;
+        }
+        
+
+        @media (max-width: 768px) {
+        .sidebar, .main-content, .reply-form, .comment-box, .ticket-header {
+            padding: 10px;
+        }
+        
+        .reply-form textarea {
+            width: 100%; /* Ensures the textarea doesn't exceed the parent width */
+        }
+        
+        .reply-form button  {
+            width: auto; /* Optional: for the button to not stretch across the full width */
+        }
+        }
+
       </style>
     <h2 id="capabilities" class="heading mt100">Use cases</h2>
     <section class="mw1200 mt40">
+        <h1 class="subheading mb20">Here are some practical use cases that you can test live</h1>
         <!-- <div class="carousel-container"> -->
             <!-- <div class="carousel-slide" style="transform: translateX(0);"> -->
                 <!-- <div class="carousel-item">
@@ -899,7 +995,7 @@
             <div class="mw1200 grid-2 ph10">
                 <div class="">
                     <img class="w100" decoding="async" 
-                        src="https://wizzardai.dev/wp-content/uploads/2024/03/young-friendly-operator-woman-agent-600nw-712414813.webp"
+                        src="https://wizzardai.dev/wp-content/uploads/2024/04/slider1-square.jpg"
                     >
                 </div>
                 <div>
@@ -924,7 +1020,7 @@
                         <label for="message" class="mt20">Leave us a few words *</label>
                         <textarea id="message"
                             class="wizzard-ai">Hi, I am a wizzard widget and I want show you how I can help! Just click the bottom right corner!</textarea>
-                        <input type="submit" onclick="sendMessage" value="Submit" class="mt20"  />
+                        <input type="submit" value="Submit" class="mt20"  />
                         <span id="confirmation-message" class="f14-mobile">Your message has been sent!</span>
                         <!-- <span class="f14-mobile">* THIS IS AN
                             EXAMPLE
@@ -932,6 +1028,52 @@
                     </form>
                 </div>
             </div>
+        </div>
+
+        <div class="carousel-title mt60">Customer Support</div>
+        <div class="mw1200 grid-2 ph10">
+            <div class="">
+                <img class="w100" decoding="async" 
+                    src="https://wizzardai.dev/wp-content/uploads/2024/04/customer_support.png"
+                    >
+            </div>
+            <div class="main-content">
+                <!-- Ticket Header -->
+                <div class="ticket-header">
+                  <div class="row">
+                    <div class="text-left">
+                      <h4 class="mb-0">Trouble signing in.</h4>
+                      <div><small class="text-muted">14 minutes ago by Venkat Kumar</small></div>
+                    </div>
+                    <div class="text-right">
+                      <span class="tag">password</span>
+                      <span class="tag">sign_in</span>
+                    </div>
+                  </div>
+                </div>
+                 <!-- Lisa Kelly's Comment -->
+                <div class="support-comment-box">
+                  <div class="comment-header">
+                    <strong>Venkat Kumar</strong> (user)
+                  </div>
+                  <div class="comment-body">
+                    Hello Support, Can you help? I'm having trouble with my password. Venkat
+                  </div>
+                  <div class="comment-footer">
+                    14 minutes ago
+                  </div>
+                </div>
+          
+                <!-- Comments Container -->
+                <div id="commentsContainer"></div>
+          
+                <!-- Reply Form -->
+                <div class="reply-form">
+                  <textarea class="" id="replyText" rows="3" placeholder="Type your reply here..."></textarea>
+                  <br>
+                  <button type="button" class="" onclick="postReply()">Reply</button>
+                </div>
+              </div>
         </div>
 
         <div class="carousel-title mt60">Product Review</div>
@@ -1015,26 +1157,55 @@
     </section>
     <script>
         // Contact form
-        const forms = document.querySelectorAll('.example_form');
-        forms.forEach(form => {
-          form.addEventListener('submit', (e) => {
-            e.preventDefault();
+        const contactForm = document.querySelector('.example_form');    
+        contactForm.addEventListener('submit', (e) => {
+            // e.preventDefault();
             sendMessage();
-          });
         });
         
         function sendMessage() {
           // Here you would normally handle form submission to your server.
           // For demonstration, we're just showing a confirmation message.
-          document.getElementById('confirmation-message').style.display = 'inline-block';
+          document.getElementById('confirmation-message').style.display = 'block';
         }
+
+        // Customer Support
+        var countReplies = 0;
+        const exampleReplies = [
+            "Hi Venkat. I will help you to reset your password. Please provide me with your email address.",
+            ]
+        exampleReplies.forEach(reply => postReply(reply));
+        
+        function postReply(reply) {
+            if (countReplies >= 2) {
+                return;
+            }
+            var replyText = document.getElementById('replyText').value.trim();
+            if (replyText || reply) {
+                var commentsContainer = document.getElementById('commentsContainer');
+                var newComment = document.createElement('div');
+                newComment.classList.add('support-comment-box');
+                newComment.innerHTML = `
+                    <div class="comment-header">
+                    <strong>Lisa Kelly</strong> (support)
+                    </div>
+                    <div class="comment-body">${replyText || reply}</div>
+                    <div class="comment-footer">Just now</div>
+                `;
+                commentsContainer.appendChild(newComment);
+                document.getElementById('replyText').value = ''; // Clear input field
+            }
+            countReplies++;
+        }
+
+        // Product review
         var countReviews = 0;
         const exampleRviews = [
             "Great laptop! I've been using it for a few weeks now and it's been working great.",
             "I'm very happy with this laptop. It's lightweight and the battery life is excellent."]
         // Add example reviews to the product review section
         exampleRviews.forEach(review => addReview(review));
-        // Product review
+        
         function addReview(review) {
             if (countReviews >= 5) {
                 return;
@@ -1197,7 +1368,7 @@
     <!-- </section> -->
     <h2 class="heading mt100">Pricing</h2>
     <section id="pricing" class="mw1200 mt40">
-        <div class="grid-4">
+        <div class="grid-3">
             <!-- <a href="#" class="pricing-card">
                 <h3 style="background-color: #3b41ad">Free Tier</h3>
                 <p><b>Free</b><br>• 5000 free credits<br>• 1 domain allowed</p>
