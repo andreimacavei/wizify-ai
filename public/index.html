@@ -110,7 +110,8 @@
             line-height: 48px;
             white-space: nowrap;
             text-overflow: ellipsis;
-            background-color: #1F35B3;
+            /* background-color: #1F35B3; */
+            background-color: rgb(44, 75, 255);
             color: white;
             border-radius: 5px;
             border: 0;
@@ -119,7 +120,23 @@
             cursor: pointer;
             font-size: 18px;
         }
+        button:hover {
+            background-color: rgb(24, 52, 211);
+        }
 
+        .submit-button {
+            height: 24;
+            background-color: #e22262;
+            color: white;
+            border-radius: 5px;
+            border: 0;
+            display: inline-block;
+            width: auto;
+            cursor: pointer;
+        }
+        .submit-button:hover {
+            background-color: #c81c5a;
+        }
 
         .example_form {
             color: white !important;
@@ -173,6 +190,9 @@
             display: inline-block;
             width: auto;
             cursor: pointer;
+        }
+        .example_form input[type="submit"]:hover {
+            background-color: #c81c5a;
         }
         .example_form input[type="submit"]:disabled {
             background-color: #ccc;
@@ -469,15 +489,15 @@
         }
 
         #actions_counter {
-            background-color: #1F35B3;
-            color: white;
+            background: radial-gradient(circle, rgb(250, 249, 254) 0%, rgb(235, 213, 255) 100%);
+            color: black;
             text-align: center;
             padding: 100px 20px
         }
 
         #actions_counter h3 {
             font-size: 55px;
-            color: white;
+            color: black;
         }
 
         #actions_counter p {
@@ -487,7 +507,28 @@
         }
 
         #actions_counter button {
-            background-color: #e22262;
+            background-color: rgb(44, 75, 255);
+        }
+        #actions_counter button:hover {
+            background-color: rgb(24, 52, 211);
+        }
+
+        #actions_counter button.secondary {
+            background-color: transparent;
+            box-sizing: border-box;
+            font-weight: 400;
+            border-radius: 5px;
+            border: 1px solid rgb(44, 75, 255);
+            color: rgb(44, 75, 255);
+        }
+
+        #actions_counter button.secondary:hover {
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid rgb(44, 75, 255);
+            font-weight: 400;
+            color: rgb(44, 75, 255);
+            background-color: rgb(214, 219, 252);
         }
 
         footer {
@@ -708,7 +749,7 @@
             </div>
             <input name="email" type="email" class="input mr20" placeholder="Enter your email..."
                 style="display: none;">
-            <button class="get_started" type="submit">Try now</button>
+            <button class="get_started" type="submit">Get started now</button>
 
         </div>
         <div>
@@ -1025,7 +1066,7 @@
                 <div class="reply-form">
                   <textarea class="" id="replyText" rows="3" placeholder="Type your reply here..."></textarea>
                   <br>
-                  <button type="button" class="" onclick="postReply()">Reply</button>
+                  <button type="button" class="submit-button" onclick="postReply()">Reply</button>
                 </div>
               </div>
         </div>
@@ -1097,7 +1138,7 @@
                         <div class="comment-box mt20">
                         <input type="text" id="commentText" placeholder="Add a comment..." onkeydown="checkForEnter(event)">
                         <br><br>
-                        <button id="add-comment" class="mt20" onclick="addComment()">Add comment</button>
+                        <button class="submit-button"  onclick="addComment()">Add comment</button>
                         </div>
                         <div class="comment-section" id="comments">
                         <!-- Enhanced Comments with timestamps and Enter key support will be added here -->
@@ -1423,7 +1464,8 @@
     <section id="actions_counter" class="mt40">
         <h3 class="mb0">10000+ widget actions</h3>
         <p>were performed in the last 24 hours</p>
-        <button class="mt40 get_started">Try now</button>
+        <button class="mt40 get_started">Get started now</button>
+        <button class="mt40 get_started secondary">Watch video</button>
     </section>
 
     <footer class="mw1200 mt40">
