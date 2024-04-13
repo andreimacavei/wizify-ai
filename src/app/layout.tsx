@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import "@/css/satoshi.css";
 import "@/css/style.css";
 import React from "react";
@@ -45,6 +46,7 @@ export default async function RootLayout({
             {children}
           </div>
           <Footer />
+          <Analytics />
         </SessionProvider>
       </body>
     </html>
