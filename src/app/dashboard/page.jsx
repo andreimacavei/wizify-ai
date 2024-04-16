@@ -12,7 +12,6 @@ export default async function DashboardPage() {
   const userKeys = await fetchUserApiKeys();
   const wizzardUrl = process.env.WIZZARD_AI_PUBLIC_URL;
   const scriptText = `<script src="${wizzardUrl}/widget.js?client_key=${userKeys[0].key}"></script>`;
-  console.log("scriptText: ", scriptText);
   // TODO fetch here domains and pass to children
   // const userDomains = await fetchUserDomains();
 

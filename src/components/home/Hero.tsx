@@ -4,7 +4,8 @@ import CopyToClipboardButton from '@/app/ui/CopyToClipboardButton'
 export default function Hero({
   loggedIn = false }: { loggedIn?: boolean}
 ) {
-  const scriptText = `<script src="https://app.wizzardai.dev/widget.js?client_key=CLIENT_KEY">\n</script>`
+  const widgetHostUrl = process.env.WIZZARD_AI_WIDGET_HOST_URL;
+  const scriptText = `<script src="${widgetHostUrl}/widget.js?client_key=CLIENT_KEY">\n</script>`
   
   return (
     <div className="flex flex-col gap-5 py-12 px-2.5 sm:px-0">
@@ -30,7 +31,7 @@ export default function Hero({
           </div>
           <div className="px-3 py-2">
             <pre className="language-xml">
-            <code className="text-sm ">
+            <code className="text-sm">
 {scriptText}
               </code>
             </pre>
