@@ -10,8 +10,8 @@ export default async function DashboardPage() {
     redirect("/signin");
   }
   const userKeys = await fetchUserApiKeys();
-  const wizzardUrl = process.env.WIZZARD_AI_PUBLIC_URL;
-  const scriptText = `<script src="${wizzardUrl}/widget.js?client_key=${userKeys[0].key}"></script>`;
+  const widgetPublicUrl = process.env.WIZZARD_AI_WIDGET_HOST_URL;
+  const scriptText = `<script src="${widgetPublicUrl}/widget.js?client_key=${userKeys[0].key}"></script>`;
   // TODO fetch here domains and pass to children
   // const userDomains = await fetchUserDomains();
 

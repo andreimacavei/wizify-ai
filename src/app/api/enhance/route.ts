@@ -67,7 +67,7 @@ export async function GET(req: Request) {
     },
   });
   if (!domains) {
-    return new Response('Domain not found', { status: 404 });
+    return new Response('Domain not found', { status: 401 });
   }
 
   // Check if any db entries is a validated domain
@@ -85,7 +85,7 @@ export async function GET(req: Request) {
   }
   
   if (!validatedDomain) {
-    return new Response('Domain or userkey not found', { status: 404 });
+    return new Response('Domain or userkey not found', { status: 403 });
   }
   const userId = validatedDomain.userId;
   
@@ -98,7 +98,7 @@ export async function GET(req: Request) {
   });
   
   if (!user) {
-    return new Response('User has no active client keys', { status: 404 });
+    return new Response('User has no active client keys', { status: 401 });
   }
 
   // Check if the current subscription has enough credits to make the request

@@ -1,5 +1,5 @@
 'use client';
-import DashboardLayout from '@/components/Layouts/DefaultLayout';
+import DashboardLayout from '@/components/Layouts/DashboardLayout';
 import Loader from "@/components/common/Loader";
 import { Sidebar } from '@/app/ui';
 import { Toaster } from "sonner";
