@@ -16,8 +16,8 @@ export const config = {
 };
 
 export default async function middleware(request: NextRequest) {
-  console.log("************")
-  console.log('request.url:', request.nextUrl.pathname)
+  // console.log("************")
+  // console.log('request.url:', request.nextUrl.pathname)
 
   // Limit the rate of requests
   const ip = request.ip ?? '127.0.0.1';

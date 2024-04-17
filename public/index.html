@@ -1154,7 +1154,8 @@
         // Contact form
         const contactForm = document.querySelector('.example_form');    
         contactForm.addEventListener('submit', (e) => {
-            // e.preventDefault();
+            e.preventDefault();
+            console.log('Form submitted with event:', e);
             sendMessage();
         });
         
@@ -1514,6 +1515,7 @@
             }
             document.querySelector('.example_form').addEventListener("click",function(event) {
               event.preventDefault()
+              console.log('Form submitted with event:', event);
             });
 
             // document.querySelectorAll('.get_started').addEventListener("click",function(event) {

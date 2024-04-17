@@ -172,7 +172,7 @@ export async function GET(req: Request) {
       },
     },
   });
-  console.log(`Updated user ${user.email} credits: ${updatedSubscription.usedCredits}`);
+  // console.log(`Updated user ${user.email} credits: ${updatedSubscription.usedCredits}`);
 
   // Update the domain usage
   const updatedDomain = await prisma.domains.update({
