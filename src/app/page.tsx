@@ -1,12 +1,5 @@
-'use client';
-import { useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation'
 
 export default async function Home() {
-  const router = useRouter();
-
-  return (
-    <button type="button" onClick={() => router.push('/dashboard')}>
-      Dashboard
-    </button>
-  )
+  redirect('/dashboard');
 }
