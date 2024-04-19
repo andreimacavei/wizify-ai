@@ -44,7 +44,7 @@ function loadStyle() {
 
   // Add CSS rules to the style element
   style.innerHTML = `
-    .micro-ai {
+    .micro-ai-button {
         position: absolute;
         right: 3px;
         z-index: 10;
@@ -56,11 +56,11 @@ function loadStyle() {
         border-radius: 0.5rem;
         padding: 1px 6px 0px 6px;
     }
-    .micro-ai:hover {
+    .micro-ai-button:hover {
         background-color: #f1e7fc;
         border-color: #6f37ba;
     }
-    .micro-ai svg {
+    .micro-ai-button svg {
         width: 1em;
         height: 1em;
     }
@@ -148,7 +148,27 @@ window.onload = function () {
   const inputElements = document.querySelectorAll(
     'input[type="text"], textarea',
   );
-  inputElements.forEach(enhanceInputElement);
+  inputElements.forEach(function (inputElement) {
+    enhanceInputElement(inputElement);
+    new ResizeObserver(function () {
+      console.log("resize event");
+      inputElement.parentNode.style.width = inputElement.offsetWidth + "px";
+      inputElement.parentNode.style.height = inputElement.offsetHeight + "px";
+    }).observe(inputElement);
+  });
+
+  // Mutation observer to enhance new input elements
+  // const observer = new MutationObserver(function (mutations) {
+  //   mutations.forEach(function (mutation) {
+  //     if (mutation.addedNodes) {
+  //       mutation.addedNodes.forEach(function (node) {
+  //         if (node.tagName == "TEXTAREA" || node.tagName == "INPUT") {
+  //           enhanceInputElement(node);
+  //         }
+  //       });
+  //     }
+  //   });
+  // });
 };
 
 function hideMenu(aiMenu) {
@@ -166,7 +186,7 @@ function enhanceInputElement(inputElement) {
   const aiButton = document.createElement("button");
   aiButton.innerHTML =
     '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.18 5.324c.454 0 .85.306.965.746.516 1.976 1.087 3.215 1.957 4.14.873.927 2.142 1.638 4.263 2.353a.997.997 0 0 1 0 1.89c-2.12.715-3.39 1.427-4.263 2.354-.87.925-1.441 2.164-1.957 4.14a.998.998 0 0 1-1.93 0c-.516-1.976-1.087-3.215-1.957-4.14-.873-.927-2.142-1.639-4.263-2.353a.997.997 0 0 1 0-1.891c2.12-.715 3.39-1.426 4.263-2.354.87-.924 1.441-2.163 1.957-4.14a.997.997 0 0 1 .965-.745Zm-4.19 8.184c1.094.535 1.987 1.153 2.72 1.932.607.644 1.08 1.373 1.47 2.205.39-.832.863-1.561 1.47-2.205.733-.78 1.626-1.397 2.72-1.932-1.094-.534-1.987-1.152-2.72-1.931-.607-.644-1.08-1.373-1.47-2.206-.39.833-.863 1.562-1.47 2.205-.733.78-1.626 1.398-2.72 1.932ZM17.587 1.67c.454 0 .85.305.965.744.284 1.082.582 1.695.999 2.136.42.445 1.057.816 2.227 1.209a.998.998 0 0 1 0 1.891c-1.17.393-1.807.764-2.227 1.21-.417.44-.715 1.053-.999 2.135a.997.997 0 0 1-1.93 0c-.283-1.082-.581-1.695-.998-2.136-.42-.445-1.057-.816-2.227-1.209a.997.997 0 0 1 0-1.891c1.17-.393 1.806-.764 2.227-1.209.417-.44.715-1.054.998-2.136a.997.997 0 0 1 .965-.745Zm0 3.601c-.151.23-.32.446-.513.65-.283.298-.6.556-.955.784.355.228.672.485.955.784.192.204.362.42.513.649.152-.23.322-.445.514-.649.282-.299.6-.556.955-.784a5.062 5.062 0 0 1-.955-.785 4.775 4.775 0 0 1-.514-.649ZM18.914 14.694c.451 0 .847.303.963.74.205.763.41 1.154.671 1.425.268.277.692.53 1.544.81a.998.998 0 0 1 0 1.896c-.852.28-1.276.533-1.544.81-.261.27-.466.662-.67 1.426a.998.998 0 0 1-1.928 0c-.204-.764-.41-1.155-.67-1.426-.268-.277-.692-.53-1.545-.81a.998.998 0 0 1 0-1.896c.853-.28 1.277-.533 1.544-.81.262-.27.467-.662.671-1.426a.998.998 0 0 1 .964-.74Zm0 3.327a3.683 3.683 0 0 1-.616.596 3.822 3.822 0 0 1 .616.596 3.68 3.68 0 0 1 .616-.596 3.793 3.793 0 0 1-.616-.596Z" fill="currentColor"></path></svg>';
-  aiButton.className = "micro-ai";
+  aiButton.className = "micro-ai-button";
   aiButton.type = "button";
   aiButton.style.height = inputElement.offsetHeight - padding * 2 + "px";
   let marginbottom = inputElement.style.marginBottom;
