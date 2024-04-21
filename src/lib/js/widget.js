@@ -1,4 +1,4 @@
-let BASE_URL = "https://wizzardai.dev/api/enhance";
+let BASE_URL = "https://app.wizzardai.dev/api/enhance";
 let CLIENT_KEY =
   extractClientId(document.currentScript.getAttribute("src")) || "";
 
