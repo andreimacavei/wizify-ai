@@ -1,4 +1,4 @@
-let BASE_URL = "https://app.wizzardai.dev/api/enhance";
+let BASE_URL = "https://wizzardai.dev/api/enhance";
 let CLIENT_KEY =
   extractClientId(document.currentScript.getAttribute("src")) || "";
 
@@ -304,8 +304,8 @@ function enhanceInputElement(inputElement) {
       type: "spelling",
     },
     {
-      html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AutoFixHighOutlinedIcon"><path d="m20 7 .94-2.06L23 4l-2.06-.94L20 1l-.94 2.06L17 4l2.06.94zM8.5 7l.94-2.06L11.5 4l-2.06-.94L8.5 1l-.94 2.06L5.5 4l2.06.94zM20 12.5l-.94 2.06-2.06.94 2.06.94.94 2.06.94-2.06L23 15.5l-2.06-.94zm-2.29-3.38-2.83-2.83c-.2-.19-.45-.29-.71-.29-.26 0-.51.1-.71.29L2.29 17.46c-.39.39-.39 1.02 0 1.41l2.83 2.83c.2.2.45.3.71.3s.51-.1.71-.29l11.17-11.17c.39-.39.39-1.03 0-1.42zm-3.54-.7 1.41 1.41L14.41 11 13 9.59l1.17-1.17zM5.83 19.59l-1.41-1.41L11.59 11 13 12.41l-7.17 7.18z"></path></svg></span>I\'m feeling lucky',
-      type: "lucky",
+      html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AutoFixHighOutlinedIcon"><path d="m20 7 .94-2.06L23 4l-2.06-.94L20 1l-.94 2.06L17 4l2.06.94zM8.5 7l.94-2.06L11.5 4l-2.06-.94L8.5 1l-.94 2.06L5.5 4l2.06.94zM20 12.5l-.94 2.06-2.06.94 2.06.94.94 2.06.94-2.06L23 15.5l-2.06-.94zm-2.29-3.38-2.83-2.83c-.2-.19-.45-.29-.71-.29-.26 0-.51.1-.71.29L2.29 17.46c-.39.39-.39 1.02 0 1.41l2.83 2.83c.2.2.45.3.71.3s.51-.1.71-.29l11.17-11.17c.39-.39.39-1.03 0-1.42zm-3.54-.7 1.41 1.41L14.41 11 13 9.59l1.17-1.17zM5.83 19.59l-1.41-1.41L11.59 11 13 12.41l-7.17 7.18z"></path></svg></span>Check tonality',
+      type: "check_tone",
     },
   ];
   function addMenu(parent, options) {
@@ -349,8 +349,8 @@ function enhanceInputElement(inputElement) {
               content,
             )}`;
             break;
-          case "lucky":
-            url = `${BASE_URL}?action=lucky&content=${encodeURIComponent(
+          case "check_tone":
+            url = `${BASE_URL}?action=check_tone&content=${encodeURIComponent(
               content,
             )}`;
             break;
@@ -385,14 +385,43 @@ function enhanceInputElement(inputElement) {
           const text = await response.text();
 
           if (response.ok) {
-            // Replace input value with the AI-generated text
-            inputElement.value = text;
-            const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-              window.HTMLInputElement.prototype,
-              "value",
-            ).set;
-            nativeInputValueSetter.call(inputElement, text);
-            inputElement.dispatchEvent(new Event("input", { bubbles: true }));
+            if (option.type == "check_tone") {
+              // we test for tone that can be aggresive:
+              // aggresive, threatening, neutral, casual, unproffesional, ironic or sarcastic
+              switch (text.toLowerCase()) {
+                case "aggresive":
+                  alert(
+                    "Detected aggresive tone. You can change it to a more neutral tone.",
+                  );
+                  break;
+                case "threatening":
+                  alert(
+                    "Detected threatening tone. You should change it to a more friendly tone.",
+                  );
+                  break;
+                case "unprofessional":
+                  alert(
+                    "Detected unprofessional tone. You should change it to a more professional tone.",
+                  );
+                  break;
+                case "ironic" || "sarcastic":
+                  alert(
+                    "Detected ironic or sarcastic tone. Are you sure you want to send it as it is?",
+                  );
+                  break;
+                default:
+                  alert("Detected tone: " + text.toLowerCase());
+              }
+            } else {
+              // Replace input value with the AI-generated text
+              inputElement.value = text;
+              const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                window.HTMLInputElement.prototype,
+                "value",
+              ).set;
+              nativeInputValueSetter.call(inputElement, text);
+              inputElement.dispatchEvent(new Event("input", { bubbles: true }));
+            }
           } else {
             console.error("Error fethcing data: ", text);
           }

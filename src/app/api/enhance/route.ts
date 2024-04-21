@@ -132,13 +132,16 @@ export async function GET(req: Request) {
       const lang = language[langParam as keyof typeof language] || 'English';
       prompt = `Translate the following text to ${lang}: "${content}"`;
       break;
-    case 'lucky':
-      prompt = `Generate a random thought using the following: "${content}"`;
+    case 'check_tone':
+      prompt = "Analyze the tone of the following text and clasify it into one category of the following: "
+      + "aggresive, threatening, ironic, sarcastic, professional, casual, friendly, straighforward, confident, casual, neutral: "
+      + `"${content}". Format the answer as a single word.`;
       break;
     default:
       return new Response('Invalid action', { status: 400 });
   }
 
+  console.log('Prompt:', prompt);
   // Ask OpenAI for a streaming completion given the prompt
   const response = await openai.completions.create({
     model: 'gpt-3.5-turbo-instruct',
