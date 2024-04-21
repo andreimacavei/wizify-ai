@@ -389,9 +389,9 @@ function enhanceInputElement(inputElement) {
               // we test for tone that can be aggresive:
               // aggresive, threatening, neutral, casual, unproffesional, ironic or sarcastic
               switch (text.toLowerCase()) {
-                case "aggresive":
+                case "aggressive":
                   alert(
-                    "Detected aggresive tone. You can change it to a more neutral tone.",
+                    "Detected aggressive tone. You can change it to a more neutral tone.",
                   );
                   break;
                 case "threatening":
