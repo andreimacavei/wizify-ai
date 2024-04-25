@@ -38,6 +38,62 @@ function copyStyles(source, target) {
   target.style.height = source.offsetHeight + "px";
 }
 
+function createToolbar() {
+  // Set the icon for the undo button
+  const undoIcon = `<svg fill="#000000" height="16px" width="16px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+    viewBox="0 0 367.136 367.136" xml:space="preserve"><path d="M336.554,86.871c-11.975-18.584-27.145-34.707-44.706-47.731L330.801,0H217.436v113.91L270.4,60.691
+   c40.142,28.131,65.042,74.724,65.042,124.571c0,83.744-68.131,151.874-151.874,151.874S31.694,269.005,31.694,185.262
+   c0-20.479,4.002-40.34,11.895-59.03l-27.637-11.671c-9.461,22.403-14.258,46.19-14.258,70.701
+   c0,100.286,81.588,181.874,181.874,181.874s181.874-81.588,181.874-181.874C365.442,150.223,355.453,116.201,336.554,86.871z"/></svg>`;
+
+  // Set the icon for the redo button
+  //   const redoIcon = `<svg width="16px" height="16px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)">
+  // <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+  // <g id="SVGRepo_iconCarrier"> <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect>
+  //  <path d="M36.7279 36.7279C33.4706 39.9853 28.9706 42 24 42C14.0589 42 6 33.9411 6 24C6 14.0589 14.0589 6 24 6C28.9706 6 33.4706 8.01472 36.7279 11.2721C38.3859 12.9301 42 17 42 17"
+  //  stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+  //  <path d="M42 8V17H33" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>`;
+  const redoIcon = `<svg fill="#000000" height="16px" width="16px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+    viewBox="0 0 423.642 423.642" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
+    <path d="M407.517,123.262l-27.717,11.48c18.585,44.869,18.585,94.29,0,139.159c-18.585,44.869-53.531,79.815-98.4,98.4 c-92.627,38.368-199.194-5.776-237.559-98.4C8.46,188.486,43.246,91.212,121.514,46.501v74.992h30V7.498H37.519v30h43.755 c-73,57.164-102.323,158.139-65.15,247.885c33.754,81.49,112.806,130.768,195.972,130.762c26.96-0.002,54.367-5.184,80.784-16.125 C400.788,355.322,452.213,231.169,407.517,123.262z"></path> 
+    </g></svg>`;
+
+  // Create the undo button
+  const undoButton = document.createElement("button");
+  undoButton.innerHTML = undoIcon;
+  // undoButton.innerHTML = 'Undo';
+  undoButton.className = "toolbar-undo-button";
+  undoButton.type = "button";
+
+  // Create the redo button
+  const redoButton = document.createElement("button");
+  redoButton.innerHTML = redoIcon;
+  // redoButton.innerHTML = 'Redo';
+  redoButton.className = "toolbar-redo-button";
+  redoButton.type = "button";
+
+  // Append the undo and redo buttons inside a div
+  const undoRedoToolbar = document.createElement("div");
+  undoRedoToolbar.id = "undo-redo-toolbar";
+  undoRedoToolbar.className = "undo-redo-toolbar";
+  undoRedoToolbar.appendChild(undoButton);
+  undoRedoToolbar.appendChild(redoButton);
+
+  undoButton.addEventListener("click", function () {
+    if (previousValue === "" || previousValue === focusedInput.value) return;
+    nextValue = focusedInput.value;
+    focusedInput.value = previousValue;
+  });
+
+  redoButton.addEventListener("click", function () {
+    if (nextValue === "" || nextValue === focusedInput.value) return;
+    previousValue = focusedInput.value;
+    focusedInput.value = nextValue;
+  });
+
+  return undoRedoToolbar;
+}
+
 function loadStyle() {
   // Create a new style element
   var style = document.createElement("style");
@@ -137,6 +193,54 @@ function loadStyle() {
         position: revert;
         font-family: monospace;
     }
+    .undo-redo-toolbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+      
+        /* background: var(--toolbar-background); */
+        // background: #2d2c2d;
+        background: rgb(249, 244, 255);
+        border-color: rgb(134, 79, 207);
+        color: #dddddd;
+        border-radius: 0.25rem;
+        color: #fff;
+        padding: 0.25rem 0.5rem;
+        z-index: 1;
+      
+        align-items: center;
+        display: flex;
+        justify-content: center;
+      }
+
+    .undo-redo-toolbar:hover {
+      background-color: #f1e7fc;
+      border-color: #6f37ba;
+    }
+
+    .undo-redo-toolbar::after {
+        content: '';
+        position: absolute;
+        border-style: solid;
+        height: 0;
+        width: 0;
+      }
+      
+    .toolbar-undo-button {
+        padding: 0 0.25rem;
+        color: #d7d7d7;
+    }
+    .toolbar-undo-button svg {
+        fill: #8e5eaa;
+    }
+    .toolbar-redo-button {
+        padding: 0 0.25rem;
+        color: #d7d7d7;
+    }
+    .toolbar-redo-button svg {
+        fill: #8e5eaa;
+    }
     `;
 
   // Append the style element to the head (common practice)
@@ -144,31 +248,67 @@ function loadStyle() {
 }
 loadStyle();
 
+var previousValue = "";
+var nextValue = "";
+var focusedInput = null;
+
+function setFocusedInput(inputElement) {
+  if (focusedInput != inputElement) {
+    previousValue = "";
+    nextValue = "";
+  }
+  focusedInput = inputElement;
+}
+
+function getSelectionRect() {
+  const selection = window.getSelection();
+  if (selection.rangeCount === 0) return;
+  const range = selection.getRangeAt(0);
+  return range.getBoundingClientRect();
+}
+
 window.onload = function () {
+  console.log("window.onload event fired");
   const inputElements = document.querySelectorAll(
     'input[type="text"], textarea',
   );
+
+  document.addEventListener("change", function (event) {
+    const inputElement = event.target;
+    // const selectionRect = getSelectionRect();
+    const selectionRect = inputElement.getBoundingClientRect();
+    if (!selectionRect) return;
+    const toolbarRect = undoRedoToolbar.getBoundingClientRect();
+
+    const distanceFromTop = window.scrollY;
+
+    let top =
+      selectionRect.top + distanceFromTop + inputElement.offsetHeight + 12;
+    let left =
+      selectionRect.left + (selectionRect.width - toolbarRect.width) / 2;
+
+    undoRedoToolbar.style.transform = `translate(${left}px, ${top}px)`;
+    undoRedoToolbar.style.opacity = 0.7;
+  });
+
+  document.addEventListener("selectionchange", () => {
+    const selection = window.getSelection().toString();
+    if (!selection) {
+      undoRedoToolbar.style.opacity = 0;
+    }
+  });
+
+  // Create the undo and redo toolbar
+  const undoRedoToolbar = createToolbar();
+  document.body.appendChild(undoRedoToolbar);
+
   inputElements.forEach(function (inputElement) {
     enhanceInputElement(inputElement);
     new ResizeObserver(function () {
-      console.log("resize event");
       inputElement.parentNode.style.width = inputElement.offsetWidth + "px";
       inputElement.parentNode.style.height = inputElement.offsetHeight + "px";
     }).observe(inputElement);
   });
-
-  // Mutation observer to enhance new input elements
-  // const observer = new MutationObserver(function (mutations) {
-  //   mutations.forEach(function (mutation) {
-  //     if (mutation.addedNodes) {
-  //       mutation.addedNodes.forEach(function (node) {
-  //         if (node.tagName == "TEXTAREA" || node.tagName == "INPUT") {
-  //           enhanceInputElement(node);
-  //         }
-  //       });
-  //     }
-  //   });
-  // });
 };
 
 function hideMenu(aiMenu) {
@@ -231,6 +371,10 @@ function enhanceInputElement(inputElement) {
   // Create the AI menu element
   const aiMenu = document.createElement("div");
   aiMenu.className = "micro-ai-menu";
+
+  // Create the undo/redo toolbar
+  const undoRedoToolbar = createToolbar();
+  wrapper.appendChild(undoRedoToolbar);
 
   // Create menu options
   const options = [
@@ -307,6 +451,24 @@ function enhanceInputElement(inputElement) {
       html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AutoFixHighOutlinedIcon"><path d="m20 7 .94-2.06L23 4l-2.06-.94L20 1l-.94 2.06L17 4l2.06.94zM8.5 7l.94-2.06L11.5 4l-2.06-.94L8.5 1l-.94 2.06L5.5 4l2.06.94zM20 12.5l-.94 2.06-2.06.94 2.06.94.94 2.06.94-2.06L23 15.5l-2.06-.94zm-2.29-3.38-2.83-2.83c-.2-.19-.45-.29-.71-.29-.26 0-.51.1-.71.29L2.29 17.46c-.39.39-.39 1.02 0 1.41l2.83 2.83c.2.2.45.3.71.3s.51-.1.71-.29l11.17-11.17c.39-.39.39-1.03 0-1.42zm-3.54-.7 1.41 1.41L14.41 11 13 9.59l1.17-1.17zM5.83 19.59l-1.41-1.41L11.59 11 13 12.41l-7.17 7.18z"></path></svg></span>Check tonality',
       type: "check_tone",
     },
+    {
+      html: '<span class="icon"><svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 42.262 42.262" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M41.159,10.363c-1.031-0.57-2.328-0.194-2.898,0.838l-0.688,1.247C35.214,5.231,28.428,0,20.434,0 C10.489,0,2.399,8.09,2.399,18.035c0,1.178,0.953,2.134,2.133,2.134c1.178,0,2.133-0.956,2.133-2.134 c0-7.593,6.178-13.769,13.77-13.769c6.02,0,11.137,3.89,13.003,9.284l-1.166-0.643c-1.028-0.57-2.328-0.195-2.897,0.837 c-0.568,1.032-0.193,2.329,0.838,2.898l4.215,2.326c0.348,0.707,1.068,1.199,1.91,1.199c0.211,0,0.414-0.041,0.606-0.099 c0.011,0,0.021,0.004,0.031,0.004c0.754,0,1.482-0.397,1.871-1.103l3.15-5.71C42.564,12.229,42.191,10.932,41.159,10.363z"></path> <path d="M37.732,22.091c-1.18,0-2.135,0.955-2.135,2.133c0,7.593-6.176,13.771-13.768,13.771c-6.021,0-11.139-3.892-13.006-9.284 l1.166,0.643c0.326,0.181,0.68,0.267,1.029,0.267c0.752,0,1.48-0.397,1.869-1.104c0.568-1.03,0.195-2.328-0.838-2.897 l-4.215-2.326c-0.348-0.707-1.066-1.198-1.908-1.198c-0.219,0-0.426,0.042-0.623,0.103c-0.758-0.006-1.496,0.385-1.887,1.096 L0.265,29c-0.568,1.031-0.193,2.328,0.838,2.898c0.326,0.18,0.68,0.266,1.029,0.266c0.752,0,1.48-0.397,1.869-1.104l0.689-1.246 c2.357,7.215,9.145,12.447,17.139,12.447c9.942,0,18.035-8.09,18.035-18.036C39.866,23.046,38.911,22.091,37.732,22.091z"></path> </g> </g> </g></svg></span>Actions',
+      type: "group",
+      children: [
+        {
+          html: "Copy text",
+          type: "copy_text",
+        },
+        {
+          html: "Undo",
+          type: "undo",
+        },
+        {
+          html: "Redo",
+          type: "redo",
+        },
+      ],
+    },
   ];
   function addMenu(parent, options) {
     options.forEach(function (option) {
@@ -353,6 +515,22 @@ function enhanceInputElement(inputElement) {
             url = `${BASE_URL}?action=check_tone&content=${encodeURIComponent(
               content,
             )}`;
+            break;
+          case "copy_text":
+            navigator.clipboard.writeText(content);
+            break;
+          case "undo":
+            setFocusedInput(inputElement);
+            if (previousValue === "" || previousValue === inputElement.value)
+              return;
+            nextValue = inputElement.value;
+            inputElement.value = previousValue;
+            break;
+          case "redo":
+            setFocusedInput(inputElement);
+            if (nextValue === "" || nextValue === inputElement.value) return;
+            previousValue = inputElement.value;
+            inputElement.value = nextValue;
             break;
           default:
             break;
@@ -414,13 +592,30 @@ function enhanceInputElement(inputElement) {
               }
             } else {
               // Replace input value with the AI-generated text
+              setFocusedInput(inputElement);
+              previousValue = inputElement.value;
+
               inputElement.value = text;
-              const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-                window.HTMLInputElement.prototype,
-                "value",
-              ).set;
+              let nativeInputValueSetter;
+              if (inputElement.tagName == "TEXTAREA") {
+                nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                  window.HTMLTextAreaElement.prototype,
+                  "value",
+                ).set;
+              } else {
+                nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                  window.HTMLInputElement.prototype,
+                  "value",
+                ).set;
+              }
               nativeInputValueSetter.call(inputElement, text);
               inputElement.dispatchEvent(new Event("input", { bubbles: true }));
+              inputElement.dispatchEvent(
+                new Event("change", { bubbles: true }),
+              );
+              // Focus on the input element
+              inputElement.focus();
+              inputElement.select();
             }
           } else {
             console.error("Error fethcing data: ", text);

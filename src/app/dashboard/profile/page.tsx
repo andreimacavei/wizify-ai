@@ -26,7 +26,8 @@ export default async function page() {
         </label>
         <input id="name" name="name" defaultValue={user.name!} type="text" minLength={3} maxLength={20} required
           placeholder='John Doe or Jane'
-          className="grow border border-slate-300 rounded px-2 py-1 outline-none text-slate-800" />
+          className="grow border border-slate-300 rounded px-2 py-1 outline-none text-slate-800" >
+          </input>
         
         <div className='flex justify-end gap-2'>
           <button type="submit" className="border text-blue-500 border-blue-500 rounded px-2 py-1 hover:bg-blue-500 hover:bg-opacity-20 focus-within:bg-blue-500 focus-within:bg-opacity-20 active:scale-95 transition-all duration-75">Save Changes</button>

@@ -67,7 +67,8 @@ function NewDomainDialog() {
 						<div className='flex gap-4 items-center'>
 							<input id="domain" name="domain" type="text" minLength={5} maxLength={50} required
 								placeholder='Example: https://mywebsite.com'
-								className="grow border border-slate-300 rounded px-2 py-1 outline-none text-slate-800" />
+                className="grow border border-slate-300 rounded px-2 py-1 outline-none text-slate-800"
+              ></input>
 						</div>
             <div className='flex justify-end gap-2'>
               <Dialog.Close className='border border-gray-300 rounded px-2 py-1 hover:bg-gray focus-within:bg-gray-200 active:scale-95 transition-all duration-75'>Cancel</Dialog.Close>

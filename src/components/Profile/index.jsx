@@ -76,7 +76,7 @@ export default function ProfilePage() {
                 onChange={(e) => handleChange(e, field, idx)}
                 disabled={!userDetails.editables[field][idx]}
                 className="border-gray-300 border-b-2"
-              />
+              ></input>
               <button
                 type="button"
                 onClick={() => handleEditToggle(field, idx)}
@@ -94,7 +94,7 @@ export default function ProfilePage() {
               onChange={(e) => handleChange(e, field)}
               disabled={!userDetails.editables[field]}
               className="border-gray-300 border-b-2"
-            />
+            ></input>
             <button
               type="button"
               onClick={() => handleEditToggle(field)}

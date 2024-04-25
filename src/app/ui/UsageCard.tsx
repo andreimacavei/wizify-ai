@@ -61,7 +61,7 @@ export default function UsageCard() {
           <div className="flex flex-col gap-4 items-left">
             <p className="text-gray-400"><span className='font-bold'>{plan.creditsPerMonth}</span> credits {plan.name === 'Free'? "" : "per month" }</p>
             <p className="text-gray-400"><span className='font-bold'>{plan.domainsAllowed}</span> domains allowed</p>
-            </div>
+          </div>
         </div>
       </div>
       <div className="flex gap-4 mt-4 items-center border-gray rounded-lg border-2 bg-white p-3 pr-1 shadow hover:shadow-md sm:p-4" role="listitem">
