@@ -273,34 +273,36 @@ window.onload = function () {
     'input[type="text"], textarea',
   );
 
-  document.addEventListener("change", function (event) {
-    const inputElement = event.target;
-    // const selectionRect = getSelectionRect();
-    const selectionRect = inputElement.getBoundingClientRect();
-    if (!selectionRect) return;
-    const toolbarRect = undoRedoToolbar.getBoundingClientRect();
+  // This code adds a undo/redo button toolbar below input element after user calls our widget
+  // It doesn't work with NextJs because of hydration issue so it's disabled for now
+  // document.addEventListener("change", function (event) {
+  //   const inputElement = event.target;
+  //   // const selectionRect = getSelectionRect();
+  //   const selectionRect = inputElement.getBoundingClientRect();
+  //   if (!selectionRect) return;
+  //   const toolbarRect = undoRedoToolbar.getBoundingClientRect();
 
-    const distanceFromTop = window.scrollY;
+  //   const distanceFromTop = window.scrollY;
 
-    let top =
-      selectionRect.top + distanceFromTop + inputElement.offsetHeight + 12;
-    let left =
-      selectionRect.left + (selectionRect.width - toolbarRect.width) / 2;
+  //   let top =
+  //     selectionRect.top + distanceFromTop + inputElement.offsetHeight + 12;
+  //   let left =
+  //     selectionRect.left + (selectionRect.width - toolbarRect.width) / 2;
 
-    undoRedoToolbar.style.transform = `translate(${left}px, ${top}px)`;
-    undoRedoToolbar.style.opacity = 0.7;
-  });
+  //   undoRedoToolbar.style.transform = `translate(${left}px, ${top}px)`;
+  //   undoRedoToolbar.style.opacity = 0.7;
+  // });
 
-  document.addEventListener("selectionchange", () => {
-    const selection = window.getSelection().toString();
-    if (!selection) {
-      undoRedoToolbar.style.opacity = 0;
-    }
-  });
+  // document.addEventListener("selectionchange", () => {
+  //   const selection = window.getSelection().toString();
+  //   if (!selection) {
+  //     undoRedoToolbar.style.opacity = 0;
+  //   }
+  // });
 
   // Create the undo and redo toolbar
-  const undoRedoToolbar = createToolbar();
-  document.body.appendChild(undoRedoToolbar);
+  // const undoRedoToolbar = createToolbar();
+  // document.body.appendChild(undoRedoToolbar);
 
   inputElements.forEach(function (inputElement) {
     enhanceInputElement(inputElement);
