@@ -456,10 +456,6 @@ function enhanceInputElement(inputElement) {
       type: "group",
       children: [
         {
-          html: "Copy text",
-          type: "copy_text",
-        },
-        {
           html: "Undo",
           type: "undo",
         },
@@ -516,21 +512,22 @@ function enhanceInputElement(inputElement) {
               content,
             )}`;
             break;
-          case "copy_text":
-            navigator.clipboard.writeText(content);
-            break;
           case "undo":
             setFocusedInput(inputElement);
             if (previousValue === "" || previousValue === inputElement.value)
               return;
             nextValue = inputElement.value;
             inputElement.value = previousValue;
+            inputElement.focus();
+            inputElement.select();
             break;
           case "redo":
             setFocusedInput(inputElement);
             if (nextValue === "" || nextValue === inputElement.value) return;
             previousValue = inputElement.value;
             inputElement.value = nextValue;
+            inputElement.focus();
+            inputElement.select();
             break;
           default:
             break;
