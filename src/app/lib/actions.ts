@@ -277,3 +277,67 @@ export async function validateDomainAndUserKey(
   return validatedDomain;
 }
 
+export async function registerApiKey(data: FormData) {
+  'use server'
+  // Get user session token
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user)
+    throw new Error('User not logged in')
+  
+  // Get form data
+  let key = data.get('apikey') as string;
+
+  // Save key to main database 
+  let newKey;
+  try {
+    newKey = await prisma.apiKey.upsert({
+      where: {
+        userId: session.user.id,
+        key: key
+      },
+      update: {
+      },
+      create: {
+        key,
+        userId: session.user.id
+      }
+    });
+
+  } catch (error) {
+    console.log('error postgres: ', error);
+    return {
+      status: 'error',
+      msg: error
+    }
+  }
+
+  return {status: 'success', msg: 'API Key added successfully', data: newKey};
+}
+
+export async function getUserApiKeys(userId: string) {
+  'use server';
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user) return null;
+
+  const { user } = session;
+  
+  if (!user) {
+    return null;
+  }
+  
+  const apiKeys = await prisma.apiKey.findMany(
+    {
+      where: {
+        userId: user.id
+      }
+    }
+  );
+
+  console.log('result findMany: ', apiKeys)
+
+  if (!apiKeys) {
+    return [];
+  }
+
+  return apiKeys;
+}

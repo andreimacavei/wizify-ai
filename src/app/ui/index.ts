@@ -7,16 +7,20 @@ import Sidebar from "./Sidebar";
 import Stepper from "./Stepper";
 import CopyToClipboardButton from "./CopyToClipboardButton";
 import NewDomainDialog from "./NewDomainDialog";
-import ConfigCard from "./ConfigCard";
+import NewKeyDialog from "./NewKeyDialog";
+import ConfigWidget from "./ConfigWidget";
+import ApiKeyCard from "./ApiKeyCard";
 
 export {
-  ConfigCard,
+  ApiKeyCard,
+  ConfigWidget,
   ContextMenuButton,
   CopyToClipboardButton,
   CreateDomainBtn,
   DashboardCard,
   DomainDeleteDialog,
   NewDomainDialog,
+  NewKeyDialog,
   NoDomains,
   Sidebar,
   Stepper
