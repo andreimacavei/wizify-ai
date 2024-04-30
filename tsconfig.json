@@ -23,6 +23,6 @@
       "@/public/*": ["./public/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/verify/page.js", "src/app/ui/Stepper.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/verify/page.js", "src/app/ui/Stepper.js", "src/app/ui/ApiKeyCard.js"],
   "exclude": ["node_modules"]
 }

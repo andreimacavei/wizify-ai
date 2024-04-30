@@ -56,7 +56,7 @@ export default function Sidebar() {
                     fill="white"
                   />
               </svg>
-              Client Keys
+              API Keys
             </Link>
           </li>
           <li>

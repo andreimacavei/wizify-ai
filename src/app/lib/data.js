@@ -26,13 +26,13 @@ export const fetchUserDomains = async () => {
   return userDomains;
 };
 
-export const fetchUserApiKeys = async () => {
+export const fetchUserClientKeys = async () => {
   "use server";
   const session = await getServerSession(authOptions);
   if (!session || !session.user) return null;
 
   const { user } = session;
-  const userApiKeys = await prisma.userKey.findMany({
+  const userClientKeys = await prisma.userKey.findMany({
     where: {
       user: {
         id: user.id,
@@ -40,7 +40,7 @@ export const fetchUserApiKeys = async () => {
     },
   });
 
-  return userApiKeys;
+  return userClientKeys;
 };
 
 export const fetchUserUsageData = async () => {

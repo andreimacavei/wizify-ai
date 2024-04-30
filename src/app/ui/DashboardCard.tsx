@@ -102,7 +102,8 @@ export default function DashboardCard(
                       </div>
                     </div>
                     <Suspense fallback={<VerticalEllipsis className="p-1 fill-gray-500" />}>
-                      <ContextMenuButton id={domain.id} remove={removeDomain} />
+                      <ContextMenuButton id={domain.id} deleteDialogTitle="Remove Web domain"
+                        deleteDialogDescription="The domain will be removed, Are you sure?" remove={removeDomain} />
                     </Suspense>
                   </div>
                 </li>
