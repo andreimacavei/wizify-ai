@@ -19,8 +19,7 @@ export default function ContextMenuButton(
       deleteDialogDescription: string,
       remove: (id: number | string) => Promise<boolean>
       keyEnabled?: boolean
-      keyStatusToggle: (id: number | string, status: string) => void
-      
+      keyStatusToggle?: (id: number | string, status: string) => void
     }) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
 
