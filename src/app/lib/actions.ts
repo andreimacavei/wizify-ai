@@ -360,3 +360,21 @@ export async function deleteApiKey(key: string) {
 
   return true;
 }
+
+export async function updateKey(key: string, params: {}) {
+  'use server';
+  let result;
+  try {
+    result = await prisma.apiKey.update({
+      where: {
+        key
+      },
+      data: params
+    });
+
+  } catch (error) {
+    console.log('error updating api key: ', error);
+    return false;
+  }
+  return true;
+}

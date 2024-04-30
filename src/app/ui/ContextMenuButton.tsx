@@ -9,14 +9,27 @@ export default function ContextMenuButton(
   { id,
     deleteDialogTitle,
     deleteDialogDescription,
-    remove }
+    remove,
+    keyEnabled,
+    keyStatusToggle
+  }
     : {
       id: number | string,
       deleteDialogTitle: string,
       deleteDialogDescription: string,
       remove: (id: number | string) => Promise<boolean>
+      keyEnabled?: boolean
+      keyStatusToggle: (id: number | string, status: string) => void
+      
     }) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
+
+  const toggleStatus = (id: number | string) => {
+    if (keyEnabled !== undefined) {
+      let status = keyEnabled ? "enabled" : "disabled";
+      keyStatusToggle(id, status)
+    }
+  }
 
   return (
     <DropdownMenu.Root>
@@ -31,10 +44,11 @@ export default function ContextMenuButton(
         onSelect={() => {}}>
         Show Details
       </DropdownMenu.Item> */}
-      {/* <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray-100"
-        onSelect={() => {}}>
-        Edit
-      </DropdownMenu.Item> */}
+        {keyStatusToggle &&
+          <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray-100"
+            onSelect={() => toggleStatus(id)}>
+            {keyEnabled ? "Disable": "Enable"}
+          </DropdownMenu.Item>}
         <DeleteDialog id={id} open={deleteDialogOpen} setOpen={setDeleteDialogOpen} remove={remove}
           dialogTitle={deleteDialogTitle} dialogDescription={deleteDialogDescription} 
           trigger={( <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray-100"

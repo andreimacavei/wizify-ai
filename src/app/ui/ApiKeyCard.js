@@ -1,7 +1,7 @@
 "use client";
 import { useContext, useState, useEffect } from "react";
 import { Suspense } from "react";
-import { getUserApiKeys, deleteApiKey } from "@/app/lib/actions";
+import { getUserApiKeys, deleteApiKey, updateKey } from "@/app/lib/actions";
 import { KeyContext } from "@/app/context";
 import { ContextMenuButton } from "@/app/ui";
 import { VerticalEllipsis } from "@/app/ui/icons";
@@ -39,6 +39,25 @@ export default function ApiKeyCard() {
     }
 
     return false;
+  };
+
+  const keyStatusToggle = async (key, status) => {
+    try {
+      const params = { enabled: status === "disabled" ? true : false };
+      let res = await updateKey(key, params);
+      if (res) {
+        setKeys((prevKeys) => {
+          return prevKeys.map((k) => {
+            if (k.key === key) {
+              return { ...k, enabled: !k.enabled };
+            }
+            return k;
+          });
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -86,6 +105,8 @@ export default function ApiKeyCard() {
                       deleteDialogTitle="Delete API Key"
                       deleteDialogDescription="Are you sure you want to delete this API key?"
                       remove={removeKey}
+                      keyEnabled={apiKey.enabled}
+                      keyStatusToggle={keyStatusToggle}
                     />
                   </Suspense>
                 </div>
