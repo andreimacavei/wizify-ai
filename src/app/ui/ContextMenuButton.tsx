@@ -2,10 +2,20 @@
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { VerticalEllipsis } from '@/app/ui/icons'
-import { DomainDeleteDialog } from '@/app/ui'
+import { DeleteDialog } from '@/app/ui'
 import { useState } from 'react'
 
-export default function ContextMenuButton({ id, remove }: { id: number, remove: (id: number) => Promise<boolean> }) {
+export default function ContextMenuButton(
+  { id,
+    deleteDialogTitle,
+    deleteDialogDescription,
+    remove }
+    : {
+      id: number | string,
+      deleteDialogTitle: string,
+      deleteDialogDescription: string,
+      remove: (id: number | string) => Promise<boolean>
+    }) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
 
   return (
@@ -25,9 +35,11 @@ export default function ContextMenuButton({ id, remove }: { id: number, remove: 
         onSelect={() => {}}>
         Edit
       </DropdownMenu.Item> */}
-      <DomainDeleteDialog id={id} open={deleteDialogOpen} setOpen={setDeleteDialogOpen} remove={remove} trigger={(
-        <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray-100"
-          onSelect={(e) => { e.preventDefault(); setDeleteDialogOpen(true) }}>
+        <DeleteDialog id={id} open={deleteDialogOpen} setOpen={setDeleteDialogOpen} remove={remove}
+          dialogTitle={deleteDialogTitle} dialogDescription={deleteDialogDescription} 
+          trigger={( <DropdownMenu.Item className="block cursor-pointer p-2 text-sm text-gray-700 hover:bg-gray-100"
+          onSelect={(e) => { e.preventDefault(); setDeleteDialogOpen(true) }}
+          >
           Delete
         </DropdownMenu.Item>
       )} />

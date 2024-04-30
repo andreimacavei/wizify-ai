@@ -72,14 +72,15 @@ model UserKey {
 }
 
 model ApiKey {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  key       String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  enabled   Boolean  @default(false)
-  valid     Boolean  @default(false)
+  id          Int      @id @default(autoincrement())
+  userId      String
+  key         String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  enabled     Boolean  @default(false)
+  valid       Boolean  @default(false)
 }
 
 model Widget {

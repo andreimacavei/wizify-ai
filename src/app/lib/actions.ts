@@ -124,7 +124,7 @@ export async function deleteDomain(id: number) {
         id
       }
     });
-    console.log('result postgres: ', result);
+    console.log('result delete domain: ', result);
 
   } catch (error) {
     console.log('error postgres: ', error);
@@ -286,6 +286,7 @@ export async function registerApiKey(data: FormData) {
   
   // Get form data
   let key = data.get('apikey') as string;
+  let description = data.get('description') || '';
 
   // Save key to main database 
   let newKey;
@@ -296,10 +297,12 @@ export async function registerApiKey(data: FormData) {
         key: key
       },
       update: {
+        description
       },
       create: {
         key,
-        userId: session.user.id
+        userId: session.user.id,
+        description
       }
     });
 
@@ -333,11 +336,27 @@ export async function getUserApiKeys(userId: string) {
     }
   );
 
-  console.log('result findMany: ', apiKeys)
-
   if (!apiKeys) {
     return [];
   }
 
   return apiKeys;
+}
+
+export async function deleteApiKey(key: string) {
+  'use server';
+  let result;
+  try {
+    result = await prisma.apiKey.delete({
+      where: {
+        key
+      }
+    });
+
+  } catch (error) {
+    console.log('error deleting api key: ', error);
+    return false;
+  }
+
+  return true;
 }

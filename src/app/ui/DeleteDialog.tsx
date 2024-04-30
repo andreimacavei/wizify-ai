@@ -6,15 +6,19 @@ import { useEffect, useState } from 'react';
 
 type Props = {
   trigger?: React.ReactNode;
-  id: number;
+  id: number | string;
+  dialogTitle: string;
+  dialogDescription: string;
   open?: boolean;
   setOpen?: (open: boolean) => void;
-  remove: (id: number) => Promise<boolean>;
+  remove: (id: number | string) => Promise<boolean>;
 };
 
-export default function DomainDeleteDialog({
+export default function DeleteDialog({
   trigger = <button className="Button violet">Delete</button>,
   id,
+  dialogTitle,
+  dialogDescription,
   open,
   setOpen,
   remove
@@ -44,9 +48,9 @@ export default function DomainDeleteDialog({
       <Dialog.Portal>
         <Dialog.Overlay className="DialogOverlay" />
         <Dialog.Content className="DialogContent">
-          <Dialog.Title className="DialogTitle">Remove Web domain</Dialog.Title>
+          <Dialog.Title className="DialogTitle">{dialogTitle}</Dialog.Title>
           <Dialog.Description className="DialogDescription">
-            The domain will be removed, Are you sure?
+            {dialogDescription}
           </Dialog.Description>
           <div className='flex gap-4 mt-6 justify-end'>
             <button className="Button red cursor-pointer disabled:cursor-default" disabled={loading} onClick={(e) => {handleDelete(e)}}>Yes, Delete</button>

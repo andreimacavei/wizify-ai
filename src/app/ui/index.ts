@@ -1,7 +1,7 @@
 import ContextMenuButton from "./ContextMenuButton";
 import CreateDomainBtn from "./CreateDomainBtn";
 import DashboardCard from "./DashboardCard";
-import DomainDeleteDialog from "./DomainDeleteDialog";
+import DeleteDialog from "./DeleteDialog";
 import NoDomains from "./NoDomains";
 import Sidebar from "./Sidebar";
 import Stepper from "./Stepper";
@@ -18,7 +18,7 @@ export {
   CopyToClipboardButton,
   CreateDomainBtn,
   DashboardCard,
-  DomainDeleteDialog,
+  DeleteDialog,
   NewDomainDialog,
   NewKeyDialog,
   NoDomains,
