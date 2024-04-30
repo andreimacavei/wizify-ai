@@ -286,7 +286,7 @@ export async function registerApiKey(data: FormData) {
   
   // Get form data
   let key = data.get('apikey') as string;
-  let description = data.get('description') || '';
+  let description = data.get('description') as string || '';
 
   // Save key to main database 
   let newKey;
