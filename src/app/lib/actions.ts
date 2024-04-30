@@ -196,7 +196,7 @@ export async function initUserData(planType: string, userId: string, userKey: st
       data: {
         planId: plan.id,
         userId,
-        credits: plan.credits,
+        credits: plan.creditsPerMonth,
       }
     });
 
