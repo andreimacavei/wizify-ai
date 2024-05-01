@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/lib/authOptions";
 import { prisma } from "@/lib/db/db";
 import { sanitizeString } from "@/utils/sanitize";
+import axios from 'axios';
 // import { client } from "@/lib/redis";
 
 /* 
@@ -288,18 +289,25 @@ export async function registerApiKey(data: FormData) {
   let key = data.get('apikey') as string;
   let description = data.get('description') as string || '';
 
+
+  // Check if key exists already
+  const existingKey = await prisma.apiKey.findUnique({
+    where: {
+      key
+    }
+  });
+
+  if (existingKey) {
+    return {
+      status: 'error',
+      msg: 'API Key already exists'
+    }
+  }
   // Save key to main database 
   let newKey;
   try {
-    newKey = await prisma.apiKey.upsert({
-      where: {
-        userId: session.user.id,
-        key: key
-      },
-      update: {
-        description
-      },
-      create: {
+    newKey = await prisma.apiKey.create({
+      data: {
         key,
         userId: session.user.id,
         description
@@ -377,4 +385,42 @@ export async function updateKey(key: string, params: {}) {
     return false;
   }
   return true;
+}
+
+
+export async function validateApiKey(apiKey: string) {
+  'use server'
+  const config = {
+    headers: { Authorization: `Bearer ${apiKey}` },
+    url: 'https://api.openai.com/v1/engines',
+    method: 'get'
+  };
+
+  try {
+    const response = await axios(config);
+    if (response.status === 200) {
+      return {
+        status: 'success',
+        msg: "API key is valid."
+      }
+    } else {
+      return {
+        status: 'error',
+        msg: "API key is invalid. Status error: " + response.status
+      }
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      return {
+        status: 'error',
+        msg: "API key is invalid. Status error: " + error.response.status
+      }
+    } else {
+      return {
+        status: 'error',
+        msg: "An error occurred: " + error.message
+      }
+    }
+  }
+
 }

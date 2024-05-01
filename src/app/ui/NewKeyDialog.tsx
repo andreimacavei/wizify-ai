@@ -1,6 +1,6 @@
 'use client';
 import * as Dialog from "@radix-ui/react-dialog";
-import { registerApiKey } from "@/app/lib/actions";
+import { registerApiKey, updateKey, validateApiKey } from "@/app/lib/actions";
 import { useContext, useState } from "react";
 import { KeyContext } from "@/app/context";
 
@@ -15,7 +15,7 @@ function NewKeyDialog() {
     e.preventDefault()
     setLoading(true)
     let formData = new FormData(e.target as HTMLFormElement)
-    // let result = await registerNewDomain(formData)
+
     let result = await registerApiKey(formData)
     console.log("register new key: ", result)
     setLoading(false)
@@ -24,7 +24,27 @@ function NewKeyDialog() {
       setStatusMsg(result.msg)
       // update apiKeys context
       setKeys((prev: any) => [...prev, result.data])
-      setOpen(false)
+      
+      let res = await validateApiKey(result.data.key)
+      if (res.status === 'success') {
+        updateKey(result.data.key, { valid: true })
+        setKeys((prev: any) => {
+          let updatedKeys = prev.map((key: any) => {
+            if (key.key === result.data.key) {
+              key.valid = true
+            }
+            return key
+          })
+          return updatedKeys
+        })
+      } 
+      setTimeout(() => {
+        setStatusMsg(res.msg)
+      }, 1000)
+
+      setTimeout(() => {
+        setOpen(false)
+      }, 3000)
     }
     else {
       setSuccess(false)
@@ -32,8 +52,13 @@ function NewKeyDialog() {
     }
   }
 
+  const handleOnOpenChange = (open: boolean) => {
+    setStatusMsg('')
+    setOpen(open)
+  }
+
   return (
-  <Dialog.Root open={open} onOpenChange={setOpen}>
+  <Dialog.Root open={open} onOpenChange={handleOnOpenChange}>
 			
       <Dialog.Trigger asChild>
       <button className="mt-4 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
@@ -76,7 +101,9 @@ function NewKeyDialog() {
               ></input>
 						</div>
             <div className='flex justify-end gap-2'>
-              <Dialog.Close className='border border-gray-300 rounded px-2 py-1 hover:bg-gray focus-within:bg-gray-200 active:scale-95 transition-all duration-75'>Cancel</Dialog.Close>
+              <Dialog.Close className='border border-gray-300 rounded px-2 py-1 hover:bg-gray focus-within:bg-gray-200 active:scale-95 transition-all duration-75'>
+                Cancel
+              </Dialog.Close>
 							<button type="submit" disabled={loading}
 								className="border text-blue-500 border-blue-500 rounded px-2 py-1 hover:bg-blue-500 hover:bg-opacity-20 focus-within:bg-opacity-20 enabled:active:scale-95 transition-all duration-75 disabled:cursor-default">
                 Add

@@ -49,7 +49,6 @@ const adapter = new PrismaNeon(neon)
 const prisma = new PrismaClient({ adapter })
 
 
-
 export async function GET(req: Request) {
   // Extract the `prompt` from the body of the request
   const { searchParams } = new URL(req.url);
@@ -148,18 +147,6 @@ export async function GET(req: Request) {
     max_tokens: 100,
     prompt,
   });
- 
-  // Mock response data for now
-  // const response = {
-  //   choices: [
-  //     {
-  //       text: 'This is a mock response. Make money online with this one weird trick!',
-  //     },
-  //   ],
-  //   usage: {
-  //     total_tokens: 5,
-  //   },
-  // };
 
   console.log('Response usage:', response.usage);
   
@@ -188,7 +175,6 @@ export async function GET(req: Request) {
       },
     },
   });
-  // console.log('Updated domain usage:', updatedDomain.usage);
 
   let aiResponseText = response.choices[0].text.trim();
 

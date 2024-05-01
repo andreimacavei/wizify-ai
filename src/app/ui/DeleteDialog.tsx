@@ -1,6 +1,5 @@
 "use client"
 import * as Dialog from '@radix-ui/react-dialog';
-import { deleteDomain } from '@/app/lib/actions';
 import './UserDeleteDialog.css';
 import { useEffect, useState } from 'react';
 
