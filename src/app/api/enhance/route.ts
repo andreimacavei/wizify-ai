@@ -154,9 +154,10 @@ export async function GET(req: Request) {
     }
   });
 
+  const isUsingUserApiKey = validApiKey && validApiKey.enabled ? true : false;
   let response;
   // Ask OpenAI for a streaming completion given the prompt
-  if (validApiKey && validApiKey.enabled === true) {
+  if (isUsingUserApiKey) {
     const openai = new OpenAI({
       apiKey: validApiKey.key,
     });
@@ -177,19 +178,20 @@ export async function GET(req: Request) {
   // console.log('Response:', response.choices[0].message.content.trim());
   // console.log("Usage:", response.usage);
   
+  if (!isUsingUserApiKey) {
   // Update the credits count for the user's subscription
   const tokenCount = response.usage.total_tokens;
-  const updatedSubscription = await prisma.subscription.update({
-    where: {
-      id: subscription.id,
-    },
-    data: {
-      usedCredits: {
-        increment: tokenCount,
+    const updatedSubscription = await prisma.subscription.update({
+      where: {
+        id: subscription.id,
       },
-    },
-  });
-  // console.log(`Updated user ${user.email} credits: ${updatedSubscription.usedCredits}`);
+      data: {
+        usedCredits: {
+          increment: tokenCount,
+        },
+      },
+    });
+    // console.log(`Updated user ${user.email} credits: ${updatedSubscription.usedCredits}`);
 
   // Update the domain usage
   const updatedDomain = await prisma.domains.update({
@@ -202,6 +204,7 @@ export async function GET(req: Request) {
       },
     },
   });
+  }
 
   let aiResponseText = response.choices[0].message.content.trim();
 

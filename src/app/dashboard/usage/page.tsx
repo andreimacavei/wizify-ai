@@ -9,5 +9,5 @@ export default async function UsagePage() {
   if (!session || !session.user) {
     redirect("/signin");
   }
-  return <UsageCard />;
+  return <UsageCard userId={session.user.id} />;
 }
