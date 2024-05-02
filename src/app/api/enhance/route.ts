@@ -1,16 +1,13 @@
 import OpenAI from 'openai';
-import { NextResponse } from 'next/server'
 // import { prisma } from '@/lib/db/db';
 import { PrismaClient } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { Pool } from '@neondatabase/serverless' 
 import { validateDomainAndUserKey } from '@/app/lib/actions';
 
-// Create an OpenAI API client (that's edge friendly!)
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-});
-
+})
 
 const language = {
   'en': 'English',
@@ -140,15 +137,45 @@ export async function GET(req: Request) {
       return new Response('Invalid action', { status: 400 });
   }
 
-  console.log('Prompt:', prompt);
-  // Ask OpenAI for a streaming completion given the prompt
-  const response = await openai.completions.create({
-    model: 'gpt-3.5-turbo-instruct',
-    max_tokens: 100,
-    prompt,
+  // console.log('Prompt:', prompt);
+
+  // Check if user has added an own OpenAI API key
+  let userApiKeys = await prisma.apiKey.findMany({
+    where: {
+      userId: userId,
+    },
+  });
+  // Check which API key is valid & enabled
+  let validApiKey = null;
+  userApiKeys.forEach((key) => {
+    if (key.valid && key.enabled) {
+      validApiKey = key;
+      return;
+    }
   });
 
-  console.log('Response usage:', response.usage);
+  let response;
+  // Ask OpenAI for a streaming completion given the prompt
+  if (validApiKey && validApiKey.enabled === true) {
+    const openai = new OpenAI({
+      apiKey: validApiKey.key,
+    });
+    response = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        max_tokens: 100,
+        messages: [{ role: 'user', content: prompt }],
+      });
+  } else {
+    // Use the default OpenAI API key
+    response = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        max_tokens: 100,
+        messages: [{ role: 'user', content: prompt }],
+      });
+  }
+  
+  // console.log('Response:', response.choices[0].message.content.trim());
+  // console.log("Usage:", response.usage);
   
   // Update the credits count for the user's subscription
   const tokenCount = response.usage.total_tokens;
@@ -176,7 +203,7 @@ export async function GET(req: Request) {
     },
   });
 
-  let aiResponseText = response.choices[0].text.trim();
+  let aiResponseText = response.choices[0].message.content.trim();
 
   // Check if the response text starts with double quotes and remove them
   if (aiResponseText.startsWith('"')) {
