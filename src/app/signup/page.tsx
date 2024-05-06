@@ -210,7 +210,7 @@ const SignUp = () => {
              
             {formSubmitted ? (
                     submissionSuccessful ? (
-                      <SuccessMessage name={name} />
+                      <SuccessMessage />
                     ) : (
                       <ErrorMessage />
                     )

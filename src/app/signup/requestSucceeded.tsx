@@ -1,13 +1,11 @@
 import React from 'react';
 
-const SuccessMessage = ({ name }) => {
+const SuccessMessage = () => {
   return (
     <div className="max-w-md w-full p-4 md:p-6 2xl:p-10">
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-6">
         <h2 className="text-2xl font-bold text-green-600 dark:text-green-400 mb-4">Registration successful!</h2>
-        <p className="text-base text-black dark:text-white mb-4">
-          Thank you, {name}.
-        </p>
+     
         <p className="text-base text-black dark:text-white mb-2">
          Your registration request has been successfully received and is currently under review.
         </p>
