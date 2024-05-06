@@ -4,13 +4,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { signUp } from "./authFunctions"; 
-import SuccessMessage from './requestSucceeded';  // Ensure these are correctly imported
+import SuccessMessage from './requestSucceeded';
 import ErrorMessage from './requestFailed';
 
 const SignUp = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [submissionSuccessful, setSubmissionSuccessful] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,35 +15,47 @@ const SignUp = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
-    setName(event.target.name.value);
-    setEmail(event.target.email.value);
-    setPassword(event.target.password.value);
+
+  // Get the values directly from the event target
+  const name = event.target.name.value.trim();
+  const email = event.target.email.value.trim();
+  const password = event.target.password.value.trim();
+
+  // Check if any of the fields are empty
+  if (!name || !email || !password) {
+    console.error("All fields are required.");
+    setSubmissionSuccessful(false);
+    setFormSubmitted(true); 
+    setIsSubmitting(false);
+    return; 
+  }
+
+    // Output for debugging
+    console.log("name:", name);
+    console.log("email:", email);
+    //console.log("password:", password);
 
     try {
+      // Attempt to sign up and wait for the response
       await signUp({ name, email, password });
+      // If signUp does not throw, it is successful
       setSubmissionSuccessful(true);
     } catch (error) {
+      // If signUp throws, handle the error
       console.error("Sign Up Error:", error);
       setSubmissionSuccessful(false);
     }
-    setFormSubmitted(true);
+
+    setFormSubmitted(true); // This will now correctly reflect the success or failure
     setIsSubmitting(false);
   };
-
     
 
   return (
   <div className="flex h-screen overflow-hidden">
-
-
-<div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-
-
-<main>
-
-<div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-
-
+  <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+  <main>
+    <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">

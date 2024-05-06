@@ -5,6 +5,12 @@ import { createUserSignUpRequest } from "@/app/lib/actions";
 export async function POST(req: Request) {
   const { name, email, password } = await req.json();
   try {
+
+    
+  // Validate input
+  if (!name || !email || !password) {
+    return NextResponse.json({ error: "All fields are required (name, email, and password)."}, { status: 400 });
+  }
         
     const hashedPassword = await bcrypt.hash(password, 10);
 
