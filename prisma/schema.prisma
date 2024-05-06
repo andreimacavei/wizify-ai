@@ -47,6 +47,8 @@ model UserSignupRequest {
   name      String
   password  String
   email     String   @unique
+  phone     String
+  details   String
   status    String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())

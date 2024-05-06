@@ -237,7 +237,9 @@ export async function initUserData(planType: string, userId: string, userKey: st
   return true;
 }
 
-export async function createUserSignUpRequest(name: string, password: string, email: string) {
+export async function createUserSignUpRequest(name: string, password: string, email: string,
+  phone: string, details: string
+) {
   'use server'
   console.log("Creating new user signup request : ", name)
 
@@ -249,6 +251,8 @@ export async function createUserSignUpRequest(name: string, password: string, em
         name: name,
         password: password,
         email: email,
+        phone: phone,
+        details: details,
         status: "PENDING"
       }
     });

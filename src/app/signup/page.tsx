@@ -20,9 +20,11 @@ const SignUp = () => {
   const name = event.target.name.value.trim();
   const email = event.target.email.value.trim();
   const password = event.target.password.value.trim();
+  const phone = event.target.phone.value.trim();
+  const details = event.target.details.value.trim();
 
   // Check if any of the fields are empty
-  if (!name || !email || !password) {
+    if (!name || !email || !password || !phone) {
     console.error("All fields are required.");
     setSubmissionSuccessful(false);
     setFormSubmitted(true); 
@@ -37,7 +39,7 @@ const SignUp = () => {
 
     try {
       // Attempt to sign up and wait for the response
-      await signUp({ name, email, password });
+      await signUp({ name, email, password, phone, details });
       // If signUp does not throw, it is successful
       setSubmissionSuccessful(true);
     } catch (error) {
@@ -293,6 +295,37 @@ const SignUp = () => {
 
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Phone Number
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="Enter your phone number"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                    <span className="absolute right-4 top-4">
+                    <svg
+                        className="fill-current"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 22 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g opacity="0.5">
+                        <path
+                          d="M21.0045 16.7933L17.375 13.1638C16.8326 12.6214 15.982 12.5859 15.3692 13.0602L12.5157 15.2643C11.9467 15.6913 11.1666 15.4106 10.9563 14.731L9.93591 11.5688C9.77317 11.0541 9.97762 10.4831 10.4654 10.1738L14.2994 7.70204C14.6886 7.44853 14.8889 6.97571 14.8235 6.47105L14.3235 2.47105C14.2419 1.83485 13.699 1.44141 13.0787 1.44141H8.4213C6.16224 1.44141 4.36586 3.1638 4.36586 5.36473V16.6353C4.36586 18.8362 6.16224 20.5586 8.4213 20.5586H13.0787C13.699 20.5586 14.2419 20.1652 14.3235 19.529L14.8235 15.529C14.8889 15.0243 14.6886 14.5515 14.2994 14.298L10.4654 11.8262C9.97762 11.5169 9.77317 10.9459 9.93591 10.4312L10.9563 7.26902C11.1666 6.5894 11.9467 6.30869 12.5157 6.73569L15.3692 8.93979C15.982 9.41413 16.8326 9.37863 17.375 8.83619L21.0045 5.20669C21.4182 4.79301 21.4182 4.16113 21.0045 3.74745L18.2528 1.04489C17.8391 0.631205 17.2073 0.631205 16.7936 1.04489L13.9325 3.85617C12.3831 2.80787 10.4445 2.19141 8.4213 2.19141H3.57872C1.60336 2.19141 0 3.79476 0 5.77012V16.2299C0 18.2053 1.60336 19.8086 3.57872 19.8086H8.4213C10.4445 19.8086 12.3831 19.1921 13.9325 18.1438L16.7936 20.9551C17.2073 21.3688 17.8391 21.3688 18.2528 20.9551L21.0045 18.2525C21.4182 17.8388 21.4182 17.207 21.0045 16.7933Z"
+                          fill=""
+                      />
+                      </g>
+                    </svg>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Password
                   </label>
                   <div className="relative">
@@ -362,6 +395,20 @@ const SignUp = () => {
                     </span>
                   </div>
                 </div>
+      
+              <div className="mb-4">
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Details
+                  </label>
+                  <div className="relative">
+                    <textarea
+                      name="details"
+                      placeholder="Enter additional details"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    ></textarea>
+                  </div>
+                </div>
+
 
                 <div className="mb-5">
                 <input type="submit" disabled={isSubmitting} value="Create account" className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90" />
