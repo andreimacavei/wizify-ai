@@ -233,6 +233,7 @@ const SignUp = () => {
                     <input
                       type="text"
                       name="name"
+                      required
                       placeholder="Enter your full name"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -269,6 +270,7 @@ const SignUp = () => {
                     <input
                       type="email"
                       name="email"
+                      required
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -301,6 +303,7 @@ const SignUp = () => {
                     <input
                       type="tel"
                       name="phone"
+                      required
                       placeholder="Enter your phone number"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
