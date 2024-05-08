@@ -45,9 +45,7 @@ model Session {
 model UserSignupRequest {
   id        Int      @id @default(autoincrement())
   name      String
-  password  String
   email     String   @unique
-  phone     String
   details   String
   status    String
   createdAt DateTime @default(now())

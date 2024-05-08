@@ -1,8 +1,6 @@
 interface SignUpData {
     name: string;
     email: string;
-    password: string;
-    phone: string;
     details: string;
   }
   

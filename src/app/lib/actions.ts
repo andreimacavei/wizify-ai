@@ -237,9 +237,7 @@ export async function initUserData(planType: string, userId: string, userKey: st
   return true;
 }
 
-export async function createUserSignUpRequest(name: string, password: string, email: string,
-  phone: string, details: string
-) {
+export async function createUserSignUpRequest(name: string, email: string, details: string) {
   'use server'
   console.log("Creating new user signup request : ", name)
 
@@ -249,9 +247,7 @@ export async function createUserSignUpRequest(name: string, password: string, em
     await prisma.userSignupRequest.create({
       data: {
         name: name,
-        password: password,
         email: email,
-        phone: phone,
         details: details,
         status: "PENDING"
       }

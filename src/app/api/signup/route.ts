@@ -1,20 +1,17 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcrypt";
 import { createUserSignUpRequest } from "@/app/lib/actions";
 
 export async function POST(req: Request) {
-  const { name, email, password, phone, details } = await req.json();
+  const { name, email, details } = await req.json();
   try {
 
     
   // Validate input
-  if (!name || !email || !password || !phone) {
-    return NextResponse.json({ error: "All fields are required (name, email, password and phone)."}, { status: 400 });
+  if ( !email) {
+    return NextResponse.json({ error: "Email field is required in order to create the user signup request."}, { status: 400 });
   }
         
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    await createUserSignUpRequest(name, hashedPassword, email, phone, details);
+    await createUserSignUpRequest(name, email, details);
 
     return NextResponse.json({ message: "Account creation request has been recorded for " + name}, { status: 201 });
 
