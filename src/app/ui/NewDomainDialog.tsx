@@ -52,13 +52,13 @@ function NewDomainDialog() {
         >
           <Dialog.Title className="DialogTitle">
             <p className="text-xl text-blue-500 border-b border-blue-500 pb-2 my-4">
-            Add Wizard AI to your website:
+            Add Wizify to your website:
               </p>
             
           </Dialog.Title>
           <Dialog.Description className="DialogDescription">
           <label className="text-slate-600 text-xm">
-            Which website you want add to be able to use <span className='text-blue-500'>Wizard AI</span> on it?
+            Which website you want add to be able to use <span className='text-blue-500'>Wizify</span> on it?
               Use full URL path of your website.
               </label>
           </Dialog.Description>

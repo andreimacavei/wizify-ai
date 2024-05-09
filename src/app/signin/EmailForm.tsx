@@ -36,7 +36,7 @@ export default function EmailForm() {
               name="email"
               autoFocus={true}
               type="email"
-              placeholder="aiparty@thewizzard.co"
+              placeholder="Your email address..."
               autoComplete="email"
               required
               value={email}

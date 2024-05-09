@@ -47,14 +47,14 @@ function ProductIntro({ user, clientKey }: { user: any, clientKey: string}) {
             </UseCaseExample>
           <UseCaseExample useCase={{
             name: 'Example text area',
-            content: 'Hi, I am a wizzard widget and I want show you how I can help! Just click the bottom right corner!',
+            content: 'Hi, I am a AI widget and I want show you how I can help! Just click the bottom right corner!',
             inputType: 'textarea',
             style: { width: '100%', height: '100px' }
           }} >
             </UseCaseExample>
         </div>
         <div className="mt-14">
-          <h2 className="text-gray-600 sm:text-xl">Wizard AI is running on Edge Environments making it really fast!</h2>
+          <h2 className="text-gray-600 sm:text-xl">Wizify AI is running on Edge Environments making it really fast!</h2>
         </div>
       </div>
     </>

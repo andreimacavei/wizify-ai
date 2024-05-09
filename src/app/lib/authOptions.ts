@@ -33,7 +33,7 @@ export const authOptions: NextAuthOptions = {
     }),
     EmailProvider({
       server: '',
-      from: 'noreply@breaktime.ltd',
+      from: 'noreply@wizify.ai',
       sendVerificationRequest : async ( params: SendVerificationRequestParams ) => {
         let { identifier, url, provider } = params;
         try {
@@ -41,10 +41,10 @@ export const authOptions: NextAuthOptions = {
           await resend.emails.send({
             from: provider.from,
             to: identifier,
-            subject: 'Your Wizard AI Login Link',
+            subject: 'Your Wizify AI Login Link',
             html: '<html><body>\
               <h2>Your Login Link</h2>\
-              <p>Welcome to AIWizzard!</p>\
+              <p>Welcome to Wizify!</p>\
               <p>Please click the magic link below to sign in to your account.</p>\
               <p><a href="' + url + '"><b>Sign in</b></a></p>\
               <p>or copy and paste this URL into your browser:</p>\

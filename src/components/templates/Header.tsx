@@ -16,7 +16,7 @@ export default async function Header() {
 				<h1 className="text-3xl">
 					<Link href={`${landingPageUrl}/`} className='flex flex-row gap-1 items-center font-bold text-blue_ai'>
 					<Image src="/images/logo/logo-1.png" alt='Logo' width={50} height={50} />
-						Wizard AI
+						Wizify
 					</Link>
 				</h1>
 

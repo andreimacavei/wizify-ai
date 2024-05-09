@@ -7,15 +7,15 @@ export default function Hero({
 
   // This causes hydration problems so we have to hardcode the URL
   // const widgetHostUrl = process.env.WIZZARD_AI_WIDGET_HOST_URL;
-  const scriptText = `<script src="https://app.wizzardai.dev/widget.js?client_key=CLIENT_KEY">\n</script>`
+  const scriptText = `<script src="https://app.wizify.ai/widget.js?client_key=CLIENT_KEY">\n</script>`
   
   return (
     <div className="flex flex-col gap-5 py-12 px-2.5 sm:px-0">
       <h1 className="font-display text-3xl font-bold leading-[1.15] text-black sm:text-6xl sm:leading-[1.15]">
         Enhance Your WebApp with<br />
-        <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">Wizard AI</span>
+        <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">Wizify AI</span>
       </h1>
-      <h2 className="text-gray-600 sm:text-xl">Wizard AI adds AI-capabilities to your webapp without any coding!.</h2>
+      <h2 className="text-gray-600 sm:text-xl">Wizify AI adds AI-capabilities to your webapp without any coding!.</h2>
       
       <div className="mx-auto space-x-4">
         {loggedIn &&

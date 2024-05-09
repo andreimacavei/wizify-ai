@@ -22,9 +22,9 @@ export default async function Page() {
       <div className="mt-[calc(15vh)] h-fit w-full sm:max-w-md overflow-hidden border-y border-gray-200 sm:rounded-2xl sm:border sm:shadow-xl">
         <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center sm:px-16">
           <a href={landingPageUrl}>
-            <Image src="/images/logo/logo-1.png" width="80" height="80" className="w-16" alt="Wizard AI Logo" />
+            <Image src="/images/logo/logo-1.png" width="80" height="80" className="w-16" alt="Wizify Logo" />
           </a>
-          <h3 className="text-xl font-semibold">Sign in to Wizard AI</h3>
+          <h3 className="text-xl font-semibold">Sign in to Wizify</h3>
           <p className="text-sm text-gray-500">Start using AI on your website.</p>
         </div>
         <div className="flex flex-col space-y-3 bg-gray-50 px-4 py-10 sm:px-16">

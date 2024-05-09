@@ -11,8 +11,8 @@ import { Footer, Header } from "@/components/templates";
 
 export const metadata: Metadata = {
   title:
-    "Wizard AI - Enhance your Web App with AI",
-  description: "Wizard AI - Enhance your Web App with AI",
+    "Wizify AI - Enhance your Web App with AI",
+  description: "Wizify AI - Enhance your Web App with AI",
 };
 
 export default async function RootLayout({
