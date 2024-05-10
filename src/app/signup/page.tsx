@@ -71,9 +71,15 @@ const SignUp = () => {
                   height={32}
                 />
               </Link>
-              <p className="2xl:px-20">
-              Unlock the full potential of your support and content creation teams with Wizard AI
-                </p>
+
+
+              <div className="flex flex-col gap-5 py-12 px-2.5 sm:px-0">
+              <h1 className="font-display text-3xl font-bold leading-[1.15] text-black sm:text-3xl sm:leading-[1.15]">
+                Enhance Your WebApp with<br />
+                <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">Wizify AI</span>
+              </h1>
+              <h2 className="text-gray-600 sm:text-xl">Wizify AI adds AI-capabilities to your webapp without any coding!</h2>
+              </div>
 
               <span className="mt-15 inline-block">
                 <svg
@@ -301,14 +307,16 @@ const SignUp = () => {
                 </div>
 
 
-              <div className="flex justify-center mb-5">
+                <div className="flex justify-center mb-5">
                 <button 
-                        type="submit" 
-                        disabled={isSubmitting} 
-                        className="animate-fade-in rounded-full border border-black bg-black px-4 py-1.5 text-sm text-white transition-all hover:bg-white hover:text-black"
-                      >Sign Up
+                    type="submit" 
+                    disabled={isSubmitting} 
+                    className="animate-fade-in rounded border border-blue-600 bg-blue-600 px-6 py-2 text-sm text-white transition-all hover:bg-blue-700 hover:text-white"
+                >
+                    Sign Up
                 </button>
-                </div>
+            </div>
+
 
 
                 <div className="mt-6 text-center">
