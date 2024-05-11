@@ -241,8 +241,7 @@ export async function createUserSignUpRequest(name: string, email: string, detai
   'use server'
   console.log("Creating new user signup request : ", name)
 
-  // Create request
-  // let signupRequest;
+ 
   try {
     await prisma.userSignupRequest.create({
       data: {

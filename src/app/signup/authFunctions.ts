@@ -5,7 +5,7 @@ interface SignUpData {
   }
   
   // Function to handle the sign up process
-  export const signUp = async (data: SignUpData): Promise<void> => {
+  export const signUp = async (data: SignUpData): Promise<boolean> => {
     console.log("Sending data to the server:", data); // Log data being sent to the server
 
     try {
@@ -16,16 +16,21 @@ interface SignUpData {
         },
         body: JSON.stringify(data)
       });
-  
-      if (!response.ok) {
-        throw new Error('Failed to sign up.');
-      }
-  
-      const result = await response.json();
-      console.log('Registration successful:', result);
-      // Actions post-registration can be handled here
-    } catch (error: any) {
-      console.error('Error during registration:', error.message || 'An unknown error occurred');
+
+
+    if (response.status === 201) {
+        const result = await response.json();
+        console.log('Registration successful:', result);
+        return true; 
+    } else {
+        console.error('Failed to sign up:', response.status);
+        return false;
     }
+ 
+  } catch (error) {
+    console.error('Error during registration:', error.message || 'An unknown error occurred');
+    return false; 
+  }
+
   };
   

@@ -7,13 +7,16 @@ export async function POST(req: Request) {
 
     
   // Validate input
-  if ( !email) {
+  if (!email) {
     return NextResponse.json({ error: "Email field is required in order to create the user signup request."}, { status: 400 });
   }
         
-    await createUserSignUpRequest(name, email, details);
+    let  operationSuccessful = await createUserSignUpRequest(name, email, details);
 
-    return NextResponse.json({ message: "Account creation request has been recorded for " + name}, { status: 201 });
+    if(operationSuccessful){
+      return NextResponse.json({ message: "Account creation request succeeded!"}, { status: 201 });
+    }
+    return NextResponse.json({ message: "Account creation request failed."}, { status: 500 });
 
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
