@@ -237,6 +237,31 @@ export async function initUserData(planType: string, userId: string, userKey: st
   return true;
 }
 
+export async function createUserSignUpRequest(name: string, email: string, details: string) {
+  'use server'
+  console.log("Creating new user signup request : ", name)
+
+ 
+  try {
+    await prisma.userSignupRequest.create({
+      data: {
+        name: name,
+        email: email,
+        details: details,
+        status: "PENDING"
+      }
+    });
+
+  } catch (error) {
+    console.log('error creating the signup request: ', error);
+    return false;
+  }
+
+  return true;
+}
+
+
+
 export async function validateDomainAndUserKey(
   domains: any[],
   userkey: string
