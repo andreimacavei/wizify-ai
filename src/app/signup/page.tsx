@@ -7,6 +7,12 @@ import { signUp } from "./authFunctions";
 import SuccessMessage from './requestSucceeded';
 import ErrorMessage from './requestFailed';
 
+interface SignUpData {
+  name: string;
+  email: string;
+  details: string;
+}
+
 const FormDataZod = z.object({
   name: z.string()
     .min(1, { message: "Field is required" })
@@ -16,9 +22,9 @@ const FormDataZod = z.object({
   details: z.string()
     .min(1, { message: "Field is required" })
     .max(500, { message: "Field must contain at most 500 characters" }),
-});
+}); 
 
-const validateFormData = (inputs: any) => {
+const validateFormData = (inputs: SignUpData) => {
   return FormDataZod.safeParse(inputs);
 };
 
