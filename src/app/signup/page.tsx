@@ -7,13 +7,13 @@ import { signUp } from "./authFunctions";
 import SuccessMessage from './requestSucceeded';
 import ErrorMessage from './requestFailed';
 
-interface SignUpData {
+interface FormData {
   name: string;
   email: string;
   details: string;
 }
 
-const FormDataZod = z.object({
+const FormDataSchema = z.object({
   name: z.string()
     .min(1, { message: "Field is required" })
     .max(18, { message: "Field must contain at most 18 characters" }),
@@ -23,10 +23,6 @@ const FormDataZod = z.object({
     .min(1, { message: "Field is required" })
     .max(500, { message: "Field must contain at most 500 characters" }),
 }); 
-
-const validateFormData = (inputs: SignUpData) => {
-  return FormDataZod.safeParse(inputs);
-};
 
 const SignUp = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -44,19 +40,20 @@ const SignUp = () => {
     const details = (event.target as any).details.value.trim();
 
     // Create the zod valid object
-    const formData = { name, email, details };
+    const formData: FormData = { name, email, details };
 
-    // Validate form data
-    const validation = validateFormData(formData);
-
-    if (!validation.success) {
-      // Set validation errors to state
-      setValidationErrors(validation.error.errors);
+    try {
+      // Validate form data using parse
+      FormDataSchema.parse(formData);
+      setValidationErrors([]);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        // Set validation errors to state
+        setValidationErrors(error.errors);
+      }
       setSubmissionSuccessful(false);
       setIsSubmitting(false);
       return; 
-    } else {
-      setValidationErrors([]);
     }
 
     try {
