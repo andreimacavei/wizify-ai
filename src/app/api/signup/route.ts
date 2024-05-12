@@ -42,22 +42,23 @@ async function sendNotificationEmail({ name, email, details }: { name: string; e
   }
 }
 
-export async function POST(req: Request) {
+
+export async function POST(req) {
   const { name, email, details } = await req.json();
   try {
     // Validate input
     if (!email) {
-      return NextResponse.json({ error: "Email field is required in order to create the user signup request."}, { status: 400 });
+      return NextResponse.json({ error: "Email field is required in order to create the user signup request." }, { status: 400 });
     }
-    
-    const operationSuccessful = await createUserSignUpRequest(name, email, details);
 
-    if (operationSuccessful) {
+    const result = await createUserSignUpRequest(name, email, details);
+
+    if (result.success) {
       await sendNotificationEmail({ name, email, details });
-      return NextResponse.json({ message: "Account creation request succeeded!"}, { status: 201 });
+      return NextResponse.json({ message: "Account creation request succeeded!" }, { status: 201 });
     }
 
-    return NextResponse.json({ message: "Account creation request failed." }, { status: 500 });
+    return NextResponse.json({ error: result.error }, { status: 400 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

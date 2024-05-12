@@ -29,6 +29,7 @@ const SignUp = () => {
   const [submissionSuccessful, setSubmissionSuccessful] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationErrors, setValidationErrors] = useState<z.ZodIssue[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -58,13 +59,15 @@ const SignUp = () => {
 
     try {
       // Attempt to sign up and wait for the response
-      const operationSuccessful = await signUp({ name, email, details });
+      const result = await signUp({ name, email, details });
 
-      setSubmissionSuccessful(operationSuccessful);
+      setSubmissionSuccessful(result.success);
+      setErrorMessage(result.error || null);
     } catch (error) {
       // If signUp throws, handle the error
       console.error("Sign Up Error:", error);
       setSubmissionSuccessful(false);
+      setErrorMessage(error.message || 'An unknown error occurred');
     }
 
     setFormSubmitted(true); // This will now correctly reflect the success or failure
@@ -236,7 +239,7 @@ const SignUp = () => {
                       submissionSuccessful ? (
                         <SuccessMessage />
                       ) : (
-                        <ErrorMessage />
+                        <ErrorMessage errorMessage={errorMessage} />
                       )
                     ) : (
                       <>
