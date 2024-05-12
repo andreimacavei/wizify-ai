@@ -254,7 +254,7 @@ export async function createUserSignUpRequest(name, email, details) {
   } catch (error) {
     console.log('error creating the signup request: ', error);
     if (error.code === 'P2002' && error.meta.target.includes('email')) {
-      return { success: false, error: "An email sign up request for " + email + " already exists" };
+      return { success: false, error: "An account sign up request for " + email + " already exists!" };
     }
     return { success: false, error: error.message };
   }
