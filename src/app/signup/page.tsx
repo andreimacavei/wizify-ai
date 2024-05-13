@@ -20,7 +20,7 @@ const FormDataSchema = z.object({
   email: z.string()
     .email({ message: "Field must be a valid email address" }),
   details: z.string()
-    .min(1, { message: "Field is required" })
+    .min(10, { message: "Field should contain between 10 to 500 characters." })
     .max(500, { message: "Field must contain at most 500 characters" }),
 }); 
 
@@ -29,6 +29,7 @@ const SignUp = () => {
   const [submissionSuccessful, setSubmissionSuccessful] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationErrors, setValidationErrors] = useState<z.ZodIssue[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -58,13 +59,15 @@ const SignUp = () => {
 
     try {
       // Attempt to sign up and wait for the response
-      const operationSuccessful = await signUp({ name, email, details });
+      const result = await signUp({ name, email, details });
 
-      setSubmissionSuccessful(operationSuccessful);
+      setSubmissionSuccessful(result.success);
+      setErrorMessage(result.error || null);
     } catch (error) {
       // If signUp throws, handle the error
       console.error("Sign Up Error:", error);
       setSubmissionSuccessful(false);
+      setErrorMessage(error.message || 'An unknown error occurred');
     }
 
     setFormSubmitted(true); // This will now correctly reflect the success or failure
@@ -100,8 +103,8 @@ const SignUp = () => {
                     <div className="flex flex-col gap-5 py-12 px-2.5 sm:px-0">
                       <h1 className="font-display text-3xl font-bold leading-[1.15] text-black sm:text-3xl sm:leading-[1.15]">
                         Enhance Your WebApp with<br />
-                        <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">Wizify AI</span>
-                      </h1>
+                        <span className="bg-gradient-to-r from-amber-500 via-orange to-yellow-500 bg-clip-text text-transparent">Wizify AI</span>
+                        </h1>
                       <h2 className="text-gray-600 sm:text-xl">Wizify AI adds AI-capabilities to your webapp without any coding!</h2>
                     </div>
 
@@ -236,7 +239,7 @@ const SignUp = () => {
                       submissionSuccessful ? (
                         <SuccessMessage />
                       ) : (
-                        <ErrorMessage />
+                        <ErrorMessage errorMessage={errorMessage} />
                       )
                     ) : (
                       <>
@@ -343,7 +346,7 @@ const SignUp = () => {
                             <button 
                               type="submit" 
                               disabled={isSubmitting} 
-                              className="animate-fade-in rounded border border-blue-600 bg-blue-600 px-6 py-2 text-sm text-white transition-all hover:bg-blue-700 hover:text-white"
+                              className="animate-fade-in rounded border border-orange  bg-orange px-6 py-2 text-sm text-white transition-all hover:bg-orangeLight hover:text-white"
                             >
                               Sign Up
                             </button>

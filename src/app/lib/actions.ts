@@ -237,11 +237,10 @@ export async function initUserData(planType: string, userId: string, userKey: st
   return true;
 }
 
-export async function createUserSignUpRequest(name: string, email: string, details: string) {
-  'use server'
-  console.log("Creating new user signup request : ", name)
+export async function createUserSignUpRequest(name, email, details) {
+  'use server';
+  console.log("Creating new user signup request : ", name);
 
- 
   try {
     await prisma.userSignupRequest.create({
       data: {
@@ -251,13 +250,14 @@ export async function createUserSignUpRequest(name: string, email: string, detai
         status: "PENDING"
       }
     });
-
+    return { success: true };
   } catch (error) {
     console.log('error creating the signup request: ', error);
-    return false;
+    if (error.code === 'P2002' && error.meta.target.includes('email')) {
+      return { success: false, error: "An account sign up request for " + email + " already exists!" };
+    }
+    return { success: false, error: error.message };
   }
-
-  return true;
 }
 
 
