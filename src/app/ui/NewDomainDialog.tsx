@@ -37,7 +37,8 @@ function NewDomainDialog() {
         {/* <button className="text-blue-500 border-black px-2 py-1 hover:underline"> */}
         {/* <button className="Button text-blue-500 border-black px-2 py-1 hover:underline"> */}
         <button onClick={() => setStatusMsg('')}
-          className="group flex items-center space-y-3 space-x-3 rounded-md border border-black bg-white px-3 py-2 text-sm font-medium text-black transition-all duration-75 hover:bg-black hover:text-white active:scale-95">
+          className="group flex items-center space-y-3 space-x-3 rounded-md border border-orange bg-orange px-3 py-2 text-sm font-medium
+           text-white transition-all duration-75 hover:bg-orangeLight hover:text-white active:scale-95">
           Add Domain
         </button>
       </Dialog.Trigger>
@@ -51,14 +52,14 @@ function NewDomainDialog() {
           className="animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-lg overflow-hidden border border-gray bg-white shadow-xl sm:rounded-xl p-8"
         >
           <Dialog.Title className="DialogTitle">
-            <p className="text-xl text-blue-500 border-b border-blue-500 pb-2 my-4">
+            <p className="text-xl text-orange border-b border-orange pb-2 my-4">
             Add Wizify to your website:
               </p>
             
           </Dialog.Title>
           <Dialog.Description className="DialogDescription">
           <label className="text-slate-600 text-xm">
-            Which website you want add to be able to use <span className='text-blue-500'>Wizify</span> on it?
+            Which website you want add to be able to use <span className='text-orange'>Wizify</span> on it?
               Use full URL path of your website.
               </label>
           </Dialog.Description>
@@ -73,7 +74,7 @@ function NewDomainDialog() {
             <div className='flex justify-end gap-2'>
               <Dialog.Close className='border border-gray-300 rounded px-2 py-1 hover:bg-gray focus-within:bg-gray-200 active:scale-95 transition-all duration-75'>Cancel</Dialog.Close>
 							<button type="submit" disabled={loading}
-								className="border text-blue-500 border-blue-500 rounded px-2 py-1 hover:bg-blue-500 hover:bg-opacity-20 focus-within:bg-opacity-20 enabled:active:scale-95 transition-all duration-75 disabled:cursor-default">
+								className="border text-orange border-orange rounded px-2 py-1 hover:bg-orange hover:bg-opacity-20 focus-within:bg-opacity-20 enabled:active:scale-95 transition-all duration-75 disabled:cursor-default">
                 Add
               </button>
 							
