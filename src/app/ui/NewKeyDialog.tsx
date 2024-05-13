@@ -61,8 +61,8 @@ function NewKeyDialog() {
   <Dialog.Root open={open} onOpenChange={handleOnOpenChange}>
 			
       <Dialog.Trigger asChild>
-      <button className="mt-4 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-        Add new key
+      <button className="mt-4 rounded bg-orange px-4 py-2 font-bold text-white hover:bg-orangeDark">
+        Add Key
       </button>
       </Dialog.Trigger>
 			<Dialog.Portal>
@@ -75,14 +75,14 @@ function NewKeyDialog() {
           className="animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-lg overflow-hidden border border-gray bg-white shadow-xl sm:rounded-xl p-8"
         >
           <Dialog.Title className="DialogTitle">
-            <p className="text-xl text-blue-500 border-b border-blue-500 pb-2 my-4">
+            <p className="text-xl text-orange border-b border-orange pb-2 my-4">
             Add a new Open AI API Key
             </p>
             
           </Dialog.Title>
           <Dialog.Description className="DialogDescription">
           <label className="text-slate-600 text-xm">
-              You can add your own  <span className='text-blue-500'>Open AI API Key</span> and reduce
+              You can add your own  <span className='text-orange'>Open AI API Key</span> and reduce
               the costs of using our service.
           </label>
           </Dialog.Description>
@@ -105,7 +105,7 @@ function NewKeyDialog() {
                 Cancel
               </Dialog.Close>
 							<button type="submit" disabled={loading}
-								className="border text-blue-500 border-blue-500 rounded px-2 py-1 hover:bg-blue-500 hover:bg-opacity-20 focus-within:bg-opacity-20 enabled:active:scale-95 transition-all duration-75 disabled:cursor-default">
+								className="border text-orange border-orange rounded px-2 py-1 hover:bg-orange hover:bg-opacity-20 focus-within:bg-opacity-20 enabled:active:scale-95 transition-all duration-75 disabled:cursor-default">
                 Add
               </button>
 							

@@ -80,7 +80,7 @@ export default function ProfilePage() {
               <button
                 type="button"
                 onClick={() => handleEditToggle(field, idx)}
-                className="text-blue-500"
+                className="text-orange"
               >
                 {userDetails.editables[field][idx] ? "Save" : "Edit"}
               </button>
@@ -98,17 +98,14 @@ export default function ProfilePage() {
             <button
               type="button"
               onClick={() => handleEditToggle(field)}
-              className="text-blue-500"
+              className="text-orange"
             >
               {userDetails.editables[field] ? "Save" : "Edit"}
             </button>
           </div>
         );
       })}
-      <button
-        type="submit"
-        className="rounded bg-blue-500 px-4 py-2 text-white"
-      >
+      <button type="submit" className="bg-orange rounded px-4 py-2 text-white">
         Save Changes
       </button>
     </form>

@@ -34,8 +34,6 @@ function NewDomainDialog() {
   <Dialog.Root open={open} onOpenChange={setOpen}>
 			
       <Dialog.Trigger asChild>
-        {/* <button className="text-blue-500 border-black px-2 py-1 hover:underline"> */}
-        {/* <button className="Button text-blue-500 border-black px-2 py-1 hover:underline"> */}
         <button onClick={() => setStatusMsg('')}
           className="group flex items-center space-y-3 space-x-3 rounded-md border border-orange bg-orange px-3 py-2 text-sm font-medium
            text-white transition-all duration-75 hover:bg-orangeLight hover:text-white active:scale-95">

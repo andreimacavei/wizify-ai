@@ -14,7 +14,7 @@ import { DomainsContext }  from "@/app/context";
 
 export default function DashboardCard(
   // { userDomains }: { userDomains: [{}] }
-  { scriptText }: { scriptText: string }
+  { scriptText, wizifyUrl }: { scriptText: string, wizifyUrl: string}
 ) {
   
   const [loading, setLoading] = useState(true);
@@ -65,7 +65,7 @@ export default function DashboardCard(
       {error && <div>Not logged in</div>}
       {domains && (
         <>
-        {domains.length === 0 && <NoDomains />}
+          {domains.length === 0 && <NoDomains wizifyUrl={wizifyUrl} />}
         {domains.length > 0 && (
           <>
             <h2 className="text-2xl font-bold">Your registrated domains</h2>

@@ -40,6 +40,7 @@ const config: Config = {
         'gray-3': '#FAFAFA',
         orange: '#FF5C36',
         orangeLight: '#FF7A59',
+        orangeDark: '#EE5D19', // '#FF3A00'
         whiten: '#F1F5F9',
         whiter: '#F5F7FD',
         boxdark: '#24303F',

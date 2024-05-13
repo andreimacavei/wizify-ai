@@ -17,8 +17,8 @@ export default async function page() {
   // TODO: Handle timezone change
 
   return (
-		<div className='col-span-1 auto-rows-min grid-cols-1 lg:col-span-5 border-gray-50 rounded-lg border-2 bg-white mt-4 p-3 shadow sm:p-4'>
-			<h2 className="text-xl text-blue-500 border-b border-blue-500 pb-2 my-4">Profile:</h2>
+		<div className='col-span-1 auto-rows-min grid-cols-1 lg:col-span-5 rounded-lg border-1 bg-white mt-4 p-3 shadow sm:p-4'>
+			<h2 className="text-xl text-orange border-b border-orange pb-2 my-4">Profile:</h2>
       <form action={updateProfile} className="flex flex-col gap-4">
         {/* <ProfileImageUpdater id={user.id} img={user.image!} /> */}
         <label htmlFor="name" className="text-slate-400 text-xs">
@@ -30,7 +30,7 @@ export default async function page() {
           </input>
         
         <div className='flex justify-end gap-2'>
-          <button type="submit" className="border text-blue-500 border-blue-500 rounded px-2 py-1 hover:bg-blue-500 hover:bg-opacity-20 focus-within:bg-blue-500 focus-within:bg-opacity-20 active:scale-95 transition-all duration-75">Save Changes</button>
+          <button type="submit" className="border text-orange border-orange rounded px-2 py-1 hover:bg-orange hover:bg-opacity-20 focus-within:bg-orange focus-within:bg-opacity-20 active:scale-95 transition-all duration-75">Save Changes</button>
           <Link href="/dashboard" className='border border-gray rounded px-2 py-1 hover:bg-gray-200 focus-within:bg-gray-200 active:scale-95 transition-all duration-75'>Cancel</Link>
         </div>
       </form>
