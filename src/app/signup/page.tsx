@@ -346,7 +346,7 @@ const SignUp = () => {
                             <button 
                               type="submit" 
                               disabled={isSubmitting} 
-                              className="animate-fade-in rounded border border-orange  bg-orange px-6 py-2 text-sm text-white transition-all hover:bg-blue-700 hover:text-white"
+                              className="animate-fade-in rounded border border-orange  bg-orange px-6 py-2 text-sm text-white transition-all hover:bg-orange hover:text-white"
                             >
                               Sign Up
                             </button>
