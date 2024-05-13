@@ -38,6 +38,15 @@ export default async function Page() {
           </SignInButton>
           <div className="mb-4 mt-1 border-t border-gray-300" />
           <EmailForm />
+          
+          <p className="flex justify-center mb-5 text-gray-700 dark:text-gray-300">
+             Don't have an account? 
+          <a href="signup" className="ml-2 text-blue-600 hover:text-blue-800 underline">
+           SignUp
+          </a>
+</p>
+
+
         </div>
       </div>
     </div>
