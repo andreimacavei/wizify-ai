@@ -46,10 +46,15 @@ async function sendNotificationEmail({ name, email, details }: { name: string; e
 export async function POST(req) {
   const { name, email, details } = await req.json();
   try {
-    // Validate input
+    // Validate email
     if (!email) {
       return NextResponse.json({ error: "Email field is required in order to create the user signup request." }, { status: 400 });
     }
+    // validate details
+    if (!details || details.length < 10) {
+      return NextResponse.json({ error: "Details field is required and must be at least 10 characters long." }, { status: 400 });
+    }
+
 
     const result = await createUserSignUpRequest(name, email, details);
 

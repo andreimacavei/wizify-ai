@@ -20,7 +20,7 @@ const FormDataSchema = z.object({
   email: z.string()
     .email({ message: "Field must be a valid email address" }),
   details: z.string()
-    .min(1, { message: "Field is required" })
+    .min(10, { message: "Field should contain between 10 to 500 characters." })
     .max(500, { message: "Field must contain at most 500 characters" }),
 }); 
 
