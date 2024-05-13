@@ -88,8 +88,12 @@ export default function UsageCard({ userId }) {
         </div>
       <div className="flex gap-4 mt-4 items-center border-gray rounded-lg border-2 bg-white p-3 pr-1 shadow hover:shadow-md sm:p-4" role="listitem">
         <div className="grow flex gap-4 sm:items-center flex-col">
-          <p className="text-gray-400">Upgrade plan to get more credits and domains.</p>
-          <button onClick={handleClick} className={`group flex items-center space-x-3 rounded-md border border-black bg-black px-3 py-2 text-sm font-medium text-white transition-all duration-75 hover:bg-white hover:text-black active:scale-95 `}>Upgrade plan</button>
+          <p className="text-gray-400">Upgrade Subscription and get premium services.</p>
+          <button onClick={handleClick}
+            className="group flex items-center space-x-3 rounded-md border border-indigo-500 bg-indigo-500 px-3 py-2 text-sm font-medium
+             text-white transition-all duration-75 hover:bg-indigo-600 active:scale-95">
+            Upgrade plan
+          </button>
         </div>
       </div>
       <div className="flex gap-4 mt-4 items-center border-gray rounded-lg border-2 bg-white p-3 pr-1 shadow hover:shadow-md sm:p-4" role="listitem">

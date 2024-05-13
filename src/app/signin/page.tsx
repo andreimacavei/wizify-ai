@@ -25,7 +25,7 @@ export default async function Page() {
             <Image src="/images/logo/logo-1.png" width="80" height="80" className="w-16" alt="Wizify Logo" />
           </a>
           <h3 className="text-xl font-semibold">Sign in to <span className="text-orange">Wizify</span></h3>
-          <p className="text-sm text-gray-500">Start using AI on your website.</p>
+          <p className="text-sm text-gray-500 font-semibold">Boost your business with AI widgets</p>
         </div>
         <div className="flex flex-col space-y-3 bg-gray-50 px-4 py-10 sm:px-16">
           <SignInButton providerId="google">

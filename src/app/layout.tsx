@@ -47,8 +47,8 @@ export default async function RootLayout({
           <div className="dark:bg-boxdark-2 dark:text-bodydark">  
             {/* {loading ? <Loader /> : children} */}
             {children}
-          </div>
-          <Footer />
+            </div>    
+            <Footer />
           <Analytics />
         </SessionProvider>
       </body>
