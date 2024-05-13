@@ -8,7 +8,7 @@ export default async function ProfileServer () {
   if (!session || !session.user) {
     return (
       <div>
-        <a className="animate-fade-in rounded-full border border-black bg-black px-4 py-1.5 text-sm text-white transition-all hover:bg-white hover:text-black"
+        <a className="animate-fade-in rounded-full border border-orange bg-orange px-4 py-1.5 text-sm text-white transition-all hover:bg-orangeDark"
           href="/signin">Sign In</a>
       </div>
     );

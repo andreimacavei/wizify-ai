@@ -43,12 +43,15 @@ export default function EmailForm() {
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+            className="mt-1 block w-full appearance-none rounded-md border 
+              border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm 
+              focus:border-black focus:outline-none focus:ring-black sm:text-sm"
           >
             </input>
           </div>
         )}
-        <button className="h-10 w-full items-center justify-center space-x-2 rounded-md border px-4 text-sm transition-all focus:outline-none border-gray-100 hover:border-black"
+      <button className="h-10 w-full items-center justify-center space-x-2 rounded-md border 
+        px-4 text-sm transition-all focus:outline-none border-gray-100 hover:border-black hover:bg-slate-500 hover:bg-opacity-10"
           {...(!showEmailOption && {
             type: "button",
             onClick: (e) => {

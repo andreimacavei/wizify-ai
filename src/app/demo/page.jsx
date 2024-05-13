@@ -6,5 +6,5 @@ export default async function DemoPage() {
   const session = await getServerSession(authOptions);
   const clientKey = process.env.WIZZARD_AI_PUBLIC_CLIENT_KEY;
 
-  return <ProductIntro user={session.user} clientKey={clientKey} />;
+  return <ProductIntro user={session && session.user} clientKey={clientKey} />;
 }

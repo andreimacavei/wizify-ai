@@ -78,12 +78,12 @@ const SignUp = () => {
     <div className="flex h-screen overflow-hidden">
       <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
         <main>
-          <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+          <div className="mx-auto max-w-screen-xl p-4 md:p-6 2xl:p-10">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="flex flex-wrap items-center">
-                <div className="hidden w-full xl:block xl:w-1/2">
+                <div className="hidden w-full lg:block lg:w-1/2">
                   <div className="px-26 py-17.5 text-center">
-                    <Link className="mb-5.5 inline-block" href="/">
+                    <Link className="mb-2 inline-block" href="/">
                       <Image
                         className="hidden dark:block"
                         src={"/images/logo/logo-1.png"}
@@ -103,7 +103,7 @@ const SignUp = () => {
                     <div className="flex flex-col gap-5 py-12 px-2.5 sm:px-0">
                       <h1 className="font-display text-3xl font-bold leading-[1.15] text-black sm:text-3xl sm:leading-[1.15]">
                         Enhance Your WebApp with<br />
-                        <span className="bg-gradient-to-r from-amber-500 via-orange to-yellow-500 bg-clip-text text-transparent">Wizify AI</span>
+                        <span className="bg-gradient-to-r from-amber-500 via-orange to-orangeDark bg-clip-text text-transparent">Wizify AI</span>
                         </h1>
                       <h2 className="text-gray-600 sm:text-xl">Wizify AI adds AI-capabilities to your webapp without any coding!</h2>
                     </div>
@@ -233,7 +233,7 @@ const SignUp = () => {
                   </div>
                 </div>
 
-                <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+                <div className="w-full border-stroke dark:border-strokedark lg:w-1/2 lg:border-l-2">
                   <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
                     {formSubmitted ? (
                       submissionSuccessful ? (
@@ -254,7 +254,7 @@ const SignUp = () => {
                         )}
                         <span className="mb-1.5 block font-medium">Start for free</span>
                         <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                          Sign Up to Wizify
+                          Sign Up to <span className="text-orange">Wizify</span>
                         </h2>
 
                         <form onSubmit={handleSubmit}>
@@ -346,7 +346,7 @@ const SignUp = () => {
                             <button 
                               type="submit" 
                               disabled={isSubmitting} 
-                              className="animate-fade-in rounded border border-orange  bg-orange px-6 py-2 text-sm text-white transition-all hover:bg-orangeLight hover:text-white"
+                              className="animate-fade-in rounded border border-orange  bg-orange px-6 py-2 text-sm text-white transition-all hover:bg-orangeDark hover:text-white"
                             >
                               Sign Up
                             </button>

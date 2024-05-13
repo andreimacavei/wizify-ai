@@ -13,7 +13,7 @@ export default function Hero({
     <div className="flex flex-col gap-5 py-12 px-2.5 sm:px-0">
       <h1 className="font-display text-3xl font-bold leading-[1.15] text-black sm:text-6xl sm:leading-[1.15]">
         Enhance Your WebApp with<br />
-        <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">Wizify AI</span>
+        <span className="bg-gradient-to-r from-cyan-500 via-orangeLight  to-orangeDark bg-clip-text text-transparent">Wizify AI</span>
       </h1>
       <h2 className="text-gray-600 sm:text-xl">Wizify AI adds AI-capabilities to your webapp without any coding!.</h2>
       

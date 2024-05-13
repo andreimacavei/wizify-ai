@@ -14,9 +14,9 @@ export default async function Header() {
 		<header className="sticky left-0 right-0 top-0 z-20 border-b border-gray-200 bg-white">
 			<div className='flex justify-between items-center mx-auto w-full max-w-screen-xl py-2 px-2.5'>
 				<h1 className="text-3xl">
-					<Link href={`${landingPageUrl}/`} className='flex flex-row gap-1 items-center font-bold text-blue_ai'>
+					<Link href={`${landingPageUrl}/`} className='flex flex-row gap-1 items-center'>
 					<Image src="/images/logo/logo-1.png" alt='Logo' width={50} height={50} />
-						Wizify
+					<span className="font-bold bg-gradient-to-r from-cyan-500 via-orangeLight  to-orange bg-clip-text text-transparent">Wizify</span>
 					</Link>
 				</h1>
 
