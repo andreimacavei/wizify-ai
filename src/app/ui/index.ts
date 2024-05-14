@@ -4,7 +4,6 @@ import DashboardCard from "./DashboardCard";
 import DeleteDialog from "./DeleteDialog";
 import NoDomains from "./NoDomains";
 import Sidebar from "./Sidebar";
-import Stepper from "./Stepper";
 import CopyToClipboardButton from "./CopyToClipboardButton";
 import NewDomainDialog from "./NewDomainDialog";
 import NewKeyDialog from "./NewKeyDialog";
@@ -22,6 +21,5 @@ export {
   NewDomainDialog,
   NewKeyDialog,
   NoDomains,
-  Sidebar,
-  Stepper
+  Sidebar
 }
