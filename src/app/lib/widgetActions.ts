@@ -198,3 +198,146 @@ export async function fetchWidgetOptionsByUserId(userId) {
       return { success: false, error: error.message };
     }
   }
+
+  export async function fetchWidgetAction(actionId) {
+    'use server';
+    console.log("Fetching widget action for actionId: ", actionId);
+  
+    try {
+      const action = await prisma.widgetActions.findUnique({
+        where: { id: actionId },
+      });
+  
+      if (!action) {
+        throw new Error(`Action with ID ${actionId} not found`);
+      }
+  
+      return {
+        id: action.id,
+        name: action.name,
+        description: action.description,
+        prompt: action.prompt,
+        isEnabled: action.isEnabled,
+        isApproved: action.isApproved,
+      };
+    } catch (error) {
+      console.log('Error fetching widget action: ', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+
+
+  export async function fetchWidgetOptionsForWebsite(userKey) {
+    'use server';
+    console.log("Fetching widget options for website for userKey: ", userKey);
+  
+    try {
+      // Fetch the user by userKey
+      const userKeyRecord = await prisma.userKey.findUnique({
+        where: { key: userKey },
+        include: { user: true },
+      });
+  
+      if (!userKeyRecord) {
+        throw new Error(`User with key ${userKey} not found`);
+      }
+  
+      const userId = userKeyRecord.user.id;
+  
+      // Fetch the user's widget
+      const widget = await prisma.widget.findUnique({
+        where: { userId },
+        include: {
+          subscription: {
+            include: {
+              plan: true,
+            },
+          },
+          widgetOptions: {
+            include: {
+              option: true,
+            },
+          },
+        },
+      });
+  
+      if (!widget) {
+        // If no widget is found, return an empty result
+        return {
+          userId: userId,
+          widgetId: null,
+          subscriptionId: null,
+          planName: null,
+          planOptions: [],
+          customOptions: [],
+        };
+      }
+  
+      const subscription = widget.subscription;
+      const plan = subscription?.plan;
+  
+      // Fetch plan options if a plan exists and apply filters
+      const planOptionsData = plan ? await prisma.planOptions.findMany({
+        where: {
+          planId: plan.id,
+          option: {
+            isEnabled: true,
+            isApproved: true,
+          },
+        },
+        include: {
+          option: true,
+        },
+      }) : [];
+  
+      // Fetch custom options for the widget and apply filters
+      const customOptionsData = await prisma.widgetOptions.findMany({
+        where: {
+          widgetId: widget.id,
+          isCustom: true,
+          option: {
+            isEnabled: true,
+            isApproved: true,
+          },
+        },
+        include: {
+          option: true,
+        },
+      });
+  
+      // Map the options to the expected structure
+      const planOptions = planOptionsData.map(po => ({
+        id: po.option.id,
+        name: po.option.name,
+        description: po.option.description,
+        prompt: po.option.prompt,
+        isEnabled: po.option.isEnabled,
+      }));
+  
+      const customOptions = customOptionsData.map(co => ({
+        id: co.option.id,
+        name: co.option.name,
+        description: co.option.description,
+        prompt: co.option.prompt,
+        isEnabled: co.option.isEnabled,
+        isApproved: co.option.isApproved,
+      }));
+  
+      // Construct the result
+      const result = {
+        userId: userId,
+        widgetId: widget.id,
+        subscriptionId: subscription?.id || null,
+        planName: plan?.name || null,
+        planOptions: planOptions,
+        customOptions: customOptions,
+      };
+  
+      return result;
+    } catch (error) {
+      console.log('Error fetching widget options for website: ', error);
+      return { success: false, error: error.message };
+    }
+  }
+  

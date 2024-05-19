@@ -4,6 +4,8 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { Pool } from '@neondatabase/serverless' 
 import { validateDomainAndUserKey } from '@/app/lib/actions';
+import { fetchWidgetAction } from '@/app/lib/widgetActions';
+ 
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -56,6 +58,8 @@ export async function GET(req: Request) {
     return new Response('Missing content or action', { status: 400 });
   }
 
+  console.log("Received new enhanceRequest with action: " + action + " and content: " + content + " userKey is " +   searchParams.get('userkey'));
+
   // Get domains with same hostname
   const domains = await prisma.domains.findMany({
     where: {
@@ -74,6 +78,7 @@ export async function GET(req: Request) {
       validatedDomain = domain;
     }
   });
+
 
   // If no validated domain found, validate the domain and user key
   if (!isValid) {
@@ -108,124 +113,144 @@ export async function GET(req: Request) {
     return new Response('Not enough credits', { status: 402 });
   }
 
-  let prompt = '';
-  switch (action.toLowerCase()) {
-    case 'fix_spelling':
-      prompt = `Fix all grammar and spelling issues in the following text: "${content}". `;
-      break;
-    case 'change_tone':
-      const tone = searchParams.get('tone') || 'friendly';
-      prompt = `Change the tone of the following text to be more "${tone}: "${content}"`;
-      break;
-    case 'make_shorter':
-      prompt = `Shorten the following text: "${content}"`;
-      break;
-    case 'make_longer':
-      prompt = `Make the following text more verbose: "${content}"`;
-      break;
-    case 'translate':
-      const langParam = searchParams.get('lang')?.toLowerCase() || 'en';
-      const lang = language[langParam as keyof typeof language] || 'English';
-      prompt = `Translate the following text to ${lang}: "${content}"`;
-      break;
-    case 'check_tone':
-      prompt = "Analyze the tone of the following text and clasify it into one category of the following: "
-      + "aggresive, threatening, ironic, sarcastic, professional, casual, friendly, straighforward, confident, casual, neutral: "
-      + `"${content}". Format the answer as a single word.`;
-      break;
-    default:
-      return new Response('Invalid action', { status: 400 });
+  const actionId = parseInt(action, 10);
+
+  const widgetData = await fetchWidgetAction(actionId);
+  let prompt = "";
+  if(widgetData.isApproved){
+    prompt = `${widgetData.prompt} + ". The text is: "${content}".`;
+  }else{
+    return new Response('Action is not approved yet', { status: 400 });
   }
 
-  // console.log('Prompt:', prompt);
+  console.log("Created the prompt: " + prompt);
 
-  // Check if user has added an own OpenAI API key
-  let userApiKeys = await prisma.apiKey.findMany({
-    where: {
-      userId: userId,
-    },
-  });
-  // Check which API key is valid & enabled
-  let validApiKey = null;
-  userApiKeys.forEach((key) => {
-    if (key.valid && key.enabled) {
-      validApiKey = key;
-      return;
-    }
-  });
-
-  const isUsingUserApiKey = validApiKey && validApiKey.enabled ? true : false;
-  let response;
-  // Ask OpenAI for a streaming completion given the prompt
-  if (isUsingUserApiKey) {
-    const openai = new OpenAI({
-      apiKey: validApiKey.key,
-    });
-    response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        max_tokens: 100,
-        messages: [{ role: 'user', content: prompt }],
-      });
-  } else {
-    // Use the default OpenAI API key
-    response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        max_tokens: 100,
-        messages: [{ role: 'user', content: prompt }],
-      });
-  }
-  
-  // console.log('Response:', response.choices[0].message.content.trim());
-  // console.log("Usage:", response.usage);
-  
-  if (!isUsingUserApiKey) {
-  // Update the credits count for the user's subscription
-  const tokenCount = response.usage.total_tokens;
-    const updatedSubscription = await prisma.subscription.update({
-      where: {
-        id: subscription.id,
-      },
-      data: {
-        usedCredits: {
-          increment: tokenCount,
-        },
-      },
-    });
-    // console.log(`Updated user ${user.email} credits: ${updatedSubscription.usedCredits}`);
-
-  // Update the domain usage
-  const updatedDomain = await prisma.domains.update({
-    where: {
-      id: validatedDomain.id,
-    },
-    data: {
-      usage: {
-        increment: tokenCount,
-      },
-    },
-  });
-  }
-
-  let aiResponseText = response.choices[0].message.content.trim();
-
-  // Check if the response text starts with double quotes and remove them
-  if (aiResponseText.startsWith('"')) {
-    // Remove the first and last characters (double quotes) from the response text
-    aiResponseText = aiResponseText.substring(1, aiResponseText.length - 1);
-  }
-
-  // End the `Pool` inside the same request handler as per here:
-  // https://github.com/prisma/prisma/issues/20566#issuecomment-1992552703
-  // (unlike `await`, `waitUntil` won't hold up the response)
-  // Not working with route handler => see workaround here: https://github.com/vercel/next.js/issues/50522
-  // waitUntil(async () => await prisma.$disconnect());
-  // waitUntil(async () => await pool.end());
-
-  // Respond with the stream
-  return new Response(aiResponseText, {
+  return new Response(prompt, {
     headers: {
       'Content-Type': 'text/plain',
     },
   });
+
+
+  // switch (action.toLowerCase()) {
+  //   case 'fix_spelling':
+  //     prompt = `Fix all grammar and spelling issues in the following text: "${content}". `;
+  //     break;
+  //   case 'change_tone':
+  //     const tone = searchParams.get('tone') || 'friendly';
+  //     prompt = `Change the tone of the following text to be more "${tone}: "${content}"`;
+  //     break;
+  //   case 'make_shorter':
+  //     prompt = `Shorten the following text: "${content}"`;
+  //     break;
+  //   case 'make_longer':
+  //     prompt = `Make the following text more verbose: "${content}"`;
+  //     break;
+  //   case 'translate':
+  //     const langParam = searchParams.get('lang')?.toLowerCase() || 'en';
+  //     const lang = language[langParam as keyof typeof language] || 'English';
+  //     prompt = `Translate the following text to ${lang}: "${content}"`;
+  //     break;
+  //   case 'check_tone':
+  //     prompt = "Analyze the tone of the following text and clasify it into one category of the following: "
+  //     + "aggresive, threatening, ironic, sarcastic, professional, casual, friendly, straighforward, confident, casual, neutral: "
+  //     + `"${content}". Format the answer as a single word.`;
+  //     break;
+  //   default:
+  //     return new Response('Invalid action', { status: 400 });
+  // }
+
+  // console.log('Prompt:', prompt);
+
+  // // Check if user has added an own OpenAI API key
+  // let userApiKeys = await prisma.apiKey.findMany({
+  //   where: {
+  //     userId: userId,
+  //   },
+  // });
+  // // Check which API key is valid & enabled
+  // let validApiKey = null;
+  // userApiKeys.forEach((key) => {
+  //   if (key.valid && key.enabled) {
+  //     validApiKey = key;
+  //     return;
+  //   }
+  // });
+
+  // const isUsingUserApiKey = validApiKey && validApiKey.enabled ? true : false;
+  
+  
+  // let response;
+  // // Ask OpenAI for a streaming completion given the prompt
+  // if (isUsingUserApiKey) {
+  //   const openai = new OpenAI({
+  //     apiKey: validApiKey.key,
+  //   });
+  //   response = await openai.chat.completions.create({
+  //       model: 'gpt-3.5-turbo',
+  //       max_tokens: 100,
+  //       messages: [{ role: 'user', content: prompt }],
+  //     });
+  // } else {
+  //   // Use the default OpenAI API key
+  //   response = await openai.chat.completions.create({
+  //       model: 'gpt-3.5-turbo',
+  //       max_tokens: 100,
+  //       messages: [{ role: 'user', content: prompt }],
+  //     });
+  // }
+  
+  // // console.log('Response:', response.choices[0].message.content.trim());
+  // // console.log("Usage:", response.usage);
+  
+  // if (!isUsingUserApiKey) {
+  // // Update the credits count for the user's subscription
+  // const tokenCount = response.usage.total_tokens;
+  //   const updatedSubscription = await prisma.subscription.update({
+  //     where: {
+  //       id: subscription.id,
+  //     },
+  //     data: {
+  //       usedCredits: {
+  //         increment: tokenCount,
+  //       },
+  //     },
+  //   });
+  //   // console.log(`Updated user ${user.email} credits: ${updatedSubscription.usedCredits}`);
+
+  // // Update the domain usage
+  // const updatedDomain = await prisma.domains.update({
+  //   where: {
+  //     id: validatedDomain.id,
+  //   },
+  //   data: {
+  //     usage: {
+  //       increment: tokenCount,
+  //     },
+  //   },
+  // });
+  // }
+
+  // let aiResponseText = response.choices[0].message.content.trim();
+
+  // // Check if the response text starts with double quotes and remove them
+  // if (aiResponseText.startsWith('"')) {
+  //   // Remove the first and last characters (double quotes) from the response text
+  //   aiResponseText = aiResponseText.substring(1, aiResponseText.length - 1);
+  // }
+
+  // // End the `Pool` inside the same request handler as per here:
+  // // https://github.com/prisma/prisma/issues/20566#issuecomment-1992552703
+  // // (unlike `await`, `waitUntil` won't hold up the response)
+  // // Not working with route handler => see workaround here: https://github.com/vercel/next.js/issues/50522
+  // // waitUntil(async () => await prisma.$disconnect());
+  // // waitUntil(async () => await pool.end());
+
+  // // Respond with the stream
+  // return new Response(aiResponseText, {
+  //   headers: {
+  //     'Content-Type': 'text/plain',
+  //   },
+  // });
 }
 
