@@ -1,7 +1,5 @@
 let BASE_URL = "http://localhost:3000/api/enhance";
-let CLIENT_KEY =
-  extractClientId(document.currentScript.getAttribute("src")) || "";
-let fetchedOptions = null;
+let CLIENT_KEY = extractClientId(document.currentScript.getAttribute("src")) || "";
 
 function extractClientId(url) {
   const regex = /client_key=([^&]*)/;
