@@ -100,7 +100,7 @@ model Widget {
 }
 
 model WidgetActions {
-  id            Int             @id @default(autoincrement()) // Changed to Int
+  id            Int             @id @default(autoincrement())
   name          String
   description   String?
   prompt        String?

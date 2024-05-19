@@ -28,11 +28,10 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
-    const { widgetId, optionId, isEnabled, name, description, prompt } = await req.json();
-    console.log(`POST request received with data: widgetId=${widgetId}, optionId=${optionId}, isEnabled=${isEnabled}, name=${name}, description=${description}, prompt=${prompt}`);
+    const { widgetId, name, description, prompt } = await req.json();
+    console.log(`POST request received with data: widgetId=${widgetId}, name=${name}, description=${description}, prompt=${prompt}`);
 
     if (name && description && prompt) {
-      // Handle adding custom action
       const response = await addCustomAction(widgetId, name, description, prompt);
       if (!response.success) {
         console.error(`Error adding custom action: ${response.error}`);
@@ -40,15 +39,6 @@ export async function POST(req) {
       }
       console.log('Custom action added successfully');
       return NextResponse.json({ success: true, action: response.action }, { status: 200 });
-    } else if (optionId && typeof isEnabled === 'boolean') {
-      // Handle updating option
-      const response = await updateOption(widgetId, optionId, isEnabled);
-      if (!response.success) {
-        console.error(`Error updating option: ${response.error}`);
-        return NextResponse.json(response, { status: 500 });
-      }
-      console.log('Option updated successfully');
-      return NextResponse.json({ success: true }, { status: 200 });
     } else {
       console.error('Invalid input for POST request');
       return NextResponse.json({ success: false, error: 'Invalid input' }, { status: 400 });

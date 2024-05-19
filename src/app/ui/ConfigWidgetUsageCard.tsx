@@ -1,3 +1,4 @@
+// configWidgetUsageCard.tsx
 'use client';
 import { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -19,19 +20,20 @@ const updateOptionFlag = async (widgetId, optionId, isEnabled) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ widgetId, optionId: parseInt(optionId, 10), isEnabled }),
+    body: JSON.stringify({ widgetId, optionId, isEnabled }),
   });
   const data = await response.json();
   return data;
 };
 
 const deleteCustomOption = async (widgetId, optionId) => {
+  console.log("Tryyying to delete option " + optionId + " from widget " + widgetId);
   const response = await fetch(`/api/widget`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ widgetId, optionId: parseInt(optionId, 10) }),
+    body: JSON.stringify({ widgetId, optionId }),
   });
   const data = await response.json();
   return data;
@@ -85,7 +87,7 @@ export default function UsageCard({ userId }) {
 
   const handleOptionChange = async (optionId, isEnabled) => {
     try {
-      const response = await updateOptionFlag(widgetData.userId, optionId, isEnabled);
+      const response = await updateOptionFlag(widgetData.widgetId, optionId, isEnabled);
       if (!response.success) {
         setError(response.error);
       } else {
@@ -108,8 +110,10 @@ export default function UsageCard({ userId }) {
   };
 
   const handleDeleteOption = async (optionId) => {
+    console.log("Trying to delete option " + optionId + " from widget " + widgetData.widgetId);
+
     try {
-      const response = await deleteCustomOption(widgetData.userId, optionId);
+      const response = await deleteCustomOption(widgetData.widgetId, optionId);
       if (!response.success) {
         setError(response.error);
       } else {
@@ -137,7 +141,7 @@ export default function UsageCard({ userId }) {
     }
 
     try {
-      const response = await addCustomAction(widgetData.userId, name, description, prompt);
+      const response = await addCustomAction(widgetData.widgetId, name, description, prompt);
       if (!response.success) {
         setError(response.error);
       } else {
@@ -188,6 +192,7 @@ export default function UsageCard({ userId }) {
                       <td className="border px-4 py-2">{option.prompt}</td>
                       <td className="border px-4 py-2">
                         <input
+                          disabled
                           type="checkbox"
                           checked={option.isEnabled}
                           readOnly
