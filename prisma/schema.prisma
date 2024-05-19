@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
@@ -28,8 +22,7 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -67,7 +60,7 @@ model User {
   createdAt      DateTime      @default(now())
   activeKey      String?
   userKeys       UserKey[]
-  widgets        Widget[]
+  widget         Widget? // Single widget
   apiKeys        ApiKey[]
 }
 
@@ -87,19 +80,44 @@ model ApiKey {
   key         String   @unique
   description String?
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now())
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   enabled     Boolean  @default(false)
   valid       Boolean  @default(false)
 }
 
 model Widget {
-  id        String   @id @default(uuid())
-  userId    String
-  config    Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id             String          @id @default(uuid())
+  userId         String          @unique
+  subscriptionId Int
+  config         Json
+  domainPrompt   String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subscription   Subscription    @relation(fields: [subscriptionId], references: [id])
+  widgetOptions  WidgetOptions[]
+}
+
+model WidgetActions {
+  id            Int             @id @default(autoincrement()) // Changed to Int
+  name          String
+  description   String?
+  prompt        String?
+  isEnabled     Boolean         @default(true)
+  isApproved    Boolean?
+  widgetOptions WidgetOptions[]
+  planOptions   PlanOptions[]
+}
+
+model WidgetOptions {
+  widget   Widget        @relation(fields: [widgetId], references: [id])
+  widgetId String
+  option   WidgetActions @relation(fields: [optionId], references: [id])
+  optionId Int // Changed to Int
+  isCustom Boolean       @default(false)
+
+  @@id([widgetId, optionId])
 }
 
 model VerificationToken {
@@ -117,7 +135,7 @@ model domains {
   userId    String
   usage     Int      @default(0)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now())
   validated Boolean  @default(false)
 }
 
@@ -130,7 +148,8 @@ model Subscription {
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now())
+  widget      Widget[]
 }
 
 model Plan {
@@ -140,4 +159,15 @@ model Plan {
   domainsAllowed  Int // Use 'null' to represent 'unlimited'
   creditsPerMonth Int // Use 'null' to represent 'unlimited', BigInt for large numbers
   subscriptions   Subscription[]
+  planOptions     PlanOptions[]
+}
+
+model PlanOptions {
+  id       Int           @id @default(autoincrement())
+  planId   Int
+  optionId Int // Changed to Int
+  plan     Plan          @relation(fields: [planId], references: [id])
+  option   WidgetActions @relation(fields: [optionId], references: [id])
+
+  @@unique([planId, optionId])
 }

@@ -186,6 +186,10 @@ export async function initUserData(planType: string, userId: string, userKey: st
       }
     });
 
+    if (!plan) {
+      throw new Error('Plan not found');
+    }
+
   } catch (error) {
     console.log('error getting plan: ', error);
     return false;
@@ -203,6 +207,23 @@ export async function initUserData(planType: string, userId: string, userKey: st
 
   } catch (error) {
     console.log('error creating subscription: ', error);
+    return false;
+  }
+
+  // Create widget
+  let widget;
+  try {
+    widget = await prisma.widget.create({
+      data: {
+        userId,
+        subscriptionId: subscription.id,
+        config: {},
+        domainPrompt: null
+        // No need to populate widgetOptions here
+      }
+    });
+  } catch (error) {
+    console.log('error creating widget: ', error);
     return false;
   }
 
@@ -225,7 +246,12 @@ export async function initUserData(planType: string, userId: string, userKey: st
             id: subscription.id
           }
         },
-        subscriptionId: subscription.id
+        subscriptionId: subscription.id,
+        widget: {
+          connect: {
+            id: widget.id
+          }
+        }
       }
     });
 

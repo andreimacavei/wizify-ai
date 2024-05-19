@@ -1,29 +1,18 @@
+import { useState } from 'react';
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
-import { ConfigWidget } from "@/app/ui";
+import ConfigWidgetUsageCard from "@/app/ui/ConfigWidgetUsageCard";
 
 export default async function ConfigPage() {
+
   const session = await getServerSession(authOptions);
-  if (!session || !session.user)
-    redirect('/')
-  const { user } = session
+  if (!session || !session.user) {
+    redirect("/signin");
+  }
 
-  return (
-    <>
-      <div className="col-span-1 auto-rows-min grid-cols-1 lg:col-span-5">
-        <h2 className="text-3xl text-center font-bold">Configuration</h2>
-      
-        <div className="flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center justify-center mt-4">
-            <h3 className="text-xl font-semibold">Welcome {user.name}</h3>
-            <p className="text-sm text-gray-500">Here you can configure your settings</p>
-          </div>
-        </div>
+  console.log('Config Page - Session data is ', session.user);
 
-        <ConfigWidget />
-      </div>
-    </>
-    
-  )
+  return <ConfigWidgetUsageCard userId={session.user.id} />;
+
 }
