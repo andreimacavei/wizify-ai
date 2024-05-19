@@ -27,7 +27,7 @@ const updateOptionFlag = async (widgetId, optionId, isEnabled) => {
 };
 
 const deleteCustomOption = async (widgetId, optionId) => {
-  console.log("Tryyying to delete option " + optionId + " from widget " + widgetId);
+  console.log("Trying to delete option " + optionId + " from widget " + widgetId);
   const response = await fetch(`/api/widget`, {
     method: 'DELETE',
     headers: {
@@ -53,6 +53,7 @@ const addCustomAction = async (widgetId, name, description, prompt) => {
 
 export default function UsageCard({ userId }) {
   const [loading, setLoading] = useState(true);
+  const [loadingOptions, setLoadingOptions] = useState({});
   const { keys, setKeys } = useContext(KeyContext);
   const [widgetData, setWidgetData] = useState(null);
   const [error, setError] = useState(null);
@@ -86,6 +87,7 @@ export default function UsageCard({ userId }) {
   }, [userId]);
 
   const handleOptionChange = async (optionId, isEnabled) => {
+    setLoadingOptions((prev) => ({ ...prev, [optionId]: true }));
     try {
       const response = await updateOptionFlag(widgetData.widgetId, optionId, isEnabled);
       if (!response.success) {
@@ -106,10 +108,13 @@ export default function UsageCard({ userId }) {
     } catch (err) {
       setError('An unexpected error occurred while updating the option');
       console.error('Error updating option:', err);
+    } finally {
+      setLoadingOptions((prev) => ({ ...prev, [optionId]: false }));
     }
   };
 
   const handleDeleteOption = async (optionId) => {
+    setLoadingOptions((prev) => ({ ...prev, [optionId]: true }));
     console.log("Trying to delete option " + optionId + " from widget " + widgetData.widgetId);
 
     try {
@@ -128,6 +133,8 @@ export default function UsageCard({ userId }) {
     } catch (err) {
       setError('An unexpected error occurred while deleting the option');
       console.error('Error deleting option:', err);
+    } finally {
+      setLoadingOptions((prev) => ({ ...prev, [optionId]: false }));
     }
   };
 
@@ -219,7 +226,7 @@ export default function UsageCard({ userId }) {
                 </thead>
                 <tbody>
                   {widgetData.customOptions.map((option) => (
-                    <tr key={option.id}>
+                    <tr key={option.id} className={loadingOptions[option.id] ? "opacity-50" : ""}>
                       <td className="border px-4 py-2">{option.name}</td>
                       <td className="border px-4 py-2">{option.description}</td>
                       <td className="border px-4 py-2">{option.prompt}</td>
@@ -229,14 +236,16 @@ export default function UsageCard({ userId }) {
                           checked={option.isEnabled}
                           onChange={(e) => handleOptionChange(option.id, e.target.checked)}
                           className="ml-2"
+                          disabled={loadingOptions[option.id]}
                         />
                       </td>
                       <td className="border px-4 py-2">
                         <button
                           onClick={() => handleDeleteOption(option.id)}
                           className="bg-red-500 hover:bg-red-700 text-red font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                          disabled={loadingOptions[option.id]}
                         >
-                          Delete
+                          {loadingOptions[option.id] ? "Processing..." : "Delete"}
                         </button>
                       </td>
                     </tr>
