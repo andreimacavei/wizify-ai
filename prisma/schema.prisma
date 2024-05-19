@@ -100,14 +100,15 @@ model Widget {
 }
 
 model WidgetActions {
-  id            Int             @id @default(autoincrement())
-  name          String
-  description   String?
-  prompt        String?
-  isEnabled     Boolean         @default(true)
-  isApproved    Boolean?
-  widgetOptions WidgetOptions[]
-  planOptions   PlanOptions[]
+  id             Int             @id @default(autoincrement())
+  name           String
+  description    String?
+  prompt         String?
+  isEnabled      Boolean         @default(true)
+  isApproved     Boolean?
+  actionParentId Int? // New field
+  widgetOptions  WidgetOptions[]
+  planOptions    PlanOptions[]
 }
 
 model WidgetOptions {

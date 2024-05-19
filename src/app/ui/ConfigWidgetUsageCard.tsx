@@ -1,7 +1,5 @@
-// configWidgetUsageCard.tsx
 'use client';
 import { useContext, useEffect, useState } from 'react';
-import Link from 'next/link';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import { KeyContext } from '@/app/context';
 import 'react-circular-progressbar/dist/styles.css';
@@ -39,13 +37,13 @@ const deleteCustomOption = async (widgetId, optionId) => {
   return data;
 };
 
-const addCustomAction = async (widgetId, name, description, prompt) => {
+const addCustomAction = async (widgetId, name, description, prompt, actionParentId) => {
   const response = await fetch(`/api/widget`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ widgetId, name, description, prompt }),
+    body: JSON.stringify({ widgetId, name, description, prompt, actionParentId }),
   });
   const data = await response.json();
   return data;
@@ -57,7 +55,7 @@ export default function UsageCard({ userId }) {
   const { keys, setKeys } = useContext(KeyContext);
   const [widgetData, setWidgetData] = useState(null);
   const [error, setError] = useState(null);
-  const [newAction, setNewAction] = useState({ name: '', description: '', prompt: '' });
+  const [newAction, setNewAction] = useState({ name: '', description: '', prompt: '', actionParentId: null });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -140,15 +138,20 @@ export default function UsageCard({ userId }) {
 
   const handleAddCustomAction = async (event) => {
     event.preventDefault();
-    const { name, description, prompt } = newAction;
+    const { name, description, prompt, actionParentId } = newAction;
 
     if (!name || !description || !prompt) {
       setError('All fields are required');
       return;
     }
 
+    let actionParentIdAsInt = null;
+    if(actionParentId != null){
+       actionParentIdAsInt =  parseInt(actionParentId, 10);
+    }
+
     try {
-      const response = await addCustomAction(widgetData.widgetId, name, description, prompt);
+      const response = await addCustomAction(widgetData.widgetId, name, description, prompt, actionParentIdAsInt);
       if (!response.success) {
         setError(response.error);
       } else {
@@ -156,7 +159,7 @@ export default function UsageCard({ userId }) {
           ...prevData,
           customOptions: [...prevData.customOptions, response.action],
         }));
-        setNewAction({ name: '', description: '', prompt: '' });
+        setNewAction({ name: '', description: '', prompt: '', actionParentId: null });
       }
     } catch (err) {
       setError('An unexpected error occurred while adding the custom action');
@@ -188,6 +191,7 @@ export default function UsageCard({ userId }) {
                     <th className="py-2">Name</th>
                     <th className="py-2">Description</th>
                     <th className="py-2">Prompt</th>
+                    <th className="py-2">HasParent</th>
                     <th className="py-2">Enabled</th>
                   </tr>
                 </thead>
@@ -197,6 +201,9 @@ export default function UsageCard({ userId }) {
                       <td className="border px-4 py-2">{option.name}</td>
                       <td className="border px-4 py-2">{option.description}</td>
                       <td className="border px-4 py-2">{option.prompt}</td>
+                      <td className="border px-4 py-2">
+                            {option.actionParentId != null ? 'True' : 'False'}
+                        </td>
                       <td className="border px-4 py-2">
                         <input
                           disabled
@@ -220,6 +227,7 @@ export default function UsageCard({ userId }) {
                     <th className="py-2">Name</th>
                     <th className="py-2">Description</th>
                     <th className="py-2">Prompt</th>
+                    <th className="py-2">HasParent</th>
                     <th className="py-2">Enabled</th>
                     <th className="py-2">Actions</th>
                   </tr>
@@ -230,6 +238,9 @@ export default function UsageCard({ userId }) {
                       <td className="border px-4 py-2">{option.name}</td>
                       <td className="border px-4 py-2">{option.description}</td>
                       <td className="border px-4 py-2">{option.prompt}</td>
+                      <td className="border px-4 py-2">
+                            {option.actionParentId != null ? 'True' : 'False'}
+                        </td>
                       <td className="border px-4 py-2">
                         <input
                           type="checkbox"
@@ -286,6 +297,20 @@ export default function UsageCard({ userId }) {
                     required
                     className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2">Parent Action:</label>
+                  <select
+                    value={newAction.actionParentId || ''}
+                    onChange={(e) => setNewAction({ ...newAction, actionParentId: e.target.value || null })}
+                    className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  >
+                    <option value="">None</option>
+                    {widgetData.customOptions.map((option) => (
+                      
+                      <option hidden={option.actionParentId!=null} key={option.id} value={option.id}>{option.name}</option>
+                    ))}
+                  </select>
                 </div>
                 <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline">
                   Add Action

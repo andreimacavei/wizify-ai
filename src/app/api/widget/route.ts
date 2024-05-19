@@ -28,11 +28,11 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
-    const { widgetId, name, description, prompt } = await req.json();
-    console.log(`POST request received with data: widgetId=${widgetId}, name=${name}, description=${description}, prompt=${prompt}`);
+    const { widgetId, name, description, prompt, actionParentId } = await req.json();
+    console.log(`POST request received with data: widgetId=${widgetId}, name=${name}, description=${description}, prompt=${prompt}, actionParentId=${actionParentId}`);
 
     if (name && description && prompt) {
-      const response = await addCustomAction(widgetId, name, description, prompt);
+      const response = await addCustomAction(widgetId, name, description, prompt, actionParentId);
       if (!response.success) {
         console.error(`Error adding custom action: ${response.error}`);
         return NextResponse.json(response, { status: 500 });
@@ -48,6 +48,7 @@ export async function POST(req) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+
 
 export async function DELETE(req) {
   try {

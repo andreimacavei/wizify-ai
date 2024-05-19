@@ -1,6 +1,7 @@
 let BASE_URL = "http://localhost:3000/api/enhance";
 let CLIENT_KEY =
   extractClientId(document.currentScript.getAttribute("src")) || "";
+let fetchedOptions = null;
 
 function extractClientId(url) {
   const regex = /client_key=([^&]*)/;
@@ -268,50 +269,50 @@ function getSelectionRect() {
 }
 
 window.onload = function () {
-  console.log("window.onload event fired");
-  const inputElements = document.querySelectorAll(
-    'input[type="text"], textarea',
-  );
-
-  // This code adds a undo/redo button toolbar below input element after user calls our widget
-  // It doesn't work with NextJs because of hydration issue so it's disabled for now
-  // document.addEventListener("change", function (event) {
-  //   const inputElement = event.target;
-  //   // const selectionRect = getSelectionRect();
-  //   const selectionRect = inputElement.getBoundingClientRect();
-  //   if (!selectionRect) return;
-  //   const toolbarRect = undoRedoToolbar.getBoundingClientRect();
-
-  //   const distanceFromTop = window.scrollY;
-
-  //   let top =
-  //     selectionRect.top + distanceFromTop + inputElement.offsetHeight + 12;
-  //   let left =
-  //     selectionRect.left + (selectionRect.width - toolbarRect.width) / 2;
-
-  //   undoRedoToolbar.style.transform = `translate(${left}px, ${top}px)`;
-  //   undoRedoToolbar.style.opacity = 0.7;
-  // });
-
-  // document.addEventListener("selectionchange", () => {
-  //   const selection = window.getSelection().toString();
-  //   if (!selection) {
-  //     undoRedoToolbar.style.opacity = 0;
-  //   }
-  // });
-
-  // Create the undo and redo toolbar
-  // const undoRedoToolbar = createToolbar();
-  // document.body.appendChild(undoRedoToolbar);
-
-  inputElements.forEach(function (inputElement) {
-    enhanceInputElement(inputElement);
-    new ResizeObserver(function () {
-      inputElement.parentNode.style.width = inputElement.offsetWidth + "px";
-      inputElement.parentNode.style.height = inputElement.offsetHeight + "px";
-    }).observe(inputElement);
-  });
-};
+    console.log("window.onload event fired");
+    const inputElements = document.querySelectorAll(
+      'input[type="text"], textarea',
+    );
+  
+    // This code adds a undo/redo button toolbar below input element after user calls our widget
+    // It doesn't work with NextJs because of hydration issue so it's disabled for now
+    // document.addEventListener("change", function (event) {
+    //   const inputElement = event.target;
+    //   // const selectionRect = getSelectionRect();
+    //   const selectionRect = inputElement.getBoundingClientRect();
+    //   if (!selectionRect) return;
+    //   const toolbarRect = undoRedoToolbar.getBoundingClientRect();
+  
+    //   const distanceFromTop = window.scrollY;
+  
+    //   let top =
+    //     selectionRect.top + distanceFromTop + inputElement.offsetHeight + 12;
+    //   let left =
+    //     selectionRect.left + (selectionRect.width - toolbarRect.width) / 2;
+  
+    //   undoRedoToolbar.style.transform = `translate(${left}px, ${top}px)`;
+    //   undoRedoToolbar.style.opacity = 0.7;
+    // });
+  
+    // document.addEventListener("selectionchange", () => {
+    //   const selection = window.getSelection().toString();
+    //   if (!selection) {
+    //     undoRedoToolbar.style.opacity = 0;
+    //   }
+    // });
+  
+    // Create the undo and redo toolbar
+    // const undoRedoToolbar = createToolbar();
+    // document.body.appendChild(undoRedoToolbar);
+  
+    inputElements.forEach(function (inputElement) {
+      enhanceInputElement(inputElement);
+      new ResizeObserver(function () {
+        inputElement.parentNode.style.width = inputElement.offsetWidth + "px";
+        inputElement.parentNode.style.height = inputElement.offsetHeight + "px";
+      }).observe(inputElement);
+    });
+  };
 
 function hideMenu(aiMenu) {
   let classNames = aiMenu.className.split(" ");
@@ -320,7 +321,6 @@ function hideMenu(aiMenu) {
   aiMenu.className = classNames.join(" ");
 }
 
-
 async function fetchWidgetData(userKey) {
     const response = await fetch(`/api/widget/website?userKey=${userKey}`, {
       method: 'GET',
@@ -328,7 +328,7 @@ async function fetchWidgetData(userKey) {
     const data = await response.json();
     return data;
   }
-
+  
 // Function to create the AI button and menu
 async function enhanceInputElement(inputElement) {
   if (inputElement.parentNode.className.includes("micro-ai-wrapper")) return;
@@ -387,9 +387,7 @@ async function enhanceInputElement(inputElement) {
   const undoRedoToolbar = createToolbar();
   wrapper.appendChild(undoRedoToolbar);
 
-  
-
- 
+   
 let apiData;
 try {
   apiData = await fetchWidgetData(CLIENT_KEY);
@@ -397,31 +395,81 @@ try {
 } catch (error) {
   console.error('Error fetching widget data:', error);
 }
-  // creating api options
+ // Generate API options
+ let options = [];
+ if (apiData) {
+   const parentMap = new Map();
 
+   // First pass to create parent entries for planOptions
+   apiData.planOptions.forEach(option => {
+     if (!option.actionParentId) {
+       parentMap.set(option.id, {
+         html: `<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="TranslateOutlinedIcon"><path d="m12.87 15.07-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7 1.62-4.33L19.12 17h-3.24z"></path></svg></span>${option.name}`,
+         type: option.id,
+         children: [],
+       });
+     }
+   });
 
-  // Generate apiOptions from apiData
-let options = [];
+   // Second pass to add children to parents for planOptions
+   apiData.planOptions.forEach(option => {
+     if (option.actionParentId) {
+       const parent = parentMap.get(option.actionParentId);
+       if (parent) {
+         parent.children.push({
+           html: option.name,
+           type: option.id,
+         });
+         parent.type = 'group';  // Set parent type to 'group' if it has children
+       }
+     }
+   });
 
-if (apiData && apiData.planOptions) {
-  apiData.planOptions.forEach(option => {
-    options.push({
-      html: `<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AutoFixHighOutlinedIcon"><path d="m20 7 .94-2.06L23 4l-2.06-.94L20 1l-.94 2.06L17 4l2.06.94zM8.5 7l.94-2.06L11.5 4l-2.06-.94L8.5 1l-.94 2.06L5.5 4l2.06.94zM20 12.5l-.94 2.06-2.06.94 2.06.94.94 2.06.94-2.06L23 15.5l-2.06-.94zm-2.29-3.38-2.83-2.83c-.2-.19-.45-.29-.71-.29-.26 0-.51.1-.71.29L2.29 17.46c-.39.39-.39 1.02 0 1.41l2.83 2.83c.2.2.45.3.71.3s.51-.1.71-.29l11.17-11.17c.39-.39.39-1.03 0-1.42zm-3.54-.7 1.41 1.41L14.41 11 13 9.59l1.17-1.17zM5.83 19.59l-1.41-1.41L11.59 11 13 12.41l-7.17 7.18z"></path></svg></span>${option.name}`,
-      type: option.id,
-    });
-  });
-}
+   // Repeat the same process for customOptions
+   apiData.customOptions.forEach(option => {
+     if (!option.actionParentId) {
+       parentMap.set(option.id, {
+         html: `<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="TranslateOutlinedIcon"><path d="m12.87 15.07-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7 1.62-4.33L19.12 17h-3.24z"></path></svg></span>${option.name}`,
+         type: option.id,
+         children: [],
+       });
+     }
+   });
 
-if (apiData && apiData.customOptions) {
-  apiData.customOptions.forEach(option => {
-    options.push({
-      html: `<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AutoFixHighOutlinedIcon"><path d="m20 7 .94-2.06L23 4l-2.06-.94L20 1l-.94 2.06L17 4l2.06.94zM8.5 7l.94-2.06L11.5 4l-2.06-.94L8.5 1l-.94 2.06L5.5 4l2.06.94zM20 12.5l-.94 2.06-2.06.94 2.06.94.94 2.06.94-2.06L23 15.5l-2.06-.94zm-2.29-3.38-2.83-2.83c-.2-.19-.45-.29-.71-.29-.26 0-.51.1-.71.29L2.29 17.46c-.39.39-.39 1.02 0 1.41l2.83 2.83c.2.2.45.3.71.3s.51-.1.71-.29l11.17-11.17c.39-.39.39-1.03 0-1.42zm-3.54-.7 1.41 1.41L14.41 11 13 9.59l1.17-1.17zM5.83 19.59l-1.41-1.41L11.59 11 13 12.41l-7.17 7.18z"></path></svg></span>${option.name}`,
-      type: option.id,
-    });
-  });
-}
+   // Second pass to add children to parents for customOptions
+   apiData.customOptions.forEach(option => {
+     if (option.actionParentId) {
+       const parent = parentMap.get(option.actionParentId);
+       if (parent) {
+         parent.children.push({
+           html: option.name,
+           type: option.id,
+         });
+         parent.type = 'group';  // Set parent type to 'group' if it has children
+       }
+     }
+   });
 
+   // Add parents and their children to options for customOptions
+   parentMap.forEach(parent => {
+     options.push(parent);
+   });
+ }
 
+options.push({
+    html: '<span class="icon"><svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 42.262 42.262" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M41.159,10.363c-1.031-0.57-2.328-0.194-2.898,0.838l-0.688,1.247C35.214,5.231,28.428,0,20.434,0 C10.489,0,2.399,8.09,2.399,18.035c0,1.178,0.953,2.134,2.133,2.134c1.178,0,2.133-0.956,2.133-2.134 c0-7.593,6.178-13.769,13.77-13.769c6.02,0,11.137,3.89,13.003,9.284l-1.166-0.643c-1.028-0.57-2.328-0.195-2.897,0.837 c-0.568,1.032-0.193,2.329,0.838,2.898l4.215,2.326c0.348,0.707,1.068,1.199,1.91,1.199c0.211,0,0.414-0.041,0.606-0.099 c0.011,0,0.021,0.004,0.031,0.004c0.754,0,1.482-0.397,1.871-1.103l3.15-5.71C42.564,12.229,42.191,10.932,41.159,10.363z"></path> <path d="M37.732,22.091c-1.18,0-2.135,0.955-2.135,2.133c0,7.593-6.176,13.771-13.768,13.771c-6.021,0-11.139-3.892-13.006-9.284 l1.166,0.643c0.326,0.181,0.68,0.267,1.029,0.267c0.752,0,1.48-0.397,1.869-1.104c0.568-1.03,0.195-2.328-0.838-2.897 l-4.215-2.326c-0.348-0.707-1.066-1.198-1.908-1.198c-0.219,0-0.426,0.042-0.623,0.103c-0.758-0.006-1.496,0.385-1.887,1.096 L0.265,29c-0.568,1.031-0.193,2.328,0.838,2.898c0.326,0.18,0.68,0.266,1.029,0.266c0.752,0,1.48-0.397,1.869-1.104l0.689-1.246 c2.357,7.215,9.145,12.447,17.139,12.447c9.942,0,18.035-8.09,18.035-18.036C39.866,23.046,38.911,22.091,37.732,22.091z"></path> </g> </g> </g></svg></span>Actions',
+    type: "group",
+    children: [
+      {
+        html: "Undo",
+        type: "undo",
+      },
+      {
+        html: "Redo",
+        type: "redo",
+      },
+    ],
+  })
 
 
   // Create menu options
@@ -476,6 +524,25 @@ if (apiData && apiData.customOptions) {
         const tone = option.tone;
         let url;
         switch (option.type) {
+          case "group":
+            return;
+          case "undo":
+            setFocusedInput(inputElement);
+            if (previousValue === "" || previousValue === inputElement.value)
+              return;
+            nextValue = inputElement.value;
+            inputElement.value = previousValue;
+            inputElement.focus();
+            inputElement.select();
+            break;
+          case "redo":
+            setFocusedInput(inputElement);
+            if (nextValue === "" || nextValue === inputElement.value) return;
+            previousValue = inputElement.value;
+            inputElement.value = nextValue;
+            inputElement.focus();
+            inputElement.select();
+            break;
           case "undo":
             setFocusedInput(inputElement);
             if (previousValue === "" || previousValue === inputElement.value)

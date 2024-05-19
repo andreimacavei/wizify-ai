@@ -4,7 +4,7 @@ import { fetchWidgetOptionsForWebsite } from "@/app/lib/widgetActions";
 export async function GET(req) {
   const url = new URL(req.url);
   const userKey = url.searchParams.get('userKey');
-  console.log(`GET request received with userKey: ${userKey}`);
+  console.log(`GET request received from website with userKey: ${userKey}`);
 
   if (!userKey) {
     console.error('UserKey is required');
@@ -12,7 +12,7 @@ export async function GET(req) {
   }
 
   try {
-    const widgetData =  await fetchWidgetOptionsForWebsite(userKey);
+    const widgetData = await fetchWidgetOptionsForWebsite(userKey);
     if ('error' in widgetData) {
       console.error(`Error fetching widget options: ${widgetData.error}`);
       return NextResponse.json(widgetData, { status: 404 });
