@@ -1,7 +1,6 @@
 "use server"
 import { prisma } from "@/lib/db/db";
 import { sanitizeString } from "@/utils/sanitize";
-import axios from 'axios';
 
 export async function fetchWidgetOptionsByUserKey(userKey) {
   'use server';

@@ -55,8 +55,8 @@ export default function UsageCard({ userId }) {
   const { keys, setKeys } = useContext(KeyContext);
   const [widgetData, setWidgetData] = useState(null);
   const [error, setError] = useState(null);
-  const [newAction, setNewAction] = useState({ name: '', description: '', prompt: '', actionParentId: null });
   const [successMessage, setSuccessMessage] = useState(null);
+  const [newAction, setNewAction] = useState({ name: '', description: '', prompt: '', actionParentId: null });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,7 +99,7 @@ export default function UsageCard({ userId }) {
             );
           return {
             ...prevData,
-            planOptions: prevData.planOptions, // Plan options should not be modified
+            planOptions: prevData.planOptions,
             customOptions: updateOptions(prevData.customOptions),
           };
         });
@@ -147,8 +147,8 @@ export default function UsageCard({ userId }) {
     }
 
     let actionParentIdAsInt = null;
-    if(actionParentId != null){
-       actionParentIdAsInt =  parseInt(actionParentId, 10);
+    if (actionParentId != null) {
+      actionParentIdAsInt = parseInt(actionParentId, 10);
     }
 
     try {
@@ -161,7 +161,7 @@ export default function UsageCard({ userId }) {
           customOptions: [...prevData.customOptions, response.action],
         }));
         setNewAction({ name: '', description: '', prompt: '', actionParentId: null });
-        setSuccessMessage('Your custom action will be available as soon as it will be reviewed and approved');
+        setSuccessMessage('Your custom action will be live once it will be reviewed and approved');
       }
     } catch (err) {
       setError('An unexpected error occurred while adding the custom action');
@@ -205,8 +205,8 @@ export default function UsageCard({ userId }) {
                       <td className="border px-4 py-2">{option.description}</td>
                       <td className="border px-4 py-2">{option.prompt}</td>
                       <td className="border px-4 py-2">
-                            {option.actionParentId != null ? 'True' : 'False'}
-                        </td>
+                        {option.actionParentId != null ? 'True' : 'False'}
+                      </td>
                       <td className="border px-4 py-2">
                         <input
                           disabled
@@ -222,108 +222,197 @@ export default function UsageCard({ userId }) {
               </table>
             </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-lg mb-8">
-              <h3 className="text-2xl font-bold mb-4">Custom Options</h3>
-              <table className="min-w-full bg-white">
-                <thead>
-                  <tr>
-                    <th className="py-2">Name</th>
-                    <th className="py-2">Description</th>
-                    <th className="py-2">Prompt</th>
-                    <th className="py-2">HasParent</th>
-                    <th className="py-2">Enabled</th>
-                    <th className="py-2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {widgetData.customOptions.map((option) => (
-                    <tr key={option.id} className={loadingOptions[option.id] ? "opacity-50" : ""}>
-                      <td className="border px-4 py-2">{option.name}</td>
-                      <td className="border px-4 py-2">{option.description}</td>
-                      <td className="border px-4 py-2">{option.prompt}</td>
-                      <td className="border px-4 py-2">
-                            {option.actionParentId != null ? 'True' : 'False'}
+            {widgetData.planName === 'Free' ? (
+              <>
+                <div className="relative bg-white p-8 rounded-lg shadow-lg mb-8">
+                  <div className="absolute inset-0 bg-gray-300 bg-opacity-80 flex items-center justify-center" style={{ zIndex: 10, pointerEvents: 'none' }}>
+                    <span style={{ color: 'red', fontWeight: 'bold', fontSize: '1.25rem', opacity: 1, pointerEvents: 'all' }}>
+                      <a href="/dashboard/subscription" style={{ textDecoration: 'underline' }}>Upgrade</a> your subscription to unlock this feature
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Custom Options</h3>
+                  <table className="min-w-full bg-white opacity-30">
+                    <thead>
+                      <tr>
+                        <th className="py-2">Name</th>
+                        <th className="py-2">Description</th>
+                        <th className="py-2">Prompt</th>
+                        <th className="py-2">HasParent</th>
+                        <th className="py-2">Enabled</th>
+                        <th className="py-2">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="border px-4 py-2">Mock Name</td>
+                        <td className="border px-4 py-2">Mock Description</td>
+                        <td className="border px-4 py-2">Mock Prompt</td>
+                        <td className="border px-4 py-2">False</td>
+                        <td className="border px-4 py-2">
+                          <input type="checkbox" disabled className="ml-2" />
                         </td>
-                      <td className="border px-4 py-2">
-                        <input
-                          type="checkbox"
-                          checked={option.isEnabled}
-                          onChange={(e) => handleOptionChange(option.id, e.target.checked)}
-                          className="ml-2"
-                          disabled={loadingOptions[option.id]}
-                        />
-                      </td>
-                      <td className="border px-4 py-2">
-                        <button
-                          onClick={() => handleDeleteOption(option.id)}
-                          className="bg-red-500 hover:bg-red-700 text-red font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                          disabled={loadingOptions[option.id]}
-                        >
-                          {loadingOptions[option.id] ? "Processing..." : "Delete"}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                        <td className="border px-4 py-2">
+                          <button className="bg-red-500 text-red font-bold py-2 px-4 rounded" disabled>
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-lg mb-8">
-              <h3 className="text-2xl font-bold mb-4">Add Custom Action</h3>
-              <form onSubmit={handleAddCustomAction}>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-bold mb-2">Name:</label>
-                  <input
-                    type="text"
-                    value={newAction.name}
-                    onChange={(e) => setNewAction({ ...newAction, name: e.target.value })}
-                    required
-                    className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
+                <div className="relative bg-white p-8 rounded-lg shadow-lg mb-8">
+                  <div className="absolute inset-0 bg-gray-300 bg-opacity-80 flex items-center justify-center" style={{ zIndex: 10, pointerEvents: 'none' }}>
+                    <span style={{ color: 'red', fontWeight: 'bold', fontSize: '1.25rem', opacity: 1, pointerEvents: 'all' }}>
+                      <a href="/dashboard/subscription" style={{ textDecoration: 'underline' }}>Upgrade</a> your subscription to unlock this feature
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Add Custom Action</h3>
+                  <form>
+                    <div className="mb-4">
+                      <label className="block text-gray-700 font-bold mb-2">Name:</label>
+                      <input
+                        type="text"
+                        value="Mock Name"
+                        disabled
+                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-gray-700 font-bold mb-2">Description:</label>
+                      <input
+                        type="text"
+                        value="Mock Description"
+                        disabled
+                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-gray-700 font-bold mb-2">Prompt:</label>
+                      <input
+                        type="text"
+                        value="Mock Prompt"
+                        disabled
+                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-gray-700 font-bold mb-2">Parent Action:</label>
+                      <select
+                        value=""
+                        disabled
+                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      >
+                        <option value="">None</option>
+                      </select>
+                    </div>
+                    <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline" disabled>
+                      Add Action
+                    </button>
+                  </form>
                 </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-bold mb-2">Description:</label>
-                  <input
-                    type="text"
-                    value={newAction.description}
-                    onChange={(e) => setNewAction({ ...newAction, description: e.target.value })}
-                    required
-                    className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
+              </>
+            ) : (
+              <>
+                <div className="bg-white p-8 rounded-lg shadow-lg mb-8">
+                  <h3 className="text-2xl font-bold mb-4">Custom Options</h3>
+                  <table className="min-w-full bg-white">
+                    <thead>
+                      <tr>
+                        <th className="py-2">Name</th>
+                        <th className="py-2">Description</th>
+                        <th className="py-2">Prompt</th>
+                        <th className="py-2">HasParent</th>
+                        <th className="py-2">Enabled</th>
+                        <th className="py-2">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {widgetData.customOptions.map((option) => (
+                        <tr key={option.id} className={loadingOptions[option.id] ? "opacity-50" : ""}>
+                          <td className="border px-4 py-2">{option.name}</td>
+                          <td className="border px-4 py-2">{option.description}</td>
+                          <td className="border px-4 py-2">{option.prompt}</td>
+                          <td className="border px-4 py-2">
+                            {option.actionParentId != null ? 'True' : 'False'}
+                          </td>
+                          <td className="border px-4 py-2">
+                            <input
+                              type="checkbox"
+                              checked={option.isEnabled}
+                              onChange={(e) => handleOptionChange(option.id, e.target.checked)}
+                              className="ml-2"
+                              disabled={loadingOptions[option.id]}
+                            />
+                          </td>
+                          <td className="border px-4 py-2">
+                            <button
+                              onClick={() => handleDeleteOption(option.id)}
+                              className="bg-red-500 hover:bg-red-700 text-red font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                              disabled={loadingOptions[option.id]}
+                            >
+                              {loadingOptions[option.id] ? "Processing..." : "Delete"}
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-bold mb-2">Prompt:</label>
-                  <input
-                    type="text"
-                    value={newAction.prompt}
-                    onChange={(e) => setNewAction({ ...newAction, prompt: e.target.value })}
-                    required
-                    className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-bold mb-2">Parent Action:</label>
-                  <select
-                    value={newAction.actionParentId || ''}
-                    onChange={(e) => setNewAction({ ...newAction, actionParentId: e.target.value || null })}
-                    className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  >
-                    <option value="">None</option>
-                    {widgetData.customOptions.map((option) => (
-                      
-                      <option hidden={option.actionParentId!=null} key={option.id} value={option.id}>{option.name}</option>
-                    ))}
-                  </select>
-                </div>
-                <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline">
-                  Add Action
-                </button>
-              </form>
-                      
-                      {error && <p className="text-red-500">{error}</p>}
-                      {successMessage && <p className="text-green-500">{successMessage}</p>}
 
-            </div>
+                <div className="bg-white p-8 rounded-lg shadow-lg mb-8">
+                  <h3 className="text-2xl font-bold mb-4">Add Custom Action</h3>
+                  <form onSubmit={handleAddCustomAction}>
+                    <div className="mb-4">
+                      <label className="block text-gray-700 font-bold mb-2">Name:</label>
+                      <input
+                        type="text"
+                        value={newAction.name}
+                        onChange={(e) => setNewAction({ ...newAction, name: e.target.value })}
+                        required
+                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-gray-700 font-bold mb-2">Description:</label>
+                      <input
+                        type="text"
+                        value={newAction.description}
+                        onChange={(e) => setNewAction({ ...newAction, description: e.target.value })}
+                        required
+                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-gray-700 font-bold mb-2">Prompt:</label>
+                      <input
+                        type="text"
+                        value={newAction.prompt}
+                        onChange={(e) => setNewAction({ ...newAction, prompt: e.target.value })}
+                        required
+                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-gray-700 font-bold mb-2">Parent Action:</label>
+                      <select
+                        value={newAction.actionParentId || ''}
+                        onChange={(e) => setNewAction({ ...newAction, actionParentId: e.target.value || null })}
+                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      >
+                        <option value="">None</option>
+                        {widgetData.customOptions.map((option) => (
+                          <option hidden={option.actionParentId != null} key={option.id} value={option.id}>{option.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline">
+                      Add Action
+                    </button>
+                  </form>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>
