@@ -55,6 +55,7 @@ export async function fetchWidgetOptionsByUserId(userId) {
         widgetId: null,
         subscriptionId: null,
         planName: null,
+        actionParentId: null,
         planOptions: [],
         customOptions: [],
       };
@@ -65,7 +66,7 @@ export async function fetchWidgetOptionsByUserId(userId) {
 
     // Fetch plan options if a plan exists
     const planOptionsData = plan ? await prisma.planOptions.findMany({
-      where: { planId: plan.id },
+      where: { planId: { lte: plan.id } },
       include: {
         option: true,
       },
@@ -159,6 +160,7 @@ export async function fetchWidgetOptionsForWebsite(userKey) {
         widgetId: null,
         subscriptionId: null,
         planName: null,
+        actionParentId: null,
         planOptions: [],
         customOptions: [],
       };
@@ -170,7 +172,7 @@ export async function fetchWidgetOptionsForWebsite(userKey) {
     // Fetch plan options if a plan exists and apply filters
     const planOptionsData = plan ? await prisma.planOptions.findMany({
       where: {
-        planId: plan.id,
+        planId: { lte: plan.id },
         option: {
           isEnabled: true,
           isApproved: true,

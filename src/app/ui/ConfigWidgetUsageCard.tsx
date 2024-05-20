@@ -56,6 +56,7 @@ export default function UsageCard({ userId }) {
   const [widgetData, setWidgetData] = useState(null);
   const [error, setError] = useState(null);
   const [newAction, setNewAction] = useState({ name: '', description: '', prompt: '', actionParentId: null });
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -160,6 +161,7 @@ export default function UsageCard({ userId }) {
           customOptions: [...prevData.customOptions, response.action],
         }));
         setNewAction({ name: '', description: '', prompt: '', actionParentId: null });
+        setSuccessMessage('Your custom action will be available as soon as it will be reviewed and approved');
       }
     } catch (err) {
       setError('An unexpected error occurred while adding the custom action');
@@ -173,6 +175,7 @@ export default function UsageCard({ userId }) {
         <h1 className="text-4xl font-bold mb-6">Fetch Widget Options</h1>
 
         {error && <p className="text-red-500">{error}</p>}
+        {successMessage && <p className="text-green-500">{successMessage}</p>}
 
         {widgetData && (
           <>
@@ -316,6 +319,10 @@ export default function UsageCard({ userId }) {
                   Add Action
                 </button>
               </form>
+                      
+                      {error && <p className="text-red-500">{error}</p>}
+                      {successMessage && <p className="text-green-500">{successMessage}</p>}
+
             </div>
           </>
         )}
