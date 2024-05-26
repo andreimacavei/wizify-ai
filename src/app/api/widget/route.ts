@@ -75,15 +75,20 @@ export async function DELETE(req) {
 
 export async function PUT(req) {
   try {
-    const { widgetId, optionId, isEnabled } = await req.json();
-    console.log(`PUT request received with data: widgetId=${widgetId}, optionId=${optionId}, isEnabled=${isEnabled}`);
+    const { widgetId, optionId, isEnabled, description, prompt } = await req.json();
+    console.log(`PUT request received with data: widgetId=${widgetId}, optionId=${optionId}, isEnabled=${isEnabled}, description=${description}, prompt=${prompt}`);
 
-    if (!widgetId || !optionId || typeof isEnabled !== 'boolean') {
+    if (!widgetId || !optionId || typeof isEnabled !== 'boolean' || !description || !prompt) {
       console.error('Invalid input for PUT request');
+      console.log("widgetId: " + widgetId);
+      console.log("optionId: " + optionId);
+      console.log("isEnabled: " + isEnabled);
+      console.log("description: " + description);
+      console.log("prompt: " + prompt);
       return NextResponse.json({ success: false, error: 'Invalid input' }, { status: 400 });
     }
 
-    const response = await updateOption(widgetId, optionId, isEnabled);
+    const response = await updateOption(widgetId, optionId, isEnabled, description, prompt);
     if (!response.success) {
       console.error(`Error updating option: ${response.error}`);
       return NextResponse.json(response, { status: 500 });

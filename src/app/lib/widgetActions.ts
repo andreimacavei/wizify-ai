@@ -2,12 +2,48 @@
 import { prisma } from "@/lib/db/db";
 import { sanitizeString } from "@/utils/sanitize";
 
-export async function fetchWidgetOptionsByUserKey(userKey) {
+
+interface Option {
+  id: number;
+  name: string;
+  description?: string;
+  prompt?: string;
+  isEnabled: boolean;
+  isApproved?: boolean;
+  actionParentId?: number | null;
+  children: Option[];
+}
+
+const mapOptions = (optionsData: any[]): Option[] => {
+  const optionsMap: { [key: number]: Option } = {};
+  
+  optionsData.forEach(opt => {
+    const option: Option = {
+      id: opt.option.id,
+      name: opt.option.name,
+      description: opt.option.description,
+      prompt: opt.option.prompt,
+      isEnabled: opt.option.isEnabled,
+      actionParentId: opt.option.actionParentId,
+      children: [],
+    };
+    optionsMap[opt.option.id] = option;
+  });
+
+  optionsData.forEach(opt => {
+    if (opt.option.actionParentId) {
+      optionsMap[opt.option.actionParentId].children.push(optionsMap[opt.option.id]);
+    }
+  });
+
+  return Object.values(optionsMap).filter(opt => !opt.actionParentId);
+};
+
+export async function fetchWidgetOptionsByUserKey(userKey: string) {
   'use server';
   console.log("Fetching widget options for userKey: ", userKey);
 
   try {
-    // Fetch the user by userKey
     const userKeyRecord = await prisma.userKey.findUnique({
       where: { key: userKey },
       include: { user: true },
@@ -25,12 +61,11 @@ export async function fetchWidgetOptionsByUserKey(userKey) {
   }
 }
 
-export async function fetchWidgetOptionsByUserId(userId) {
+export async function fetchWidgetOptionsByUserId(userId: string) {
   'use server';
   console.log("Fetching widget options for userId: ", userId);
 
   try {
-    // Fetch the user's widget
     const widget = await prisma.widget.findUnique({
       where: { userId },
       include: {
@@ -48,13 +83,11 @@ export async function fetchWidgetOptionsByUserId(userId) {
     });
 
     if (!widget) {
-      // If no widget is found, return an empty result
       return {
         userId: userId,
         widgetId: null,
         subscriptionId: null,
         planName: null,
-        actionParentId: null,
         planOptions: [],
         customOptions: [],
       };
@@ -63,7 +96,6 @@ export async function fetchWidgetOptionsByUserId(userId) {
     const subscription = widget.subscription;
     const plan = subscription?.plan;
 
-    // Fetch plan options if a plan exists
     const planOptionsData = plan ? await prisma.planOptions.findMany({
       where: { planId: { lte: plan.id } },
       include: {
@@ -71,7 +103,6 @@ export async function fetchWidgetOptionsByUserId(userId) {
       },
     }) : [];
 
-    // Fetch custom options for the widget
     const customOptionsData = await prisma.widgetOptions.findMany({
       where: {
         widgetId: widget.id,
@@ -82,30 +113,12 @@ export async function fetchWidgetOptionsByUserId(userId) {
       },
     });
 
-    // Map the options to the expected structure
-    const planOptions = planOptionsData.map(po => ({
-      id: po.option.id,
-      name: po.option.name,
-      description: po.option.description,
-      prompt: po.option.prompt,
-      isEnabled: po.option.isEnabled,
-      actionParentId: po.option.actionParentId,
-    }));
+    const planOptions = mapOptions(planOptionsData);
+    const customOptions = mapOptions(customOptionsData);
 
-    const customOptions = customOptionsData.map(co => ({
-      id: co.option.id,
-      name: co.option.name,
-      description: co.option.description,
-      prompt: co.option.prompt,
-      isEnabled: co.option.isEnabled,
-      isApproved: co.option.isApproved,
-      actionParentId: co.option.actionParentId,
-    }));
-
-    // Construct the result
     const result = {
       userId: userId,
-      widgetId: widget.id, // Add the widget ID here
+      widgetId: widget.id,
       subscriptionId: subscription?.id || null,
       planName: plan?.name || null,
       planOptions: planOptions,
@@ -118,12 +131,12 @@ export async function fetchWidgetOptionsByUserId(userId) {
     return { success: false, error: error.message };
   }
 }
-export async function fetchWidgetOptionsForWebsite(userKey) {
+
+export async function fetchWidgetOptionsForWebsite(userKey: string) {
   'use server';
   console.log("Fetching widget options for website for userKey: ", userKey);
 
   try {
-    // Fetch the user by userKey
     const userKeyRecord = await prisma.userKey.findUnique({
       where: { key: userKey },
       include: { user: true },
@@ -135,7 +148,6 @@ export async function fetchWidgetOptionsForWebsite(userKey) {
 
     const userId = userKeyRecord.user.id;
 
-    // Fetch the user's widget
     const widget = await prisma.widget.findUnique({
       where: { userId },
       include: {
@@ -153,13 +165,11 @@ export async function fetchWidgetOptionsForWebsite(userKey) {
     });
 
     if (!widget) {
-      // If no widget is found, return an empty result
       return {
         userId: userId,
         widgetId: null,
         subscriptionId: null,
         planName: null,
-        actionParentId: null,
         planOptions: [],
         customOptions: [],
       };
@@ -168,7 +178,6 @@ export async function fetchWidgetOptionsForWebsite(userKey) {
     const subscription = widget.subscription;
     const plan = subscription?.plan;
 
-    // Fetch plan options if a plan exists and apply filters
     const planOptionsData = plan ? await prisma.planOptions.findMany({
       where: {
         planId: { lte: plan.id },
@@ -182,7 +191,6 @@ export async function fetchWidgetOptionsForWebsite(userKey) {
       },
     }) : [];
 
-    // Fetch custom options for the widget and apply filters
     const customOptionsData = await prisma.widgetOptions.findMany({
       where: {
         widgetId: widget.id,
@@ -197,27 +205,9 @@ export async function fetchWidgetOptionsForWebsite(userKey) {
       },
     });
 
-    // Map the options to the expected structure
-    const planOptions = planOptionsData.map(po => ({
-      id: po.option.id,
-      name: po.option.name,
-      description: po.option.description,
-      prompt: po.option.prompt,
-      isEnabled: po.option.isEnabled,
-      actionParentId: po.option.actionParentId,
-    }));
+    const planOptions = mapOptions(planOptionsData);
+    const customOptions = mapOptions(customOptionsData);
 
-    const customOptions = customOptionsData.map(co => ({
-      id: co.option.id,
-      name: co.option.name,
-      description: co.option.description,
-      prompt: co.option.prompt,
-      isEnabled: co.option.isEnabled,
-      isApproved: co.option.isApproved,
-      actionParentId: co.option.actionParentId,
-    }));
-
-    // Construct the result
     const result = {
       userId: userId,
       widgetId: widget.id,
@@ -234,22 +224,40 @@ export async function fetchWidgetOptionsForWebsite(userKey) {
   }
 }
 
-
-export async function updateOption(widgetId, optionId, isEnabled) {
+export async function updateOption(widgetId, optionId, isEnabled, description, prompt) {
   try {
-    console.log(`Updating option. Widget ID: ${widgetId}, Option ID: ${optionId}, Is Enabled: ${isEnabled}`);
-    
+    console.log(`Updating option. Widget ID: ${widgetId}, Option ID: ${optionId}, Is Enabled: ${isEnabled}, Description: ${description}, Prompt: ${prompt}`);
+
+    const existingOption = await prisma.widgetActions.findUnique({
+      where: { id: optionId },
+    });
+
+    if (!existingOption) {
+      throw new Error(`Option with ID ${optionId} not found`);
+    }
+
+    const updateData: { isEnabled: boolean; description: string; prompt: string; isApproved?: boolean } = {
+      isEnabled: isEnabled,
+      description: description,
+      prompt: prompt,
+    };
+
+    if (existingOption.prompt !== prompt) {
+      updateData.isApproved = false;
+    }
+
     await prisma.widgetActions.update({
       where: { id: optionId },
-      data: { isEnabled: isEnabled },
+      data: updateData,
     });
-    
-    return { success: true };
+
+    return { success: true, promptChanged: existingOption.prompt !== prompt };
   } catch (error) {
     console.error('Error updating option: ', error);
     return { success: false, error: error.message };
   }
 }
+
 
 export async function deleteCustomOption(widgetId, optionId) {
   try {

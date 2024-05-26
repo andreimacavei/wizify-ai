@@ -1,5 +1,5 @@
 'use client';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import { KeyContext } from '@/app/context';
 import 'react-circular-progressbar/dist/styles.css';
@@ -12,13 +12,13 @@ const fetchWidgetData = async (userId) => {
   return data;
 };
 
-const updateOptionFlag = async (widgetId, optionId, isEnabled) => {
+const updateOption = async (widgetId, optionId, isEnabled, description, prompt) => {
   const response = await fetch(`/api/widget`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ widgetId, optionId, isEnabled }),
+    body: JSON.stringify({ widgetId, optionId, isEnabled, description, prompt }),
   });
   const data = await response.json();
   return data;
@@ -49,6 +49,17 @@ const addCustomAction = async (widgetId, name, description, prompt, actionParent
   return data;
 };
 
+const flattenOptions = (options) => {
+  return options.reduce((acc, option) => {
+    acc.push(option);
+    if (option.children) {
+      acc = acc.concat(flattenOptions(option.children));
+    }
+    return acc;
+  }, []);
+};
+
+
 export default function UsageCard({ userId }) {
   const [loading, setLoading] = useState(true);
   const [loadingOptions, setLoadingOptions] = useState({});
@@ -57,6 +68,7 @@ export default function UsageCard({ userId }) {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [newAction, setNewAction] = useState({ name: '', description: '', prompt: '', actionParentId: null });
+  const [customOptionsEdits, setCustomOptionsEdits] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,24 +97,50 @@ export default function UsageCard({ userId }) {
     fetchData();
   }, [userId]);
 
-  const handleOptionChange = async (optionId, isEnabled) => {
+  const handleOptionChange = (optionId, field, value) => {
+    setCustomOptionsEdits((prev) => ({
+      ...prev,
+      [optionId]: { ...prev[optionId], [field]: value },
+    }));
+  };
+
+
+  const saveOptionChanges = async (optionId) => {
+    const optionEdits = customOptionsEdits[optionId] || {};
+    
+    // Flatten the customOptions array
+    const flattenedCustomOptions = flattenOptions(widgetData.customOptions);
+    const originalOption = flattenedCustomOptions.find(option => option.id === optionId);
+  
+    if (!originalOption) {
+      console.error(`Original option with ID ${optionId} not found`);
+      setError('Original option not found');
+      return;
+    }
+  
+    const isEnabled = optionEdits.isEnabled !== undefined ? optionEdits.isEnabled : originalOption.isEnabled;
+    const description = optionEdits.description !== undefined ? optionEdits.description : originalOption.description;
+    const prompt = optionEdits.prompt !== undefined ? optionEdits.prompt : originalOption.prompt;
+  
     setLoadingOptions((prev) => ({ ...prev, [optionId]: true }));
     try {
-      const response = await updateOptionFlag(widgetData.widgetId, optionId, isEnabled);
+      const response = await updateOption(widgetData.widgetId, optionId, isEnabled, description, prompt);
       if (!response.success) {
         setError(response.error);
       } else {
         setWidgetData((prevData) => {
           const updateOptions = (options) =>
             options.map((option) =>
-              option.id === optionId ? { ...option, isEnabled } : option
+              option.id === optionId ? { ...option, ...optionEdits, isEnabled, description, prompt } : option
             );
           return {
             ...prevData,
-            planOptions: prevData.planOptions,
             customOptions: updateOptions(prevData.customOptions),
           };
         });
+        if (response.promptChanged) {
+          setSuccessMessage('Your custom action will be live once it will be reviewed and approved');
+        }
       }
     } catch (err) {
       setError('An unexpected error occurred while updating the option');
@@ -111,6 +149,8 @@ export default function UsageCard({ userId }) {
       setLoadingOptions((prev) => ({ ...prev, [optionId]: false }));
     }
   };
+  
+  
 
   const handleDeleteOption = async (optionId) => {
     setLoadingOptions((prev) => ({ ...prev, [optionId]: true }));
@@ -169,6 +209,90 @@ export default function UsageCard({ userId }) {
     }
   };
 
+  const getParentName = (parentId) => {
+    if (!parentId) return 'N/A';
+    const parent = [...widgetData.planOptions, ...widgetData.customOptions].find(option => option.id === parentId);
+    return parent ? parent.name : 'Unknown';
+  };
+
+  const renderOptions = (options, isCustom, depth = 0) => {
+    return options.map(option => (
+      <React.Fragment key={option.id}>
+        <tr>
+          <td className="border px-4 py-2" style={{ paddingLeft: `${depth * 20}px` }}>
+            {isCustom ? (
+              <input
+                type="text"
+                value={customOptionsEdits[option.id]?.name ?? option.name}
+                onChange={(e) => handleOptionChange(option.id, 'name', e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            ) : (
+              option.name
+            )}
+          </td>
+          <td className="border px-4 py-2">
+            {isCustom ? (
+              <input
+                type="text"
+                value={customOptionsEdits[option.id]?.description ?? option.description}
+                onChange={(e) => handleOptionChange(option.id, 'description', e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            ) : (
+              option.description
+            )}
+          </td>
+          <td className="border px-4 py-2">
+            {isCustom ? (
+              <input
+                type="text"
+                value={customOptionsEdits[option.id]?.prompt ?? option.prompt}
+                onChange={(e) => handleOptionChange(option.id, 'prompt', e.target.value)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            ) : (
+              option.prompt
+            )}
+          </td>
+          <td className="border px-4 py-2">{getParentName(option.actionParentId)}</td>
+          <td className="border px-4 py-2">
+            <input
+              type="checkbox"
+              checked={customOptionsEdits[option.id]?.isEnabled ?? option.isEnabled}
+              onChange={(e) => handleOptionChange(option.id, 'isEnabled', e.target.checked)}
+              className="ml-2"
+              disabled={!isCustom}
+            />
+          </td>
+          {isCustom && (
+            <>
+              <td className="border px-4 py-2">
+                <button
+                  onClick={() => saveOptionChanges(option.id)}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  disabled={loadingOptions[option.id]}
+                >
+                  {loadingOptions[option.id] ? "Saving..." : "Save"}
+                </button>
+              </td>
+              <td className="border px-4 py-2">
+                <button
+                  onClick={() => handleDeleteOption(option.id)}
+                  className="bg-red-500 hover:bg-red-700 text-red font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  disabled={loadingOptions[option.id]}
+                >
+                  {loadingOptions[option.id] ? "Processing..." : "Delete"}
+                </button>
+              </td>
+            </>
+          )}
+        </tr>
+        {option.children && renderOptions(option.children, isCustom, depth + 1)}
+      </React.Fragment>
+    ));
+  };
+  
   return (
     <div className="col-span-1 auto-rows-min grid-cols-1 lg:col-span-5">
       <div className="min-h-screen bg-gray-100 p-6">
@@ -194,30 +318,12 @@ export default function UsageCard({ userId }) {
                     <th className="py-2">Name</th>
                     <th className="py-2">Description</th>
                     <th className="py-2">Prompt</th>
-                    <th className="py-2">HasParent</th>
+                    <th className="py-2">Parent</th>
                     <th className="py-2">Enabled</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {widgetData.planOptions.map((option) => (
-                    <tr key={option.id}>
-                      <td className="border px-4 py-2">{option.name}</td>
-                      <td className="border px-4 py-2">{option.description}</td>
-                      <td className="border px-4 py-2">{option.prompt}</td>
-                      <td className="border px-4 py-2">
-                        {option.actionParentId != null ? 'True' : 'False'}
-                      </td>
-                      <td className="border px-4 py-2">
-                        <input
-                          disabled
-                          type="checkbox"
-                          checked={option.isEnabled}
-                          readOnly
-                          className="ml-2"
-                        />
-                      </td>
-                    </tr>
-                  ))}
+                  {renderOptions(widgetData.planOptions, false)}
                 </tbody>
               </table>
             </div>
@@ -237,9 +343,9 @@ export default function UsageCard({ userId }) {
                         <th className="py-2">Name</th>
                         <th className="py-2">Description</th>
                         <th className="py-2">Prompt</th>
-                        <th className="py-2">HasParent</th>
+                        <th className="py-2">Parent</th>
                         <th className="py-2">Enabled</th>
-                        <th className="py-2">Actions</th>
+                        <th className="py-2">Delete</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -247,7 +353,7 @@ export default function UsageCard({ userId }) {
                         <td className="border px-4 py-2">Mock Name</td>
                         <td className="border px-4 py-2">Mock Description</td>
                         <td className="border px-4 py-2">Mock Prompt</td>
-                        <td className="border px-4 py-2">False</td>
+                        <td className="border px-4 py-2">N/A</td>
                         <td className="border px-4 py-2">
                           <input type="checkbox" disabled className="ml-2" />
                         </td>
@@ -297,7 +403,7 @@ export default function UsageCard({ userId }) {
                       />
                     </div>
                     <div className="mb-4">
-                      <label className="block text-gray-700 font-bold mb-2">Parent Action:</label>
+                      <label className="block text-gray-700 font-bold mb-2">Parent:</label>
                       <select
                         value=""
                         disabled
@@ -322,40 +428,14 @@ export default function UsageCard({ userId }) {
                         <th className="py-2">Name</th>
                         <th className="py-2">Description</th>
                         <th className="py-2">Prompt</th>
-                        <th className="py-2">HasParent</th>
+                        <th className="py-2">Parent</th>
                         <th className="py-2">Enabled</th>
-                        <th className="py-2">Actions</th>
+                        <th className="py-2">Save</th>
+                        <th className="py-2">Delete</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {widgetData.customOptions.map((option) => (
-                        <tr key={option.id} className={loadingOptions[option.id] ? "opacity-50" : ""}>
-                          <td className="border px-4 py-2">{option.name}</td>
-                          <td className="border px-4 py-2">{option.description}</td>
-                          <td className="border px-4 py-2">{option.prompt}</td>
-                          <td className="border px-4 py-2">
-                            {option.actionParentId != null ? 'True' : 'False'}
-                          </td>
-                          <td className="border px-4 py-2">
-                            <input
-                              type="checkbox"
-                              checked={option.isEnabled}
-                              onChange={(e) => handleOptionChange(option.id, e.target.checked)}
-                              className="ml-2"
-                              disabled={loadingOptions[option.id]}
-                            />
-                          </td>
-                          <td className="border px-4 py-2">
-                            <button
-                              onClick={() => handleDeleteOption(option.id)}
-                              className="bg-red-500 hover:bg-red-700 text-red font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                              disabled={loadingOptions[option.id]}
-                            >
-                              {loadingOptions[option.id] ? "Processing..." : "Delete"}
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
+                      {renderOptions(widgetData.customOptions, true)}
                     </tbody>
                   </table>
                 </div>
@@ -394,7 +474,7 @@ export default function UsageCard({ userId }) {
                       />
                     </div>
                     <div className="mb-4">
-                      <label className="block text-gray-700 font-bold mb-2">Parent Action:</label>
+                      <label className="block text-gray-700 font-bold mb-2">Parent:</label>
                       <select
                         value={newAction.actionParentId || ''}
                         onChange={(e) => setNewAction({ ...newAction, actionParentId: e.target.value || null })}
