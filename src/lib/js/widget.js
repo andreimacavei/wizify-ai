@@ -1,6 +1,5 @@
 let BASE_URL = "http://localhost:3000/api/enhance";
-let CLIENT_KEY =
-  extractClientId(document.currentScript.getAttribute("src")) || "";
+let CLIENT_KEY = extractClientId(document.currentScript.getAttribute("src")) || "";
 
 function extractClientId(url) {
   const regex = /client_key=([^&]*)/;
@@ -268,50 +267,50 @@ function getSelectionRect() {
 }
 
 window.onload = function () {
-  console.log("window.onload event fired");
-  const inputElements = document.querySelectorAll(
-    'input[type="text"], textarea',
-  );
-
-  // This code adds a undo/redo button toolbar below input element after user calls our widget
-  // It doesn't work with NextJs because of hydration issue so it's disabled for now
-  // document.addEventListener("change", function (event) {
-  //   const inputElement = event.target;
-  //   // const selectionRect = getSelectionRect();
-  //   const selectionRect = inputElement.getBoundingClientRect();
-  //   if (!selectionRect) return;
-  //   const toolbarRect = undoRedoToolbar.getBoundingClientRect();
-
-  //   const distanceFromTop = window.scrollY;
-
-  //   let top =
-  //     selectionRect.top + distanceFromTop + inputElement.offsetHeight + 12;
-  //   let left =
-  //     selectionRect.left + (selectionRect.width - toolbarRect.width) / 2;
-
-  //   undoRedoToolbar.style.transform = `translate(${left}px, ${top}px)`;
-  //   undoRedoToolbar.style.opacity = 0.7;
-  // });
-
-  // document.addEventListener("selectionchange", () => {
-  //   const selection = window.getSelection().toString();
-  //   if (!selection) {
-  //     undoRedoToolbar.style.opacity = 0;
-  //   }
-  // });
-
-  // Create the undo and redo toolbar
-  // const undoRedoToolbar = createToolbar();
-  // document.body.appendChild(undoRedoToolbar);
-
-  inputElements.forEach(function (inputElement) {
-    enhanceInputElement(inputElement);
-    new ResizeObserver(function () {
-      inputElement.parentNode.style.width = inputElement.offsetWidth + "px";
-      inputElement.parentNode.style.height = inputElement.offsetHeight + "px";
-    }).observe(inputElement);
-  });
-};
+    console.log("window.onload event fired");
+    const inputElements = document.querySelectorAll(
+      'input[type="text"], textarea',
+    );
+  
+    // This code adds a undo/redo button toolbar below input element after user calls our widget
+    // It doesn't work with NextJs because of hydration issue so it's disabled for now
+    // document.addEventListener("change", function (event) {
+    //   const inputElement = event.target;
+    //   // const selectionRect = getSelectionRect();
+    //   const selectionRect = inputElement.getBoundingClientRect();
+    //   if (!selectionRect) return;
+    //   const toolbarRect = undoRedoToolbar.getBoundingClientRect();
+  
+    //   const distanceFromTop = window.scrollY;
+  
+    //   let top =
+    //     selectionRect.top + distanceFromTop + inputElement.offsetHeight + 12;
+    //   let left =
+    //     selectionRect.left + (selectionRect.width - toolbarRect.width) / 2;
+  
+    //   undoRedoToolbar.style.transform = `translate(${left}px, ${top}px)`;
+    //   undoRedoToolbar.style.opacity = 0.7;
+    // });
+  
+    // document.addEventListener("selectionchange", () => {
+    //   const selection = window.getSelection().toString();
+    //   if (!selection) {
+    //     undoRedoToolbar.style.opacity = 0;
+    //   }
+    // });
+  
+    // Create the undo and redo toolbar
+    // const undoRedoToolbar = createToolbar();
+    // document.body.appendChild(undoRedoToolbar);
+  
+    inputElements.forEach(function (inputElement) {
+      enhanceInputElement(inputElement);
+      new ResizeObserver(function () {
+        inputElement.parentNode.style.width = inputElement.offsetWidth + "px";
+        inputElement.parentNode.style.height = inputElement.offsetHeight + "px";
+      }).observe(inputElement);
+    });
+  };
 
 function hideMenu(aiMenu) {
   let classNames = aiMenu.className.split(" ");
@@ -320,8 +319,16 @@ function hideMenu(aiMenu) {
   aiMenu.className = classNames.join(" ");
 }
 
+async function fetchWidgetData(userKey) {
+    const response = await fetch(`/api/widget/website?userKey=${userKey}`, {
+      method: 'GET',
+    });
+    const data = await response.json();
+    return data;
+  }
+  
 // Function to create the AI button and menu
-function enhanceInputElement(inputElement) {
+async function enhanceInputElement(inputElement) {
   if (inputElement.parentNode.className.includes("micro-ai-wrapper")) return;
   // Create the AI button element
   let padding = 3;
@@ -378,96 +385,94 @@ function enhanceInputElement(inputElement) {
   const undoRedoToolbar = createToolbar();
   wrapper.appendChild(undoRedoToolbar);
 
+   
+
+let apiData;
+try {
+  apiData = await fetchWidgetData(CLIENT_KEY);
+  console.log('Fetched widget data:', apiData);
+} catch (error) {
+  console.error('Error fetching widget data:', error);
+}
+
+// Generate API options
+let options = [];
+if (apiData) {
+  apiData.planOptions.forEach(option => {
+    options.push({
+      html: `<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="TranslateOutlinedIcon"><path d="m12.87 15.07-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7 1.62-4.33L19.12 17h-3.24z"></path></svg></span>${option.name}`,
+      type: option.children && option.children.length > 0 ? 'group' : option.id,
+      children: option.children.map(child => ({
+        html: child.name,
+        type: child.id,
+      })),
+    });
+  });
+
+  apiData.customOptions.forEach(option => {
+    options.push({
+      html: `<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="TranslateOutlinedIcon"><path d="m12.87 15.07-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7 1.62-4.33L19.12 17h-3.24z"></path></svg></span>${option.name}`,
+      type: option.children && option.children.length > 0 ? 'group' : option.id,
+      children: option.children.map(child => ({
+        html: child.name,
+        type: child.id,
+      })),
+    });
+  });
+}
+
+options.push({
+    html: '<span class="icon"><svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 42.262 42.262" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M41.159,10.363c-1.031-0.57-2.328-0.194-2.898,0.838l-0.688,1.247C35.214,5.231,28.428,0,20.434,0 C10.489,0,2.399,8.09,2.399,18.035c0,1.178,0.953,2.134,2.133,2.134c1.178,0,2.133-0.956,2.133-2.134 c0-7.593,6.178-13.769,13.77-13.769c6.02,0,11.137,3.89,13.003,9.284l-1.166-0.643c-1.028-0.57-2.328-0.195-2.897,0.837 c-0.568,1.032-0.193,2.329,0.838,2.898l4.215,2.326c0.348,0.707,1.068,1.199,1.91,1.199c0.211,0,0.414-0.041,0.606-0.099 c0.011,0,0.021,0.004,0.031,0.004c0.754,0,1.482-0.397,1.871-1.103l3.15-5.71C42.564,12.229,42.191,10.932,41.159,10.363z"></path> <path d="M37.732,22.091c-1.18,0-2.135,0.955-2.135,2.133c0,7.593-6.176,13.771-13.768,13.771c-6.021,0-11.139-3.892-13.006-9.284 l1.166,0.643c0.326,0.181,0.68,0.267,1.029,0.267c0.752,0,1.48-0.397,1.869-1.104c0.568-1.03,0.195-2.328-0.838-2.897 l-4.215-2.326c-0.348-0.707-1.066-1.198-1.908-1.198c-0.219,0-0.426,0.042-0.623,0.103c-0.758-0.006-1.496,0.385-1.887,1.096 L0.265,29c-0.568,1.031-0.193,2.328,0.838,2.898c0.326,0.18,0.68,0.266,1.029,0.266c0.752,0,1.48-0.397,1.869-1.104l0.689-1.246 c2.357,7.215,9.145,12.447,17.139,12.447c9.942,0,18.035-8.09,18.035-18.036C39.866,23.046,38.911,22.091,37.732,22.091z"></path> </g> </g> </g></svg></span>Actions',
+    type: "group",
+    children: [
+      {
+        html: "Undo",
+        type: "undo",
+      },
+      {
+        html: "Redo",
+        type: "redo",
+      },
+    ],
+  })
+
+
   // Create menu options
-  const options = [
-    {
-      html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="TranslateOutlinedIcon"><path d="m12.87 15.07-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7 1.62-4.33L19.12 17h-3.24z"></path></svg></span>Translate',
-      type: "group",
-      children: [
-        {
-          html: "To English",
-          type: "translate",
-          lang: "en",
-        },
-        {
-          html: "To Chinese",
-          type: "translate",
-          lang: "zh",
-        },
-        {
-          html: "To Dutch",
-          type: "translate",
-          lang: "nl",
-        },
-        {
-          html: "To German",
-          type: "translate",
-          lang: "de",
-        },
-      ],
-    },
-    {
-      html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="KeyboardVoiceOutlinedIcon"><path d="M12 15c1.66 0 2.99-1.34 2.99-3L15 6c0-1.66-1.34-3-3-3S9 4.34 9 6v6c0 1.66 1.34 3 3 3zm-1.2-9.1c0-.66.54-1.2 1.2-1.2s1.2.54 1.2 1.2l-.01 6.2c0 .66-.53 1.2-1.19 1.2s-1.2-.54-1.2-1.2V5.9zm6.5 6.1c0 3-2.54 5.1-5.3 5.1S6.7 15 6.7 12H5c0 3.41 2.72 6.23 6 6.72V22h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"></path></svg></span>Change tone',
-      type: "group",
-      children: [
-        {
-          html: "Professional",
-          type: "change_tone",
-          tone: "professional",
-        },
-        {
-          html: "Friendly",
-          type: "change_tone",
-          tone: "friendly",
-        },
-        {
-          html: "Straightforward",
-          type: "change_tone",
-          tone: "straightforward",
-        },
-        {
-          html: "Confident",
-          type: "change_tone",
-          tone: "confident",
-        },
-        {
-          html: "Casual",
-          type: "change_tone",
-          tone: "casual",
-        },
-      ],
-    },
-    {
-      html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ShortTextIcon"><path d="M4 9h16v2H4V9zm0 4h10v2H4v-2z"></path></svg></span>Make shorter',
-      type: "shorter",
-    },
-    {
-      html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="SubjectIcon"><path d="M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z"></path></svg></span>Make longer',
-      type: "longer",
-    },
-    {
-      html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DoneIcon"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path></svg></span>Fix spelling & grammar',
-      type: "spelling",
-    },
-    {
-      html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AutoFixHighOutlinedIcon"><path d="m20 7 .94-2.06L23 4l-2.06-.94L20 1l-.94 2.06L17 4l2.06.94zM8.5 7l.94-2.06L11.5 4l-2.06-.94L8.5 1l-.94 2.06L5.5 4l2.06.94zM20 12.5l-.94 2.06-2.06.94 2.06.94.94 2.06.94-2.06L23 15.5l-2.06-.94zm-2.29-3.38-2.83-2.83c-.2-.19-.45-.29-.71-.29-.26 0-.51.1-.71.29L2.29 17.46c-.39.39-.39 1.02 0 1.41l2.83 2.83c.2.2.45.3.71.3s.51-.1.71-.29l11.17-11.17c.39-.39.39-1.03 0-1.42zm-3.54-.7 1.41 1.41L14.41 11 13 9.59l1.17-1.17zM5.83 19.59l-1.41-1.41L11.59 11 13 12.41l-7.17 7.18z"></path></svg></span>Check tonality',
-      type: "check_tone",
-    },
-    {
-      html: '<span class="icon"><svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 42.262 42.262" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M41.159,10.363c-1.031-0.57-2.328-0.194-2.898,0.838l-0.688,1.247C35.214,5.231,28.428,0,20.434,0 C10.489,0,2.399,8.09,2.399,18.035c0,1.178,0.953,2.134,2.133,2.134c1.178,0,2.133-0.956,2.133-2.134 c0-7.593,6.178-13.769,13.77-13.769c6.02,0,11.137,3.89,13.003,9.284l-1.166-0.643c-1.028-0.57-2.328-0.195-2.897,0.837 c-0.568,1.032-0.193,2.329,0.838,2.898l4.215,2.326c0.348,0.707,1.068,1.199,1.91,1.199c0.211,0,0.414-0.041,0.606-0.099 c0.011,0,0.021,0.004,0.031,0.004c0.754,0,1.482-0.397,1.871-1.103l3.15-5.71C42.564,12.229,42.191,10.932,41.159,10.363z"></path> <path d="M37.732,22.091c-1.18,0-2.135,0.955-2.135,2.133c0,7.593-6.176,13.771-13.768,13.771c-6.021,0-11.139-3.892-13.006-9.284 l1.166,0.643c0.326,0.181,0.68,0.267,1.029,0.267c0.752,0,1.48-0.397,1.869-1.104c0.568-1.03,0.195-2.328-0.838-2.897 l-4.215-2.326c-0.348-0.707-1.066-1.198-1.908-1.198c-0.219,0-0.426,0.042-0.623,0.103c-0.758-0.006-1.496,0.385-1.887,1.096 L0.265,29c-0.568,1.031-0.193,2.328,0.838,2.898c0.326,0.18,0.68,0.266,1.029,0.266c0.752,0,1.48-0.397,1.869-1.104l0.689-1.246 c2.357,7.215,9.145,12.447,17.139,12.447c9.942,0,18.035-8.09,18.035-18.036C39.866,23.046,38.911,22.091,37.732,22.091z"></path> </g> </g> </g></svg></span>Actions',
-      type: "group",
-      children: [
-        {
-          html: "Undo",
-          type: "undo",
-        },
-        {
-          html: "Redo",
-          type: "redo",
-        },
-      ],
-    },
-  ];
+//   const options = [
+
+//     {
+//       html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ShortTextIcon"><path d="M4 9h16v2H4V9zm0 4h10v2H4v-2z"></path></svg></span>Make shorter',
+//       type: "shorter",
+//     },
+//     {
+//       html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="SubjectIcon"><path d="M14 17H4v2h10v-2zm6-8H4v2h16V9zM4 15h16v-2H4v2zM4 5v2h16V5H4z"></path></svg></span>Make longer',
+//       type: "longer",
+//     },
+//     {
+//       html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DoneIcon"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path></svg></span>Fix spelling & grammar',
+//       type: "spelling",
+//     },
+//     {
+//       html: '<span class="icon"><svg class="use-chat-gpt-ai--MuiSvgIcon-root use-chat-gpt-ai--MuiSvgIcon-fontSizeMedium use-chat-gpt-ai-context-menu-e8cpb9" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="AutoFixHighOutlinedIcon"><path d="m20 7 .94-2.06L23 4l-2.06-.94L20 1l-.94 2.06L17 4l2.06.94zM8.5 7l.94-2.06L11.5 4l-2.06-.94L8.5 1l-.94 2.06L5.5 4l2.06.94zM20 12.5l-.94 2.06-2.06.94 2.06.94.94 2.06.94-2.06L23 15.5l-2.06-.94zm-2.29-3.38-2.83-2.83c-.2-.19-.45-.29-.71-.29-.26 0-.51.1-.71.29L2.29 17.46c-.39.39-.39 1.02 0 1.41l2.83 2.83c.2.2.45.3.71.3s.51-.1.71-.29l11.17-11.17c.39-.39.39-1.03 0-1.42zm-3.54-.7 1.41 1.41L14.41 11 13 9.59l1.17-1.17zM5.83 19.59l-1.41-1.41L11.59 11 13 12.41l-7.17 7.18z"></path></svg></span>Check tonality',
+//       type: "check_tone",
+//     },
+//     {
+//       html: '<span class="icon"><svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 42.262 42.262" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M41.159,10.363c-1.031-0.57-2.328-0.194-2.898,0.838l-0.688,1.247C35.214,5.231,28.428,0,20.434,0 C10.489,0,2.399,8.09,2.399,18.035c0,1.178,0.953,2.134,2.133,2.134c1.178,0,2.133-0.956,2.133-2.134 c0-7.593,6.178-13.769,13.77-13.769c6.02,0,11.137,3.89,13.003,9.284l-1.166-0.643c-1.028-0.57-2.328-0.195-2.897,0.837 c-0.568,1.032-0.193,2.329,0.838,2.898l4.215,2.326c0.348,0.707,1.068,1.199,1.91,1.199c0.211,0,0.414-0.041,0.606-0.099 c0.011,0,0.021,0.004,0.031,0.004c0.754,0,1.482-0.397,1.871-1.103l3.15-5.71C42.564,12.229,42.191,10.932,41.159,10.363z"></path> <path d="M37.732,22.091c-1.18,0-2.135,0.955-2.135,2.133c0,7.593-6.176,13.771-13.768,13.771c-6.021,0-11.139-3.892-13.006-9.284 l1.166,0.643c0.326,0.181,0.68,0.267,1.029,0.267c0.752,0,1.48-0.397,1.869-1.104c0.568-1.03,0.195-2.328-0.838-2.897 l-4.215-2.326c-0.348-0.707-1.066-1.198-1.908-1.198c-0.219,0-0.426,0.042-0.623,0.103c-0.758-0.006-1.496,0.385-1.887,1.096 L0.265,29c-0.568,1.031-0.193,2.328,0.838,2.898c0.326,0.18,0.68,0.266,1.029,0.266c0.752,0,1.48-0.397,1.869-1.104l0.689-1.246 c2.357,7.215,9.145,12.447,17.139,12.447c9.942,0,18.035-8.09,18.035-18.036C39.866,23.046,38.911,22.091,37.732,22.091z"></path> </g> </g> </g></svg></span>Actions',
+//       type: "group",
+//       children: [
+//         {
+//           html: "Undo",
+//           type: "undo",
+//         },
+//         {
+//           html: "Redo",
+//           type: "redo",
+//         },
+//       ],
+//     },
+//   ];
+
+
   function addMenu(parent, options) {
     options.forEach(function (option) {
       const menuOption = document.createElement("div");
@@ -484,35 +489,24 @@ function enhanceInputElement(inputElement) {
         const tone = option.tone;
         let url;
         switch (option.type) {
-          case "translate":
-            url = `${BASE_URL}?action=translate&lang=${lang}&content=${encodeURIComponent(
-              content,
-            )}`;
+          case "group":
+            return;
+          case "undo":
+            setFocusedInput(inputElement);
+            if (previousValue === "" || previousValue === inputElement.value)
+              return;
+            nextValue = inputElement.value;
+            inputElement.value = previousValue;
+            inputElement.focus();
+            inputElement.select();
             break;
-          case "change_tone":
-            url = `${BASE_URL}?action=change_tone&tone=${tone}&content=${encodeURIComponent(
-              content,
-            )}`;
-            break;
-          case "shorter":
-            url = `${BASE_URL}?action=make_shorter&content=${encodeURIComponent(
-              content,
-            )}`;
-            break;
-          case "longer":
-            url = `${BASE_URL}?action=make_longer&content=${encodeURIComponent(
-              content,
-            )}`;
-            break;
-          case "spelling":
-            url = `${BASE_URL}?action=fix_spelling&content=${encodeURIComponent(
-              content,
-            )}`;
-            break;
-          case "check_tone":
-            url = `${BASE_URL}?action=check_tone&content=${encodeURIComponent(
-              content,
-            )}`;
+          case "redo":
+            setFocusedInput(inputElement);
+            if (nextValue === "" || nextValue === inputElement.value) return;
+            previousValue = inputElement.value;
+            inputElement.value = nextValue;
+            inputElement.focus();
+            inputElement.select();
             break;
           case "undo":
             setFocusedInput(inputElement);
@@ -532,8 +526,12 @@ function enhanceInputElement(inputElement) {
             inputElement.select();
             break;
           default:
+            url = `${BASE_URL}?action=${option.type}&content=${encodeURIComponent(
+              content,
+            )}`;
             break;
         }
+
         if (!url) return;
         try {
           url += "&userkey=" + encodeURIComponent(CLIENT_KEY);

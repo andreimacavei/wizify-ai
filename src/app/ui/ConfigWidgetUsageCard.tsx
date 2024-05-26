@@ -1,6 +1,5 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
-import { CircularProgressbar } from 'react-circular-progressbar';
 import { KeyContext } from '@/app/context';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -25,7 +24,6 @@ const updateOption = async (widgetId, optionId, isEnabled, description, prompt) 
 };
 
 const deleteCustomOption = async (widgetId, optionId) => {
-  console.log("Trying to delete option " + optionId + " from widget " + widgetId);
   const response = await fetch(`/api/widget`, {
     method: 'DELETE',
     headers: {
@@ -59,8 +57,7 @@ const flattenOptions = (options) => {
   }, []);
 };
 
-
-export default function UsageCard({ userId }) {
+export default function ConfigWidgetUsageCard({ userId }) {
   const [loading, setLoading] = useState(true);
   const [loadingOptions, setLoadingOptions] = useState({});
   const { keys, setKeys } = useContext(KeyContext);
@@ -79,7 +76,6 @@ export default function UsageCard({ userId }) {
         return;
       }
 
-      console.log('User ID used for fetching data: ', userId);
       try {
         const data = await fetchWidgetData(userId);
         if (data.error) {
@@ -104,29 +100,27 @@ export default function UsageCard({ userId }) {
     }));
   };
 
-
   const saveOptionChanges = async (optionId) => {
     const optionEdits = customOptionsEdits[optionId] || {};
-    
-    // Flatten the customOptions array
     const flattenedCustomOptions = flattenOptions(widgetData.customOptions);
     const originalOption = flattenedCustomOptions.find(option => option.id === optionId);
-  
+
     if (!originalOption) {
       console.error(`Original option with ID ${optionId} not found`);
       setError('Original option not found');
       return;
     }
-  
+
     const isEnabled = optionEdits.isEnabled !== undefined ? optionEdits.isEnabled : originalOption.isEnabled;
     const description = optionEdits.description !== undefined ? optionEdits.description : originalOption.description;
     const prompt = optionEdits.prompt !== undefined ? optionEdits.prompt : originalOption.prompt;
-  
-    setLoadingOptions((prev) => ({ ...prev, [optionId]: true }));
+
+    setLoadingOptions((prev) => ({ ...prev, [optionId]: 'Updating...' }));
     try {
       const response = await updateOption(widgetData.widgetId, optionId, isEnabled, description, prompt);
       if (!response.success) {
         setError(response.error);
+        setLoadingOptions((prev) => ({ ...prev, [optionId]: response.error }));
       } else {
         setWidgetData((prevData) => {
           const updateOptions = (options) =>
@@ -138,28 +132,30 @@ export default function UsageCard({ userId }) {
             customOptions: updateOptions(prevData.customOptions),
           };
         });
+        setLoadingOptions((prev) => ({ ...prev, [optionId]: 'Updated successfully' }));
         if (response.promptChanged) {
           setSuccessMessage('Your custom action will be live once it will be reviewed and approved');
         }
       }
     } catch (err) {
       setError('An unexpected error occurred while updating the option');
+      setLoadingOptions((prev) => ({ ...prev, [optionId]: err.message }));
       console.error('Error updating option:', err);
     } finally {
-      setLoadingOptions((prev) => ({ ...prev, [optionId]: false }));
+      setTimeout(() => {
+        setLoadingOptions((prev) => ({ ...prev, [optionId]: false }));
+      }, 2000);
     }
   };
-  
-  
 
   const handleDeleteOption = async (optionId) => {
-    setLoadingOptions((prev) => ({ ...prev, [optionId]: true }));
-    console.log("Trying to delete option " + optionId + " from widget " + widgetData.widgetId);
+    setLoadingOptions((prev) => ({ ...prev, [optionId]: 'Deleting...' }));
 
     try {
       const response = await deleteCustomOption(widgetData.widgetId, optionId);
       if (!response.success) {
         setError(response.error);
+        setLoadingOptions((prev) => ({ ...prev, [optionId]: response.error }));
       } else {
         setWidgetData((prevData) => {
           const updateOptions = (options) => options.filter((option) => option.id !== optionId);
@@ -168,38 +164,60 @@ export default function UsageCard({ userId }) {
             customOptions: updateOptions(prevData.customOptions),
           };
         });
+        setLoadingOptions((prev) => ({ ...prev, [optionId]: 'Deleted successfully' }));
       }
     } catch (err) {
       setError('An unexpected error occurred while deleting the option');
+      setLoadingOptions((prev) => ({ ...prev, [optionId]: err.message }));
       console.error('Error deleting option:', err);
     } finally {
-      setLoadingOptions((prev) => ({ ...prev, [optionId]: false }));
+      setTimeout(() => {
+        setLoadingOptions((prev) => ({ ...prev, [optionId]: false }));
+      }, 2000);
     }
   };
+
 
   const handleAddCustomAction = async (event) => {
     event.preventDefault();
     const { name, description, prompt, actionParentId } = newAction;
-
+  
     if (!name || !description || !prompt) {
       setError('All fields are required');
       return;
     }
-
+  
     let actionParentIdAsInt = null;
     if (actionParentId != null) {
       actionParentIdAsInt = parseInt(actionParentId, 10);
     }
-
+  
     try {
       const response = await addCustomAction(widgetData.widgetId, name, description, prompt, actionParentIdAsInt);
       if (!response.success) {
         setError(response.error);
       } else {
-        setWidgetData((prevData) => ({
-          ...prevData,
-          customOptions: [...prevData.customOptions, response.action],
-        }));
+        setWidgetData((prevData) => {
+          let updatedCustomOptions;
+  
+          if (actionParentIdAsInt !== null) {
+            updatedCustomOptions = prevData.customOptions.map(option => {
+              if (option.id === actionParentIdAsInt) {
+                const updatedChildren = option.children ? [...option.children, response.action] : [response.action];
+                return { ...option, children: updatedChildren };
+              }
+              return option;
+            });
+          } else {
+            updatedCustomOptions = [...prevData.customOptions, response.action];
+          }
+  
+          return {
+            ...prevData,
+            customOptions: updatedCustomOptions,
+          };
+        });
+  
         setNewAction({ name: '', description: '', prompt: '', actionParentId: null });
         setSuccessMessage('Your custom action will be live once it will be reviewed and approved');
       }
@@ -208,6 +226,7 @@ export default function UsageCard({ userId }) {
       console.error('Error adding custom action:', err);
     }
   };
+  
 
   const getParentName = (parentId) => {
     if (!parentId) return 'N/A';
@@ -215,81 +234,106 @@ export default function UsageCard({ userId }) {
     return parent ? parent.name : 'Unknown';
   };
 
+  const injectParentProperties = (options) => {
+    return options.map(option => {
+      if (getParentName(option.actionParentId)=="N/A") {
+        return {
+          ...option,
+          children: [
+            {
+              id: `${option.id}-parent`,
+              name: "Parent Action Properties",
+              description: option.description,
+              prompt: option.prompt,
+              actionParentId: option.actionParentId,
+              isEnabled: option.isEnabled,
+              children: []
+            },
+            ...injectParentProperties(option.children)
+          ]
+        };
+      }
+      return option;
+    });
+  };
+
   const renderOptions = (options, isCustom, depth = 0) => {
     return options.map(option => (
-      <React.Fragment key={option.id}>
-        <tr>
-          <td className="border px-4 py-2" style={{ paddingLeft: `${depth * 20}px` }}>
-            {isCustom ? (
-              <input
-                type="text"
-                value={customOptionsEdits[option.id]?.name ?? option.name}
-                onChange={(e) => handleOptionChange(option.id, 'name', e.target.value)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            ) : (
-              option.name
-            )}
-          </td>
-          <td className="border px-4 py-2">
-            {isCustom ? (
+      <details key={option.id} className={`mb-2 ${depth > 0 ? 'ml-8' : ''}`}>
+        <summary className={`bg-${depth > 0 ? 'gray-100' : 'gray-200'} p-3 rounded-lg cursor-pointer shadow`}>
+          <span className="font-semibold">{option.name}</span>
+        </summary>
+        {depth > 0 && (
+          <div className="bg-white p-4">
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2">Description:</label>
               <input
                 type="text"
                 value={customOptionsEdits[option.id]?.description ?? option.description}
                 onChange={(e) => handleOptionChange(option.id, 'description', e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
-            ) : (
-              option.description
-            )}
-          </td>
-          <td className="border px-4 py-2">
-            {isCustom ? (
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2">Prompt:</label>
               <input
                 type="text"
                 value={customOptionsEdits[option.id]?.prompt ?? option.prompt}
                 onChange={(e) => handleOptionChange(option.id, 'prompt', e.target.value)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
-            ) : (
-              option.prompt
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2">Parent:</label>
+              <input
+                type="text"
+                value={getParentName(option.actionParentId)}
+                disabled
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            {isCustom && (
+              <>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2">Enabled:</label>
+                  <select
+                    value={String(customOptionsEdits[option.id]?.isEnabled ?? option.isEnabled)}
+                    onChange={(e) => handleOptionChange(option.id, 'isEnabled', e.target.value === 'true')}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  >
+                    <option value="true">Enabled</option>
+                    <option value="false">Disabled</option>
+                  </select>
+                </div>
+                <div className="flex space-x-4">
+                <button
+                    onClick={() => saveOptionChanges(option.id)}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline flex items-center justify-center"
+                    disabled={loadingOptions[option.id] === 'Updating...'}
+                    title="Save"
+                  >
+                    &#10003;
+                  </button>
+                  <button
+                    onClick={() => handleDeleteOption(option.id)}
+                    className="bg-red hover:bg-red text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline flex items-center justify-center"
+                    disabled={loadingOptions[option.id] === 'Deleting...'}
+                    title="Delete"
+                  >
+                    &#10007;
+                  </button>
+                </div>
+                {loadingOptions[option.id] && (
+                  <div className="mt-4 text-gray-700">
+                    Status: {loadingOptions[option.id]}
+                  </div>
+                )}
+              </>
             )}
-          </td>
-          <td className="border px-4 py-2">{getParentName(option.actionParentId)}</td>
-          <td className="border px-4 py-2">
-            <input
-              type="checkbox"
-              checked={customOptionsEdits[option.id]?.isEnabled ?? option.isEnabled}
-              onChange={(e) => handleOptionChange(option.id, 'isEnabled', e.target.checked)}
-              className="ml-2"
-              disabled={!isCustom}
-            />
-          </td>
-          {isCustom && (
-            <>
-              <td className="border px-4 py-2">
-                <button
-                  onClick={() => saveOptionChanges(option.id)}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  disabled={loadingOptions[option.id]}
-                >
-                  {loadingOptions[option.id] ? "Saving..." : "Save"}
-                </button>
-              </td>
-              <td className="border px-4 py-2">
-                <button
-                  onClick={() => handleDeleteOption(option.id)}
-                  className="bg-red-500 hover:bg-red-700 text-red font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  disabled={loadingOptions[option.id]}
-                >
-                  {loadingOptions[option.id] ? "Processing..." : "Delete"}
-                </button>
-              </td>
-            </>
-          )}
-        </tr>
+          </div>
+        )}
         {option.children && renderOptions(option.children, isCustom, depth + 1)}
-      </React.Fragment>
+      </details>
     ));
   };
   
@@ -305,194 +349,84 @@ export default function UsageCard({ userId }) {
           <>
             <div className="bg-white p-8 rounded-lg shadow-lg mb-8">
               <h2 className="text-3xl font-bold mb-6">Widget Data</h2>
-              <p><strong>User ID:</strong> {widgetData.userId}</p>
-              <p><strong>Subscription ID:</strong> {widgetData.subscriptionId || 'N/A'}</p>
               <p><strong>Plan Name:</strong> {widgetData.planName || 'N/A'}</p>
+              <p><strong>Plan Price:</strong> {widgetData.planPrice || 'N/A'}</p>
+              <p><strong>Domains Allowed:</strong> {widgetData.planDomainsAllowed || 'N/A'}</p>
+              <p><strong>Subscription Total Credits:</strong> {widgetData.subscriptionCredits || 'N/A'}</p>
+              <p><strong>Subscription Used Credits:</strong> {widgetData.subscriptionUsedCredits || 'N/A'}</p>
+              <p><strong>Subscription Remaining Credits:</strong> { widgetData.subscriptionCredits - widgetData.subscriptionUsedCredits || 'N/A'}</p>
             </div>
+
+            <details className="mb-2">
+              <summary className="bg-gray-200 p-4 rounded-lg cursor-pointer shadow-md mb-4">
+                <span className="font-semibold">Plan Options</span>
+              </summary>
+              <ul className="ml-8 space-y-4">
+                {renderOptions(injectParentProperties(widgetData.planOptions), false)}
+
+              </ul>
+            </details>
+
+            <details className="mb-2">
+              <summary className="bg-gray-200 p-4 rounded-lg cursor-pointer shadow-md mb-4">
+                <span className="font-semibold">Custom Options</span>
+              </summary>
+              <ul className="ml-8 space-y-4">
+                {renderOptions(injectParentProperties(widgetData.customOptions), true)}
+              </ul>
+            </details>
 
             <div className="bg-white p-8 rounded-lg shadow-lg mb-8">
-              <h3 className="text-2xl font-bold mb-4">Plan Options</h3>
-              <table className="min-w-full bg-white">
-                <thead>
-                  <tr>
-                    <th className="py-2">Name</th>
-                    <th className="py-2">Description</th>
-                    <th className="py-2">Prompt</th>
-                    <th className="py-2">Parent</th>
-                    <th className="py-2">Enabled</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {renderOptions(widgetData.planOptions, false)}
-                </tbody>
-              </table>
+              <h3 className="text-2xl font-bold mb-4">Add Custom Action</h3>
+              <form onSubmit={handleAddCustomAction}>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2">Name:</label>
+                  <input
+                    type="text"
+                    value={newAction.name}
+                    onChange={(e) => setNewAction({ ...newAction, name: e.target.value })}
+                    required
+                    className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2">Description:</label>
+                  <input
+                    type="text"
+                    value={newAction.description}
+                    onChange={(e) => setNewAction({ ...newAction, description: e.target.value })}
+                    required
+                    className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2">Prompt:</label>
+                  <input
+                    type="text"
+                    value={newAction.prompt}
+                    onChange={(e) => setNewAction({ ...newAction, prompt: e.target.value })}
+                    required
+                    className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2">Parent:</label>
+                  <select
+                    value={newAction.actionParentId || ''}
+                    onChange={(e) => setNewAction({ ...newAction, actionParentId: e.target.value || null })}
+                    className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  >
+                    <option value="">None</option>
+                    {widgetData.customOptions.map((option) => (
+                      <option hidden={option.actionParentId != null} key={option.id} value={option.id}>{option.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline">
+                  Add Action
+                </button>
+              </form>
             </div>
-
-            {widgetData.planName === 'Free' ? (
-              <>
-                <div className="relative bg-white p-8 rounded-lg shadow-lg mb-8">
-                  <div className="absolute inset-0 bg-gray-300 bg-opacity-80 flex items-center justify-center" style={{ zIndex: 10, pointerEvents: 'none' }}>
-                    <span style={{ color: 'red', fontWeight: 'bold', fontSize: '1.25rem', opacity: 1, pointerEvents: 'all' }}>
-                      <a href="/dashboard/subscription" style={{ textDecoration: 'underline' }}>Upgrade</a> your subscription to unlock this feature
-                    </span>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">Custom Options</h3>
-                  <table className="min-w-full bg-white opacity-30">
-                    <thead>
-                      <tr>
-                        <th className="py-2">Name</th>
-                        <th className="py-2">Description</th>
-                        <th className="py-2">Prompt</th>
-                        <th className="py-2">Parent</th>
-                        <th className="py-2">Enabled</th>
-                        <th className="py-2">Delete</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="border px-4 py-2">Mock Name</td>
-                        <td className="border px-4 py-2">Mock Description</td>
-                        <td className="border px-4 py-2">Mock Prompt</td>
-                        <td className="border px-4 py-2">N/A</td>
-                        <td className="border px-4 py-2">
-                          <input type="checkbox" disabled className="ml-2" />
-                        </td>
-                        <td className="border px-4 py-2">
-                          <button className="bg-red-500 text-red font-bold py-2 px-4 rounded" disabled>
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className="relative bg-white p-8 rounded-lg shadow-lg mb-8">
-                  <div className="absolute inset-0 bg-gray-300 bg-opacity-80 flex items-center justify-center" style={{ zIndex: 10, pointerEvents: 'none' }}>
-                    <span style={{ color: 'red', fontWeight: 'bold', fontSize: '1.25rem', opacity: 1, pointerEvents: 'all' }}>
-                      <a href="/dashboard/subscription" style={{ textDecoration: 'underline' }}>Upgrade</a> your subscription to unlock this feature
-                    </span>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">Add Custom Action</h3>
-                  <form>
-                    <div className="mb-4">
-                      <label className="block text-gray-700 font-bold mb-2">Name:</label>
-                      <input
-                        type="text"
-                        value="Mock Name"
-                        disabled
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label className="block text-gray-700 font-bold mb-2">Description:</label>
-                      <input
-                        type="text"
-                        value="Mock Description"
-                        disabled
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label className="block text-gray-700 font-bold mb-2">Prompt:</label>
-                      <input
-                        type="text"
-                        value="Mock Prompt"
-                        disabled
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label className="block text-gray-700 font-bold mb-2">Parent:</label>
-                      <select
-                        value=""
-                        disabled
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      >
-                        <option value="">None</option>
-                      </select>
-                    </div>
-                    <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline" disabled>
-                      Add Action
-                    </button>
-                  </form>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="bg-white p-8 rounded-lg shadow-lg mb-8">
-                  <h3 className="text-2xl font-bold mb-4">Custom Options</h3>
-                  <table className="min-w-full bg-white">
-                    <thead>
-                      <tr>
-                        <th className="py-2">Name</th>
-                        <th className="py-2">Description</th>
-                        <th className="py-2">Prompt</th>
-                        <th className="py-2">Parent</th>
-                        <th className="py-2">Enabled</th>
-                        <th className="py-2">Save</th>
-                        <th className="py-2">Delete</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {renderOptions(widgetData.customOptions, true)}
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className="bg-white p-8 rounded-lg shadow-lg mb-8">
-                  <h3 className="text-2xl font-bold mb-4">Add Custom Action</h3>
-                  <form onSubmit={handleAddCustomAction}>
-                    <div className="mb-4">
-                      <label className="block text-gray-700 font-bold mb-2">Name:</label>
-                      <input
-                        type="text"
-                        value={newAction.name}
-                        onChange={(e) => setNewAction({ ...newAction, name: e.target.value })}
-                        required
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label className="block text-gray-700 font-bold mb-2">Description:</label>
-                      <input
-                        type="text"
-                        value={newAction.description}
-                        onChange={(e) => setNewAction({ ...newAction, description: e.target.value })}
-                        required
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label className="block text-gray-700 font-bold mb-2">Prompt:</label>
-                      <input
-                        type="text"
-                        value={newAction.prompt}
-                        onChange={(e) => setNewAction({ ...newAction, prompt: e.target.value })}
-                        required
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label className="block text-gray-700 font-bold mb-2">Parent:</label>
-                      <select
-                        value={newAction.actionParentId || ''}
-                        onChange={(e) => setNewAction({ ...newAction, actionParentId: e.target.value || null })}
-                        className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      >
-                        <option value="">None</option>
-                        {widgetData.customOptions.map((option) => (
-                          <option hidden={option.actionParentId != null} key={option.id} value={option.id}>{option.name}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline">
-                      Add Action
-                    </button>
-                  </form>
-                </div>
-              </>
-            )}
           </>
         )}
       </div>

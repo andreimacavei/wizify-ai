@@ -8,11 +8,13 @@ import CopyToClipboardButton from "./CopyToClipboardButton";
 import NewDomainDialog from "./NewDomainDialog";
 import NewKeyDialog from "./NewKeyDialog";
 import ConfigWidget from "./ConfigWidget";
+import ConfigWidgetUsageCard from "./ConfigWidgetUsageCard";
 import ApiKeyCard from "./ApiKeyCard";
 
 export {
   ApiKeyCard,
   ConfigWidget,
+  ConfigWidgetUsageCard,
   ContextMenuButton,
   CopyToClipboardButton,
   CreateDomainBtn,
